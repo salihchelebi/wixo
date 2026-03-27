@@ -1,5 +1,5 @@
 import { lazy } from 'react'
-import { Navigate, Outlet } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 
 // project imports
 import MainLayout from '@/layout/MainLayout'
@@ -84,8 +84,8 @@ const MainRoutes = {
     children: [
         {
             path: '/',
-            // Bu koşul Netlify hafif prototip modunda kök yolu doğrudan admin ekranına güvenli biçimde yönlendirir.
-            element: import.meta.env.VITE_NETLIFY_LITE === 'true' ? <Navigate to='/netlify-lite/admin' replace /> : <DefaultRedirect />
+            // Bu koşul Netlify hafif prototip modunda kök yolu doğrudan açılış sayfasına güvenli biçimde yönlendirir.
+            element: import.meta.env.VITE_NETLIFY_LITE === 'true' ? <NetlifyLiteLandingPage /> : <DefaultRedirect />
         },
         {
             // Bu route açılış sayfasını netlify-lite akışı için bağımsız ve sade bir giriş katmanı olarak sunar.
