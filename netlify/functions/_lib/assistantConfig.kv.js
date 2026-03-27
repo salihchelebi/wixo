@@ -3,7 +3,15 @@ const path = require('path')
 const { defaultAssistantConfig } = require('./assistantConfig.defaults')
 
 // Bu adaptör tüm veri erişimini tek yerden geçirerek ileride Neon geçişini risksiz hale getirir.
-const kvFilePath = path.resolve(__dirname, '..', '..', 'data', 'kv.json')
+const kvFilePath = resolveKvFilePath()
+
+// Bu seçim Netlify serverless ortamında yazılamayan dosya yolları yerine güvenli yazılabilir alanı kullanır.
+function resolveKvFilePath() {
+    if (process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.NETLIFY) {
+        return path.resolve('/tmp', 'netlify-lite-kv.json')
+    }
+    return path.resolve(__dirname, '..', '..', 'data', 'kv.json')
+}
 
 async function ensureKvFile() {
     try {

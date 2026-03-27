@@ -51,6 +51,9 @@ const messages = {
 }
 
 export const getNetlifyLiteTexts = () => {
-    const locale = (typeof navigator !== 'undefined' && navigator.language?.toLowerCase().startsWith('tr')) ? 'tr' : 'en'
+    // Bu seçim kullanıcıya varsayılan olarak Türkçe metin gösterirken gerektiğinde URL ile dil değişimini güvenli biçimde açık tutar.
+    const forcedLang =
+        typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('lang')?.toLowerCase() : null
+    const locale = forcedLang === 'en' ? 'en' : 'tr'
     return messages[locale]
 }

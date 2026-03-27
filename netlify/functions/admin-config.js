@@ -23,7 +23,7 @@ exports.handler = async (event) => {
 
         return jsonResponse(405, { error: 'Desteklenmeyen metod.' })
     } catch (error) {
-        return jsonResponse(400, { error: error.message || 'İşlem başarısız oldu.' })
+        return jsonResponse(400, { error: normalizeErrorMessage(error) })
     }
 }
 
@@ -79,4 +79,13 @@ function jsonResponse(statusCode, body) {
         },
         body: JSON.stringify(body)
     }
+}
+
+// Bu eşleme kullanıcıya teknik dosya sistemi hatası yerine anlaşılır ve güvenli Türkçe hata metni gösterir.
+function normalizeErrorMessage(error) {
+    const message = String(error?.message || '')
+    if (message.includes('ENOENT') || message.includes('EACCES') || message.includes('EROFS')) {
+        return 'Depolama alanına erişim sırasında geçici bir sorun oluştu.'
+    }
+    return message || 'İşlem başarısız oldu.'
 }
