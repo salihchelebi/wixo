@@ -19,6 +19,11 @@ to = "/.netlify/functions/chat"
 status = 200
 
 [[redirects]]
+from = "/api/admin-login"
+to = "/.netlify/functions/admin-login"
+status = 200
+
+[[redirects]]
 from = "/*"
 to = "/index.html"
 status = 200

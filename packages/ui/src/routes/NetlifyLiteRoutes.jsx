@@ -2,6 +2,7 @@ import { lazy } from 'react'
 import Loadable from '@/ui-component/loading/Loadable'
 import AuthLayout from '@/layout/AuthLayout'
 
+const NetlifyLiteLandingPage = Loadable(lazy(() => import('@/views/netlifyLite/LandingPage')))
 const NetlifyLiteAdminPage = Loadable(lazy(() => import('@/views/netlifyLite/AdminPage')))
 const NetlifyLiteChatPage = Loadable(lazy(() => import('@/views/netlifyLite/ChatPage')))
 
@@ -10,6 +11,10 @@ const NetlifyLiteRoutes = {
     path: '/',
     element: <AuthLayout />,
     children: [
+        {
+            path: '/netlify-lite',
+            element: <NetlifyLiteLandingPage />
+        },
         {
             path: '/netlify-lite/admin',
             element: <NetlifyLiteAdminPage />

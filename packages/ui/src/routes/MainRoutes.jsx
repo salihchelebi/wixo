@@ -1,5 +1,5 @@
 import { lazy } from 'react'
-import { Navigate } from 'react-router-dom'
+import { Navigate, Outlet } from 'react-router-dom'
 
 // project imports
 import MainLayout from '@/layout/MainLayout'
@@ -52,6 +52,9 @@ const Evaluators = Loadable(lazy(() => import('@/views/evaluators')))
 
 // account routing
 const Account = Loadable(lazy(() => import('@/views/account')))
+const NetlifyLiteLandingPage = Loadable(lazy(() => import('@/views/netlifyLite/LandingPage')))
+const NetlifyLiteAdminPage = Loadable(lazy(() => import('@/views/netlifyLite/AdminPage')))
+const NetlifyLiteChatPage = Loadable(lazy(() => import('@/views/netlifyLite/ChatPage')))
 
 // files routing
 const Files = Loadable(lazy(() => import('@/views/files')))
@@ -70,17 +73,34 @@ const Workspaces = Loadable(lazy(() => import('@/views/workspace')))
 const WorkspaceDetails = Loadable(lazy(() => import('@/views/workspace/WorkspaceUsers')))
 const SSOConfig = Loadable(lazy(() => import('@/views/auth/ssoConfig')))
 const SSOSuccess = Loadable(lazy(() => import('@/views/auth/ssoSuccess')))
+const NetlifyLiteLayout = () => <Outlet />
 
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
     path: '/',
-    element: <MainLayout />,
+    // Bu koşul Netlify hafif prototip modunda ana ağır yerleşimi devre dışı bırakıp netlify-lite sayfalarını doğrudan gösterir.
+    element: import.meta.env.VITE_NETLIFY_LITE === 'true' ? <NetlifyLiteLayout /> : <MainLayout />,
     children: [
         {
             path: '/',
             // Bu koşul Netlify hafif prototip modunda kök yolu doğrudan admin ekranına güvenli biçimde yönlendirir.
             element: import.meta.env.VITE_NETLIFY_LITE === 'true' ? <Navigate to='/netlify-lite/admin' replace /> : <DefaultRedirect />
+        },
+        {
+            // Bu route açılış sayfasını netlify-lite akışı için bağımsız ve sade bir giriş katmanı olarak sunar.
+            path: '/netlify-lite',
+            element: <NetlifyLiteLandingPage />
+        },
+        {
+            // Bu doğrudan eşleşme netlify-lite admin ekranının yalnızca ana iskelet değil içerik de göstermesini güvenli biçimde sağlar.
+            path: '/netlify-lite/admin',
+            element: <NetlifyLiteAdminPage />
+        },
+        {
+            // Bu doğrudan eşleşme netlify-lite sohbet ekranının yalnızca ana iskelet değil içerik de göstermesini güvenli biçimde sağlar.
+            path: '/netlify-lite/chat',
+            element: <NetlifyLiteChatPage />
         },
         {
             path: '/chatflows',

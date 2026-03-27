@@ -10,6 +10,7 @@ import {
     TextField,
     Typography
 } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
 import { getNetlifyLiteTexts } from './texts'
 
 const defaultForm = {
@@ -24,6 +25,7 @@ const defaultForm = {
 
 // Bu ekran tek admin paneli için asistan ayarlarını Türkçe alanlarla okuyup kaydetme akışını sağlar.
 export default function NetlifyLiteAdminPage() {
+    const navigate = useNavigate()
     const [form, setForm] = useState(defaultForm)
     const t = getNetlifyLiteTexts()
     const [message, setMessage] = useState('')
@@ -54,8 +56,13 @@ export default function NetlifyLiteAdminPage() {
     }
 
     useEffect(() => {
+        // Bu kontrol admin ekranına yalnız giriş tokenı olan kullanıcının erişmesini güvenli biçimde sağlar.
+        if (!sessionStorage.getItem('netlifyLiteAdminToken')) {
+            navigate('/netlify-lite', { replace: true })
+            return
+        }
         loadConfig()
-    }, [])
+    }, [navigate])
 
     const onChange = (key) => (event) => {
         const value = key === 'enabled' ? event.target.checked : event.target.value

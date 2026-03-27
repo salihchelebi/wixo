@@ -22,7 +22,16 @@ const messages = {
         userMessage: 'Mesajınız',
         send: 'Gönder',
         assistantReply: 'Asistan Yanıtı',
-        chatError: 'Yanıt alınamadı.'
+        chatError: 'Yanıt alınamadı.',
+        notAuthorized: 'Bu ekran için önce giriş yapmalısınız.',
+        landingHeadline: 'Dağınıklığı bitir, operasyonunu tek panelden yönet.',
+        landingSubheadline: 'Hızlı kurulum, net kontrol ve ölçülebilir sonuç için yönetim paneline güvenli giriş yapın.',
+        loginTitle: 'Yönetici Girişi',
+        loginSubtitle: 'Yalnız yetkili kullanıcı admin paneline erişebilir.',
+        loginUsername: 'Kullanıcı Adı',
+        loginPassword: 'Parola',
+        loginButton: 'Panele Gir',
+        loginError: 'Giriş bilgileri doğrulanamadı.'
     },
     en: {
         loading: 'Loading...',
@@ -46,7 +55,16 @@ const messages = {
         userMessage: 'Your Message',
         send: 'Send',
         assistantReply: 'Assistant Reply',
-        chatError: 'Failed to get response.'
+        chatError: 'Failed to get response.',
+        notAuthorized: 'You need to sign in first.',
+        landingHeadline: 'Stop operational chaos and manage from one panel.',
+        landingSubheadline: 'Sign in securely to reach fast setup, clear control, and measurable outcomes.',
+        loginTitle: 'Admin Sign In',
+        loginSubtitle: 'Only authorized users can access the admin panel.',
+        loginUsername: 'Username',
+        loginPassword: 'Password',
+        loginButton: 'Enter Panel',
+        loginError: 'Unable to validate credentials.'
     }
 }
 
