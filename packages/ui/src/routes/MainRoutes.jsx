@@ -80,7 +80,7 @@ const NetlifyLiteLayout = () => <Outlet />
 const MainRoutes = {
     path: '/',
     // Bu koşul Netlify hafif prototip modunda ana ağır yerleşimi devre dışı bırakıp netlify-lite sayfalarını doğrudan gösterir.
-    element: import.meta.env.VITE_NETLIFY_LITE === 'true' ? <NetlifyLiteLayout /> : <MainLayout />,
+    element: import.meta.env.VITE_NETLIFY_LITE === 'true' ? <NetlifyLiteLandingPage /> : <DefaultRedirect />
     children: [
         {
             path: '/',
