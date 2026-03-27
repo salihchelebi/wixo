@@ -4,6 +4,10 @@ command = "pnpm --filter flowise-ui build"
 publish = "packages/ui/build"
 functions = "netlify/functions"
 
+[build.environment]
+# Bu değişken Netlify deployunda kök rota davranışını hafif prototip admin ekranına sabitler.
+VITE_NETLIFY_LITE = "true"
+
 [[redirects]]
 from = "/api/admin-config"
 to = "/.netlify/functions/admin-config"

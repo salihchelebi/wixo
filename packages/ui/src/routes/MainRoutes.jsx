@@ -1,4 +1,5 @@
 import { lazy } from 'react'
+import { Navigate } from 'react-router-dom'
 
 // project imports
 import MainLayout from '@/layout/MainLayout'
@@ -78,7 +79,8 @@ const MainRoutes = {
     children: [
         {
             path: '/',
-            element: <DefaultRedirect />
+            // Bu koşul Netlify hafif prototip modunda kök yolu doğrudan admin ekranına güvenli biçimde yönlendirir.
+            element: import.meta.env.VITE_NETLIFY_LITE === 'true' ? <Navigate to='/netlify-lite/admin' replace /> : <DefaultRedirect />
         },
         {
             path: '/chatflows',
