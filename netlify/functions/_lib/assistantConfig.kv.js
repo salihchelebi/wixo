@@ -2,10 +2,8 @@ const fs = require('fs/promises')
 const path = require('path')
 const { defaultAssistantConfig } = require('./assistantConfig.defaults')
 
-// Bu adaptör tüm veri erişimini tek yerden geçirerek ileride Neon geçişini risksiz hale getirir.
 const kvFilePath = resolveKvFilePath()
 
-// Bu seçim Netlify serverless ortamında yazılamayan dosya yolları yerine güvenli yazılabilir alanı kullanır.
 function resolveKvFilePath() {
     if (process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.NETLIFY) {
         return path.resolve('/tmp', 'netlify-lite-kv.json')
@@ -18,30 +16,38 @@ async function ensureKvFile() {
         await fs.access(kvFilePath)
     } catch {
         await fs.mkdir(path.dirname(kvFilePath), { recursive: true })
-        await fs.writeFile(kvFilePath, `${JSON.stringify(defaultAssistantConfig, null, 2)}\n`, 'utf8')
+        await fs.writeFile(kvFilePath, `${JSON.stringify(defaultAssistantConfig, null, 4)}\n`, 'utf8')
     }
 }
 
 function sanitizeInput(input = {}) {
     const next = {
-        assistantName: typeof input.assistantName === 'string' ? input.assistantName.trim() : undefined,
-        systemPrompt: typeof input.systemPrompt === 'string' ? input.systemPrompt.trim() : undefined,
-        welcomeMessage: typeof input.welcomeMessage === 'string' ? input.welcomeMessage.trim() : undefined,
-        primaryColor: typeof input.primaryColor === 'string' ? input.primaryColor.trim() : undefined,
-        model: typeof input.model === 'string' ? input.model.trim() : undefined,
+        assistantName: sanitizeString(input.assistantName),
+        assistantRole: sanitizeString(input.assistantRole),
+        systemPrompt: sanitizeString(input.systemPrompt),
+        welcomeMessage: sanitizeString(input.welcomeMessage),
+        primaryColor: sanitizeString(input.primaryColor),
+        provider: sanitizeString(input.provider),
+        baseUrl: sanitizeString(input.baseUrl),
+        apiKey: sanitizeString(input.apiKey),
+        model: sanitizeString(input.model),
         temperature: Number(input.temperature),
-        enabled: input.enabled
+        enabled: input.enabled,
+        sectorKey: sanitizeString(input.sectorKey),
+        landingVariant: sanitizeString(input.landingVariant),
+        ctaTarget: sanitizeString(input.ctaTarget),
+        theme: sanitizeString(input.theme)
     }
 
-    if (Number.isNaN(next.temperature)) {
-        next.temperature = undefined
-    }
-
-    if (typeof next.enabled !== 'boolean') {
-        next.enabled = undefined
-    }
+    if (Number.isNaN(next.temperature)) next.temperature = undefined
+    if (typeof next.enabled !== 'boolean') next.enabled = undefined
 
     return next
+}
+
+function sanitizeString(value) {
+    if (typeof value !== 'string') return undefined
+    return value.trim()
 }
 
 async function getAssistantConfig() {
@@ -59,12 +65,12 @@ async function saveAssistantConfig(input) {
         ...Object.fromEntries(Object.entries(sanitized).filter(([, value]) => value !== undefined)),
         updatedAt: new Date().toISOString()
     }
-    await fs.writeFile(kvFilePath, `${JSON.stringify(merged, null, 2)}\n`, 'utf8')
+    await fs.writeFile(kvFilePath, `${JSON.stringify(merged, null, 4)}\n`, 'utf8')
     return merged
 }
 
 async function resetAssistantConfig() {
-    await fs.writeFile(kvFilePath, `${JSON.stringify(defaultAssistantConfig, null, 2)}\n`, 'utf8')
+    await fs.writeFile(kvFilePath, `${JSON.stringify(defaultAssistantConfig, null, 4)}\n`, 'utf8')
     return { ...defaultAssistantConfig }
 }
 

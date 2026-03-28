@@ -1,4 +1,5 @@
-// Bu handler yalnız env değişkenlerindeki yönetici bilgileriyle giriş doğrulayıp panel erişimi için geçici token üretir.
+const { createSessionToken, buildSessionCookie, buildSessionCookieClear } = require('./_lib/adminAuth')
+
 exports.handler = async (event) => {
     try {
         if (event.httpMethod !== 'POST') {
@@ -16,18 +17,19 @@ exports.handler = async (event) => {
             return jsonResponse(401, { error: 'Kullanıcı adı veya parola hatalı.' })
         }
 
-        const token = Buffer.from(`${username}:${Date.now()}`).toString('base64url')
-        return jsonResponse(200, { token })
+        const token = createSessionToken(username)
+        return jsonResponse(200, { success: true }, { 'set-cookie': buildSessionCookie(token) })
     } catch {
-        return jsonResponse(400, { error: 'Giriş doğrulanamadı.' })
+        return jsonResponse(400, { error: 'Giriş doğrulanamadı.' }, { 'set-cookie': buildSessionCookieClear() })
     }
 }
 
-function jsonResponse(statusCode, body) {
+function jsonResponse(statusCode, body, headers = {}) {
     return {
         statusCode,
         headers: {
-            'content-type': 'application/json; charset=utf-8'
+            'content-type': 'application/json; charset=utf-8',
+            ...headers
         },
         body: JSON.stringify(body)
     }

@@ -1,6 +1,5 @@
 const { getAssistantConfig } = require('./_lib/assistantConfig.kv')
 
-// Bu handler Netlify prototipini hafif tutmak için gerçek Flowise zinciri yerine kontrollü mock yanıt üretir.
 exports.handler = async (event) => {
     try {
         if (event.httpMethod !== 'POST') {
@@ -18,9 +17,9 @@ exports.handler = async (event) => {
             return jsonResponse(400, { error: 'message alanı zorunludur.' })
         }
 
-        const reply = `${config.assistantName}: ${config.systemPrompt} | Kullanıcı mesajı: ${message}`
+        const reply = await buildReply({ config, message })
         return jsonResponse(200, {
-            mode: 'mock',
+            mode: config.provider === 'ollama' ? 'ollama' : 'fallback',
             assistantName: config.assistantName,
             primaryColor: config.primaryColor,
             reply
@@ -28,6 +27,49 @@ exports.handler = async (event) => {
     } catch (error) {
         return jsonResponse(400, { error: normalizeErrorMessage(error) })
     }
+}
+
+async function buildReply({ config, message }) {
+    if (config.provider === 'ollama') {
+        return callOllama({
+            baseUrl: config.baseUrl,
+            apiKey: config.apiKey,
+            model: config.model,
+            temperature: config.temperature,
+            prompt: `${config.systemPrompt}\n\nKullanıcı mesajı: ${message}`
+        })
+    }
+
+    return `${config.assistantName}: ${config.systemPrompt} | Kullanıcı mesajı: ${message}`
+}
+
+async function callOllama({ baseUrl, apiKey, model, temperature, prompt }) {
+    const endpoint = `${String(baseUrl || 'http://localhost:11434').replace(/\/$/, '')}/api/generate`
+    const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json',
+            ...(apiKey ? { authorization: `Bearer ${apiKey}` } : {})
+        },
+        body: JSON.stringify({
+            model,
+            prompt,
+            stream: false,
+            options: { temperature }
+        })
+    })
+
+    const data = await response.json().catch(() => ({}))
+    if (!response.ok) {
+        throw new Error(data.error || `Ollama isteği başarısız oldu (${response.status}).`)
+    }
+
+    const text = typeof data.response === 'string' ? data.response.trim() : ''
+    if (!text) {
+        throw new Error('Ollama boş yanıt döndürdü.')
+    }
+
+    return text
 }
 
 function jsonResponse(statusCode, body) {
@@ -40,9 +82,11 @@ function jsonResponse(statusCode, body) {
     }
 }
 
-// Bu eşleme kullanıcıya teknik dosya sistemi hatası yerine anlaşılır ve güvenli Türkçe hata metni gösterir.
 function normalizeErrorMessage(error) {
     const message = String(error?.message || '')
+    if (message.includes('fetch failed') || message.includes('ECONNREFUSED')) {
+        return 'Ollama servisine ulaşılamadı. baseUrl ayarını kontrol edin.'
+    }
     if (message.includes('ENOENT') || message.includes('EACCES') || message.includes('EROFS')) {
         return 'Depolama alanına erişim sırasında geçici bir sorun oluştu.'
     }
