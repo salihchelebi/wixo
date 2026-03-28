@@ -1,0 +1,45 @@
+<svg width="1600" height="500" viewBox="0 0 1600 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="iconGlow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2A4DFF"/>
+      <stop offset="55%" stop-color="#2EC5FF"/>
+      <stop offset="100%" stop-color="#8A4BFF"/>
+    </linearGradient>
+    <linearGradient id="textBase" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#EAF2FF"/>
+      <stop offset="100%" stop-color="#C8D7FF"/>
+    </linearGradient>
+    <linearGradient id="textAI" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#66D8FF"/>
+      <stop offset="100%" stop-color="#A45DFF"/>
+    </linearGradient>
+    <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="500" fill="transparent"/>
+
+  <g transform="translate(90 85)" filter="url(#softGlow)">
+    <rect x="0" y="0" width="330" height="330" rx="54" fill="#091636" stroke="#1A316F" stroke-width="2"/>
+    <path d="M68 236C113 203 140 175 170 128C190 97 210 79 244 62" stroke="url(#iconGlow)" stroke-width="20" stroke-linecap="round"/>
+    <path d="M104 256C154 219 180 191 212 142C232 111 251 90 282 72" stroke="#0E2A66" stroke-width="8" stroke-linecap="round"/>
+    <circle cx="70" cy="236" r="17" fill="#2EC5FF"/>
+    <circle cx="171" cy="129" r="17" fill="#2A4DFF"/>
+    <circle cx="244" cy="62" r="17" fill="#8A4BFF"/>
+    <rect x="56" y="88" width="52" height="16" rx="8" fill="#2EC5FF" opacity="0.88"/>
+    <rect x="56" y="122" width="78" height="16" rx="8" fill="#2A4DFF" opacity="0.78"/>
+    <rect x="56" y="156" width="104" height="16" rx="8" fill="#8A4BFF" opacity="0.75"/>
+  </g>
+
+  <g transform="translate(500 114)">
+    <text x="0" y="176" font-family="Inter, Arial, sans-serif" font-size="180" font-weight="750" letter-spacing="1.8" fill="url(#textBase)">NISS</text>
+    <text x="720" y="176" font-family="Inter, Arial, sans-serif" font-size="182" font-weight="850" letter-spacing="2" fill="url(#textAI)">AI</text>
+    <rect x="717" y="186" width="214" height="8" rx="4" fill="url(#textAI)" opacity="0.8"/>
+    <text x="4" y="258" font-family="Inter, Arial, sans-serif" font-size="58" font-weight="500" letter-spacing="1" fill="#AFC4FF">Operasyon Kontrolü</text>
+  </g>
+</svg>
