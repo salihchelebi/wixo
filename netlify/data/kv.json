@@ -1,12 +1,12 @@
 {
-  "workspaceId": "default-workspace",
-  "assistantName": "Meslek Asistanı",
-  "systemPrompt": "Kullanıcıya kendi uzmanlık alanında yardımcı olan profesyonel bir asistansın.",
-  "welcomeMessage": "Merhaba, size nasıl yardımcı olabilirim?",
-  "primaryColor": "#2563eb",
-  "model": "gpt-4o-mini",
-  "temperature": 0.2,
-  "enabled": true,
-  "updatedAt": "2026-03-27T00:00:00.000Z",
-  "__note": "Bu dosya prototip amaçlıdır ve kalıcı üretim veri omurgası için ileride adapter üzerinden Neon'a taşınacaktır."
+    "workspaceId": "default-workspace",
+    "assistantName": "Meslek Asistanı",
+    "systemPrompt": "Kullanıcıya kendi uzmanlık alanında yardımcı olan profesyonel bir asistansın.",
+    "welcomeMessage": "Merhaba, size nasıl yardımcı olabilirim?",
+    "primaryColor": "#2563eb",
+    "model": "gpt-4o-mini",
+    "temperature": 0.2,
+    "enabled": true,
+    "updatedAt": "2026-03-27T00:00:00.000Z",
+    "__note": "Bu dosya prototip amaçlıdır ve kalıcı üretim veri omurgası için ileride adapter üzerinden Neon'a taşınacaktır."
 }
