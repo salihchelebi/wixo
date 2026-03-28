@@ -1,6 +1,6 @@
 # Bu yapı hafif prototipi Netlify'de UI build + functions olarak minimum riskle yayınlamak için eklendi.
 [build]
-command = "pnpm --filter flowise-ui build"
+command = "corepack prepare pnpm@10.26.0 --activate && pnpm --filter flowise-ui build"
 publish = "packages/ui/build"
 functions = "netlify/functions"
 
