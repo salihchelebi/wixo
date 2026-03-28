@@ -21,7 +21,7 @@ export default function NetlifyLiteChatPage() {
                 setPrimaryColor(data.config.primaryColor)
                 setWelcomeMessage(data.config.welcomeMessage)
             } catch {
-                setWelcomeMessage('Merhaba, ben demo asistanıyım. Mesaj bırakabilirsiniz.')
+                setWelcomeMessage('Merhaba, NISSAI mesaj merkezine hoş geldiniz. Mesajınızı iletebilirsiniz.')
             }
         }
         load()

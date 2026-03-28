@@ -1,4 +1,7 @@
-const { createSessionToken, buildSessionCookie, buildSessionCookieClear } = require('./_lib/adminAuth')
+const { buildSessionCookie, buildSessionCookieClear, createSessionId, createSessionToken, SESSION_TTL_MS } = require('./_lib/adminAuth')
+const { findAdminUserByUsername } = require('./_lib/adminUser.repo')
+const { createAdminSession } = require('./_lib/adminSession.repo')
+const { verifyPassword } = require('./_lib/password')
 
 exports.handler = async (event) => {
     try {
@@ -10,14 +13,25 @@ exports.handler = async (event) => {
         const username = typeof body.username === 'string' ? body.username.trim() : ''
         const password = typeof body.password === 'string' ? body.password : ''
 
-        const expectedUsername = process.env.ADMIN_USER_NAME || process.env.ADMIN_USERNAME || '!mr0b0t'
-        const expectedPassword = process.env.ADMIN_PASSWORD || 'Sal!hc3l38!'
-
-        if (username !== expectedUsername || password !== expectedPassword) {
+        const admin = await findAdminUserByUsername(username)
+        if (!admin || !admin.is_active) {
             return jsonResponse(401, { error: 'Kullanıcı adı veya parola hatalı.' })
         }
 
-        const token = createSessionToken(username)
+        const passwordOk = await verifyPassword(password, admin.password_hash)
+        if (!passwordOk) {
+            return jsonResponse(401, { error: 'Kullanıcı adı veya parola hatalı.' })
+        }
+
+        const sessionId = createSessionId()
+        const token = createSessionToken({ username: admin.username, sessionId })
+        await createAdminSession({
+            id: sessionId,
+            userId: admin.id,
+            token,
+            expiresAt: Date.now() + SESSION_TTL_MS
+        })
+
         return jsonResponse(200, { success: true }, { 'set-cookie': buildSessionCookie(token) })
     } catch {
         return jsonResponse(400, { error: 'Giriş doğrulanamadı.' }, { 'set-cookie': buildSessionCookieClear() })

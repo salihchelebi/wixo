@@ -1,24 +1,5 @@
-const fs = require('fs/promises')
-const path = require('path')
 const { defaultAssistantConfig } = require('./assistantConfig.defaults')
-
-const kvFilePath = resolveKvFilePath()
-
-function resolveKvFilePath() {
-    if (process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.NETLIFY) {
-        return path.resolve('/tmp', 'netlify-lite-kv.json')
-    }
-    return path.resolve(__dirname, '..', '..', 'data', 'kv.json')
-}
-
-async function ensureKvFile() {
-    try {
-        await fs.access(kvFilePath)
-    } catch {
-        await fs.mkdir(path.dirname(kvFilePath), { recursive: true })
-        await fs.writeFile(kvFilePath, `${JSON.stringify(defaultAssistantConfig, null, 4)}\n`, 'utf8')
-    }
-}
+const { getStoredAssistantConfig, upsertAssistantConfig } = require('./assistantConfig.repo')
 
 function sanitizeInput(input = {}) {
     const next = {
@@ -51,10 +32,8 @@ function sanitizeString(value) {
 }
 
 async function getAssistantConfig() {
-    await ensureKvFile()
-    const raw = await fs.readFile(kvFilePath, 'utf8')
-    const parsed = JSON.parse(raw)
-    return { ...defaultAssistantConfig, ...parsed }
+    const stored = await getStoredAssistantConfig().catch(() => null)
+    return { ...defaultAssistantConfig, ...(stored || {}) }
 }
 
 async function saveAssistantConfig(input) {
@@ -65,13 +44,15 @@ async function saveAssistantConfig(input) {
         ...Object.fromEntries(Object.entries(sanitized).filter(([, value]) => value !== undefined)),
         updatedAt: new Date().toISOString()
     }
-    await fs.writeFile(kvFilePath, `${JSON.stringify(merged, null, 4)}\n`, 'utf8')
+
+    await upsertAssistantConfig(merged)
     return merged
 }
 
 async function resetAssistantConfig() {
-    await fs.writeFile(kvFilePath, `${JSON.stringify(defaultAssistantConfig, null, 4)}\n`, 'utf8')
-    return { ...defaultAssistantConfig }
+    const next = { ...defaultAssistantConfig, updatedAt: new Date().toISOString() }
+    await upsertAssistantConfig(next)
+    return next
 }
 
 module.exports = {

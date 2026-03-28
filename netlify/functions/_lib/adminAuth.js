@@ -1,4 +1,5 @@
 const crypto = require('crypto')
+const { getActiveAdminSession } = require('./adminSession.repo')
 
 const COOKIE_NAME = 'netlify_lite_admin_session'
 const SESSION_TTL_MS = 1000 * 60 * 60 * 8
@@ -7,9 +8,10 @@ function getSessionSecret() {
     return process.env.NETLIFY_LITE_SESSION_SECRET || process.env.ADMIN_SESSION_SECRET || 'netlify-lite-session-secret'
 }
 
-function createSessionToken(username) {
+function createSessionToken({ username, sessionId }) {
     const payload = {
         sub: username,
+        sid: sessionId,
         exp: Date.now() + SESSION_TTL_MS
     }
     const body = Buffer.from(JSON.stringify(payload)).toString('base64url')
@@ -25,7 +27,7 @@ function verifySessionToken(token) {
 
     try {
         const payload = JSON.parse(Buffer.from(body, 'base64url').toString('utf8'))
-        if (!payload?.sub || !payload?.exp || Date.now() > Number(payload.exp)) return null
+        if (!payload?.sub || !payload?.sid || !payload?.exp || Date.now() > Number(payload.exp)) return null
         return payload
     } catch {
         return null
@@ -53,7 +55,7 @@ function readCookie(event, cookieName = COOKIE_NAME) {
     return null
 }
 
-function requireAdmin(event) {
+async function requireAdmin(event) {
     const token = readCookie(event)
     const payload = verifySessionToken(token)
     if (!payload) {
@@ -61,7 +63,15 @@ function requireAdmin(event) {
         error.statusCode = 401
         throw error
     }
-    return payload
+
+    const session = await getActiveAdminSession({ id: payload.sid, token })
+    if (!session) {
+        const error = new Error('Yönetici oturumu geçersiz.')
+        error.statusCode = 401
+        throw error
+    }
+
+    return { ...payload, userId: session.user_id }
 }
 
 function sign(data) {
@@ -75,11 +85,18 @@ function timingSafeEqual(a, b) {
     return crypto.timingSafeEqual(left, right)
 }
 
+function createSessionId() {
+    return crypto.randomUUID()
+}
+
 module.exports = {
     COOKIE_NAME,
+    SESSION_TTL_MS,
+    createSessionId,
     createSessionToken,
     verifySessionToken,
     buildSessionCookie,
     buildSessionCookieClear,
+    readCookie,
     requireAdmin
 }

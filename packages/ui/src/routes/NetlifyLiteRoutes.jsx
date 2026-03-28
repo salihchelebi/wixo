@@ -8,7 +8,7 @@ const NetlifyLiteAdminPage = Loadable(lazy(() => import('@/views/netlifyLite/Adm
 const NetlifyLiteChatPage = Loadable(lazy(() => import('@/views/netlifyLite/ChatPage')))
 const NetlifyLiteSectorPage = Loadable(lazy(() => import('@/views/netlifyLite/SectorLandingPage')))
 
-// Bu route grubu prototip admin ve chat sayfalarını mevcut ana mimariyi bozmadan yalın biçimde sunar.
+// Bu route grubu NISSAI yönetim ve mesaj merkezi sayfalarını mevcut ana mimariyi bozmadan yalın biçimde sunar.
 const NetlifyLiteRoutes = {
     path: '/',
     element: <AuthLayout />,

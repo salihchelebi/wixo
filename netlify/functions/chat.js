@@ -1,4 +1,6 @@
+const crypto = require('crypto')
 const { getAssistantConfig } = require('./_lib/assistantConfig.kv')
+const { ensureChatSession, createChatMessage } = require('./_lib/chatSession.repo')
 
 exports.handler = async (event) => {
     try {
@@ -17,15 +19,22 @@ exports.handler = async (event) => {
             return jsonResponse(400, { error: 'message alanı zorunludur.' })
         }
 
+        const sessionId = typeof body.sessionId === 'string' && body.sessionId.trim() ? body.sessionId.trim() : crypto.randomUUID()
+        await ensureChatSession({ sessionId, sectorKey: config.sectorKey }).catch(() => null)
+        await createChatMessage({ sessionId, role: 'user', message, meta: { provider: config.provider } }).catch(() => null)
+
         const reply = await buildReply({ config, message })
+        await createChatMessage({ sessionId, role: 'assistant', message: reply, meta: { provider: config.provider } }).catch(() => null)
+
         return jsonResponse(200, {
-            mode: config.provider === 'ollama' ? 'ollama' : 'mock',
+            mode: config.provider === 'ollama' ? 'ollama' : 'fallback',
             assistantName: config.assistantName,
             primaryColor: config.primaryColor,
             reply
         })
     } catch (error) {
-        return jsonResponse(400, { error: normalizeErrorMessage(error) })
+        const mapped = mapChatError(error)
+        return jsonResponse(mapped.statusCode, { error: mapped.message })
     }
 }
 
@@ -61,12 +70,16 @@ async function callOllama({ baseUrl, apiKey, model, temperature, prompt }) {
 
     const data = await response.json().catch(() => ({}))
     if (!response.ok) {
-        throw new Error(data.error || `Ollama isteği başarısız oldu (${response.status}).`)
+        const error = new Error(data.error || `Ollama isteği başarısız oldu (${response.status}).`)
+        error.code = 'PROVIDER_BAD_RESPONSE'
+        throw error
     }
 
     const text = typeof data.response === 'string' ? data.response.trim() : ''
     if (!text) {
-        throw new Error('Ollama boş yanıt döndürdü.')
+        const error = new Error('Ollama boş yanıt döndürdü.')
+        error.code = 'PROVIDER_BAD_RESPONSE'
+        throw error
     }
 
     return text
@@ -82,13 +95,22 @@ function jsonResponse(statusCode, body) {
     }
 }
 
-function normalizeErrorMessage(error) {
+function mapChatError(error) {
     const message = String(error?.message || '')
+    if (error?.code === 'PROVIDER_BAD_RESPONSE') {
+        return { statusCode: 502, message }
+    }
     if (message.includes('fetch failed') || message.includes('ECONNREFUSED')) {
-        return 'Ollama servisine ulaşılamadı. baseUrl ayarını kontrol edin.'
+        return { statusCode: 503, message: 'Ollama servisine ulaşılamadı. baseUrl ayarını kontrol edin.' }
     }
-    if (message.includes('ENOENT') || message.includes('EACCES') || message.includes('EROFS')) {
-        return 'Depolama alanına erişim sırasında geçici bir sorun oluştu.'
+    if (message.includes('message alanı zorunludur')) {
+        return { statusCode: 400, message }
     }
-    return message || 'İşlem başarısız oldu.'
+    if (message.includes('Asistan pasif')) {
+        return { statusCode: 409, message }
+    }
+    if (message.includes('Veritabanı bağlantısı')) {
+        return { statusCode: 500, message: 'Veritabanı bağlantısı yapılamadı.' }
+    }
+    return { statusCode: 400, message: message || 'İşlem başarısız oldu.' }
 }

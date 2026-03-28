@@ -5,13 +5,13 @@ const { requireAdmin } = require('./_lib/adminAuth')
 exports.handler = async (event) => {
     try {
         if (event.httpMethod === 'GET') {
-            requireAdmin(event)
+            await requireAdmin(event)
             const config = await getAssistantConfig()
             return jsonResponse(200, { config, env: envConfig })
         }
 
         if (event.httpMethod === 'POST') {
-            requireAdmin(event)
+            await requireAdmin(event)
             const body = JSON.parse(event.body || '{}')
             if (body.action === 'reset') {
                 const resetConfig = await resetAssistantConfig()

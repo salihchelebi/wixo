@@ -20,7 +20,7 @@ export const SECTOR_PAGE_CONTENT = {
         eyebrow: 'AVUKATLAR İÇİN ÖN KARŞILAMA ASİSTANI',
         heroTitle: 'Hukuk ofisinizde ilk teması kaçırmadan yönetin.',
         heroDescription: 'Bu asistan avukatın yerine geçmez; ilk başvuru toplama, ön eleme ve doğru yönlendirme için çalışır.',
-        ctas: ['Hukuk ofisiniz için nasıl çalıştığını görün', 'Avukat asistanını canlı önizle', 'İlk müvekkil karşılama akışını incele'],
+        ctas: ['Hukuk ofisiniz için nasıl çalıştığını görün', 'Avukat asistanı sayfasını aç', 'İlk müvekkil karşılama akışını incele'],
         blocks: [
             'Hangi hukuk ofisleri için uygun',
             'Hangi sorunları çözer',
