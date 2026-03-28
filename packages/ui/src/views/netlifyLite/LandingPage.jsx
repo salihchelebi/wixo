@@ -16,10 +16,6 @@ import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded'
 import PlayCircleRoundedIcon from '@mui/icons-material/PlayCircleRounded'
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded'
 import ShieldRoundedIcon from '@mui/icons-material/ShieldRounded'
-import SpeedRoundedIcon from '@mui/icons-material/SpeedRounded'
-import BusinessCenterRoundedIcon from '@mui/icons-material/BusinessCenterRounded'
-import GroupsRoundedIcon from '@mui/icons-material/GroupsRounded'
-import PhoneIphoneRoundedIcon from '@mui/icons-material/PhoneIphoneRounded'
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
 
 export default function LandingPage() {
@@ -302,7 +298,7 @@ export default function LandingPage() {
                                         >
                                             Netlify-Lite; ekip yükünü azaltır, süreci hızlandırır ve kontrolü tek panelde toplar.
                                             Daha fazla personel almadan daha fazla işi yönetmek isteyenler için tasarlandı. Bu
-                                            sayfa bilgi vermek için değil, dönüşüm almak için var. :contentReference[oaicite:4]{index=4}
+                                            sayfa bilgi vermek için değil, dönüşüm almak için var.
                                         </Typography>
 
                                         <Stack spacing={1.3} mt={3}>
@@ -404,7 +400,7 @@ export default function LandingPage() {
                     <SectionHeadline
                         top='PROBLEM + AJİTASYON'
                         title='Sorun küçük değil. Sessizce para kaybettiriyor.'
-                        text='İşler büyürken süreçler toparlanmıyorsa kayıp görünmez ama gerçektir. Yavaş ekip, düzensiz takip, geciken dönüş ve görünmeyen maliyet büyümenin önüne fren koyar. :contentReference[oaicite:5]{index=5}'
+                        text='İşler büyürken süreçler toparlanmıyorsa kayıp görünmez ama gerçektir. Yavaş ekip, düzensiz takip, geciken dönüş ve görünmeyen maliyet büyümenin önüne fren koyar.'
                     />
 
                     <Grid container spacing={3}>
@@ -442,7 +438,7 @@ export default function LandingPage() {
                     <SectionHeadline
                         top='KİMLER İÇİN'
                         title='Bu sistem herkes için değil. Bu sistem hız isteyenler için.'
-                        text='Bu yapı özellikle ajanslar, e-ticaret ekipleri, emlak ekipleri, operasyon yöneticileri ve destek yükü yüksek işletmeler için tasarlandı. :contentReference[oaicite:6]{index=6}'
+                        text='Bu yapı özellikle ajanslar, e-ticaret ekipleri, emlak ekipleri, operasyon yöneticileri ve destek yükü yüksek işletmeler için tasarlandı.'
                     />
 
                     <Grid container spacing={2.5}>
@@ -470,8 +466,7 @@ export default function LandingPage() {
                                     <Typography sx={{ color: '#374151', lineHeight: 1.9, fontSize: 16 }}>
                                         Kuru vaat değil, güven veren yapı. “Ya uymazsa?”, “Ya ekip kullanamazsa?”,
                                         “Ya gereksiz çıkarsa?” gibi itirazlar için sayfanın bu alanı kullanıcıyı rahatlatmalı.
-                                        Riski kullanıcı değil, sistem taşıyor hissi burada açıkça verilmeli. :contentReference[oaicite:7]{index=7}
-                                        :contentReference[oaicite:8]{index=8}
+                                        Riski kullanıcı değil, sistem taşıyor hissi burada açıkça verilmeli.
                                     </Typography>
                                 </Stack>
                             </Paper>
@@ -488,7 +483,7 @@ export default function LandingPage() {
                                     <CountBox value={fmt(countdown.s)} label='Saniye' />
                                 </Stack>
                                 <Typography sx={{ mt: 2.5, color: '#6b7280', lineHeight: 1.8 }}>
-                                    Kararsızlık burada pahalıdır. Şimdi incele. Şimdi gör. Şimdi harekete geç. :contentReference[oaicite:9]{index=9}
+                                    Kararsızlık burada pahalıdır. Şimdi incele. Şimdi gör. Şimdi harekete geç.
                                 </Typography>
                             </Paper>
                         </Grid>
@@ -497,7 +492,7 @@ export default function LandingPage() {
                     <SectionHeadline
                         top='MİNİ SSS'
                         title='İtirazları en baştan temizleyelim.'
-                        text='Kararı yavaşlatan soruların cevabı burada. Kısa, net ve itiraz kırıcı. HTML örnekte de SSS bloğu final kapanıştan hemen önce yer alıyor. :contentReference[oaicite:10]{index=10}'
+                        text='Kararı yavaşlatan soruların cevabı burada. Kısa, net ve itiraz kırıcı.'
                     />
 
                     <Grid container spacing={2}>
@@ -519,7 +514,7 @@ export default function LandingPage() {
                             </Typography>
                             <Typography sx={{ maxWidth: 780, color: 'rgba(255,255,255,0.84)', lineHeight: 1.9 }}>
                                 Bu sayfa klasik ürün tanıtımı değil. Dönüşüm makinesi olarak çalışmalı. Ziyaretçiyi durdurmalı,
-                                problemi hissettirmeli, çözümü güçlü biçimde sunmalı ve sonunda kullanıcıyı karara zorlamalı. :contentReference[oaicite:11]{index=11}
+                                problemi hissettirmeli, çözümü güçlü biçimde sunmalı ve sonunda kullanıcıyı karara zorlamalı.
                             </Typography>
 
                             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
