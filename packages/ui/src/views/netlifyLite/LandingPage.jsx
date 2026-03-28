@@ -18,6 +18,79 @@ import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded'
 import ShieldRoundedIcon from '@mui/icons-material/ShieldRounded'
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
 
+const LANDING_IMAGES = {
+    logo: {
+        src: '/images/nissai-operasyon-kontrolu-logo.jpg',
+        alt: 'NISSAI operasyon kontrolü logosu',
+        slot: 'Navbar sol üst logo'
+    },
+    hero: {
+        src: '/images/nissai-operasyon-paneli-hero.jpg',
+        alt: 'NISSAI operasyon paneli hero görseli',
+        slot: 'Hero ana ürün görseli'
+    },
+    demoCta: {
+        src: '/images/nissai-karar-oncesi-demo-cta.jpg',
+        alt: 'Karar öncesi demo çağrısı görseli',
+        slot: 'Hero sonrası demo CTA bölümü'
+    },
+    chatDemo: {
+        src: '/images/nissai-chat-demo-paneli.png',
+        alt: 'Canlı demo ve sohbet paneli görseli',
+        slot: 'Canlı demo bölümü ana görseli'
+    },
+    liveSupport: {
+        src: '/images/nissai-canli-destek-paneli.jpg',
+        alt: 'Canlı destek ve işlem aksiyonları paneli',
+        slot: 'Chat/demo devamı canlı destek bölümü'
+    },
+    newLeadFlow: {
+        src: '/images/nissai-yeni-talep-akisi.jpg',
+        alt: 'Yeni talep akışı görseli',
+        slot: 'Yeni talep geldiğinde ne oluyor bölümü'
+    },
+    firstResponse: {
+        src: '/images/nissai-ilk-yanit-talep-paneli.jpg',
+        alt: 'İlk yanıt ve talep paneli görseli',
+        slot: 'İlk yanıt ve talep oluşturma bölümü'
+    },
+    customerFlow: {
+        src: '/images/nissai-musteri-akisi-paneli.jpg',
+        alt: 'Müşteri akışı ve yanıt hızı paneli',
+        slot: 'Müşteri akışı bölümü'
+    },
+    singleCenter: {
+        src: '/images/nissai-tek-merkez-paneli.jpg',
+        alt: 'Tek merkez operasyon paneli',
+        slot: 'Tek merkez operasyon görünürlüğü bölümü'
+    },
+    loadBalance: {
+        src: '/images/nissai-yuk-dengesi-paneli.jpg',
+        alt: 'Yük dengesi ve ekip dağılımı paneli',
+        slot: 'Yük dengesi bölümü'
+    },
+    lossDetection: {
+        src: '/images/nissai-kayip-tespit-paneli.jpg',
+        alt: 'Kayıp tespit ve bekleme riski paneli',
+        slot: 'Kayıp tespit bölümü'
+    },
+    automation: {
+        src: '/images/nissai-tekrari-azalt-otomasyon.jpg',
+        alt: 'Tekrarı azaltan otomasyon paneli',
+        slot: 'Otomasyon bölümü'
+    },
+    mobileMain: {
+        src: '/images/nissai-yeni-mesaj-mobil-ekran.jpg',
+        alt: 'Mobil ana deneyim ekranı',
+        slot: 'Mobil deneyim ana görseli'
+    },
+    mobileSecondary: {
+        src: '/images/nissai-mobil-mesajlar-ekrani.jpg',
+        alt: 'Mobil ikinci mesaj ekranı',
+        slot: 'Mobil deneyim ikinci görseli'
+    }
+}
+
 export default function LandingPage() {
     const navigate = useNavigate()
     const [visibleToast, setVisibleToast] = useState(null)
@@ -51,66 +124,66 @@ export default function LandingPage() {
         []
     )
 
-    const modules = [
+    const sections = [
         {
-            badge: 'Operasyon Kontrolü',
-            title: 'Dağınık süreci topla. Hızı geri kazan.',
-            text: 'Netlify-Lite, iş akışını tek merkezde toplar. Ekip baskısını düşürür, görünürlüğü artırır ve operasyonu daha az müdahale ile yönetmeni sağlar.',
-            visual: '/marketingblocks-ref/module-operations-main.webp',
+            badge: 'DEMO + CTA',
+            title: 'Karar vermeden önce ürünü gör. Sonra ilerle.',
+            text: 'Bu bölüm kararsız kullanıcıyı ikna etmek için var. Ürünün soyut vaat değil, gerçek bir operasyon arayüzü sunduğunu net biçimde gösterir.',
+            image: LANDING_IMAGES.demoCta,
             theme: 'light',
-            items: [
-                { image: '/marketingblocks-ref/op-1.webp', text: 'İş takibini tek bakışta görünür hale getir' },
-                { image: '/marketingblocks-ref/op-2.webp', text: 'Ekip üzerindeki tekrar yükünü azalt' },
-                { image: '/marketingblocks-ref/op-3.webp', text: 'Geciken dönüşleri hızlandır' },
-                { image: '/marketingblocks-ref/op-4.webp', text: 'Müşteri akışını düzenli yönet' },
-                { image: '/marketingblocks-ref/op-5.webp', text: 'Daha az kaos, daha çok kontrol kur' },
-                { image: '/marketingblocks-ref/op-6.webp', text: 'Süreçleri kişilere değil sisteme bağla' }
-            ]
+            bullets: ['Canlı demoyu gör', 'Paneli incele', 'Karar vermeden önce ürünü hisset'],
+            reverse: false
         },
         {
-            badge: 'Yönetici Paneli',
-            title: 'Karar vermeyi kolaylaştıran net görünüm.',
-            text: 'Kimin ne yaptığı, hangi işin tıkandığı, neyin hızlandırılması gerektiği tek panelde görünür. Bu sayede kör yönetim değil, kontrollü büyüme başlar.',
-            visual: '/marketingblocks-ref/module-admin-main.webp',
+            badge: 'SOHBET + CANLI DESTEK',
+            title: 'Sohbeti sadece konuşma değil, sonuç üreten akışa çevir.',
+            text: 'Kullanıcı önce demo panelini görür, sonra canlı destek akışının nasıl çalıştığını anlar. Böylece ürünün sadece güzel değil, aksiyon alan bir sistem olduğu kanıtlanır.',
+            image: LANDING_IMAGES.chatDemo,
+            companion: LANDING_IMAGES.liveSupport,
             theme: 'dark',
-            items: [
-                { image: '/marketingblocks-ref/admin-1.webp', text: 'Yönetim görünümü ile darboğazları erken gör' },
-                { image: '/marketingblocks-ref/admin-2.webp', text: 'Yoğunluğu dağıt, ekibi rahatlat' },
-                { image: '/marketingblocks-ref/admin-3.webp', text: 'Süreçleri tek merkezden takip et' },
-                { image: '/marketingblocks-ref/admin-4.webp', text: 'Daha yüksek görünürlük ile daha hızlı karar al' },
-                { image: '/marketingblocks-ref/admin-5.webp', text: 'Operasyonun neresinde kayıp var hemen fark et' },
-                { image: '/marketingblocks-ref/admin-6.webp', text: 'Manuel kontrol yerine sistematik yönetim kur' }
-            ]
+            bullets: ['Sohbet deneyimini ürün kanıtına dönüştür', 'İlgili ekibe aktar ve işlem başlat', 'Canlılık hissi ile güven oluştur'],
+            reverse: true
         },
         {
-            badge: 'Sohbet + Demo',
-            title: 'Müşteri akışını kaçırma. Yanıt hızını yükselt.',
-            text: 'Demo ve sohbet katmanı, kullanıcının sistemi hissetmesini sağlar. Hızlı yanıt, daha az bekleme ve daha yüksek etkileşim ile dönüşüm baskısını artırır.',
-            visual: '/marketingblocks-ref/module-chat-main.webp',
+            badge: 'TALEP AKIŞI',
+            title: 'Yeni talep gelir gelmez düzen başlasın.',
+            text: 'Bu blok ilk temas anından ilk yanıta kadar olan kritik hattı gösterir. Amaç, kullanıcının sürecin dağılmadan sisteme düştüğünü görmesidir.',
+            image: LANDING_IMAGES.newLeadFlow,
+            companion: LANDING_IMAGES.firstResponse,
             theme: 'light',
-            items: [
-                { image: '/marketingblocks-ref/chat-1.webp', text: 'Demo akışı ile ürünü hemen hissettir' },
-                { image: '/marketingblocks-ref/chat-2.webp', text: 'İkinci CTA ile kararsız kullanıcıyı kaybetme' },
-                { image: '/marketingblocks-ref/chat-3.webp', text: 'Sohbet deneyimini ürün kanıtına dönüştür' },
-                { image: '/marketingblocks-ref/chat-4.webp', text: 'Kullanıcıyı inceleyen değil harekete geçen yap' },
-                { image: '/marketingblocks-ref/chat-5.webp', text: 'Mobilde de güçlü deneyim sun' },
-                { image: '/marketingblocks-ref/chat-6.webp', text: 'Canlılık hissi ile güven oluştur' }
-            ]
+            bullets: ['İlk temas kaçmaz', 'Talep anında sisteme düşer', 'İlk yanıt gecikmeden ilerler'],
+            reverse: false
         },
         {
-            badge: 'Fayda + Büyüme',
-            title: 'Daha fazla yük değil, daha fazla sonuç.',
-            text: 'Bu yapı özellik satmak için değil, iş değeri üretmek için var. Daha hızlı operasyon, daha düşük ekip baskısı, daha net görünürlük ve daha akıllı maliyet sağlar.',
-            visual: '/marketingblocks-ref/module-growth-main.webp',
+            badge: 'MÜŞTERİ AKIŞI + TEK MERKEZ',
+            title: 'Müşteri akışını tek merkezden izle, hızını kaybetme.',
+            text: 'Müşteri akışı ve tek merkez görünümü birlikte çalışır. Biri operasyon akışını görünür kılar, diğeri tüm işi tek panelde toplar.',
+            image: LANDING_IMAGES.customerFlow,
+            companion: LANDING_IMAGES.singleCenter,
             theme: 'dark',
-            items: [
-                { image: '/marketingblocks-ref/growth-1.webp', text: '3 saatlik işi 20 dakikaya indir' },
-                { image: '/marketingblocks-ref/growth-2.webp', text: 'Yeni personel maliyeti yerine sistem kur' },
-                { image: '/marketingblocks-ref/growth-3.webp', text: 'Ajanslar için daha güçlü kontrol' },
-                { image: '/marketingblocks-ref/growth-4.webp', text: 'E-ticaret için daha hızlı geri dönüş' },
-                { image: '/marketingblocks-ref/growth-5.webp', text: 'Emlak ve destek ekipleri için daha net akış' },
-                { image: '/marketingblocks-ref/growth-6.webp', text: 'Mobil, hızlı ve premium görünüm ile güven ver' }
-            ]
+            bullets: ['Bekleyenleri ve işlem sırasını gör', 'Tek merkezden açık işleri yönet', 'Dağınık süreci toparla'],
+            reverse: true
+        },
+        {
+            badge: 'YÖNETİM GÖRÜNÜRLÜĞÜ',
+            title: 'Yükü dengele, kaybı erken fark et.',
+            text: 'Yük dengesi ve kayıp tespiti aynı yönetim katmanında anlam kazanır. Yönetici önce ekip yükünü görür, sonra geciken ve riskli alanları anında fark eder.',
+            image: LANDING_IMAGES.loadBalance,
+            companion: LANDING_IMAGES.lossDetection,
+            theme: 'light',
+            bullets: ['Ekip yükünü akıllı dağıt', 'Riskli işleri erken gör', 'Geciken dönüşleri saklama'],
+            reverse: false
+        },
+        {
+            badge: 'OTOMASYON + MOBİL',
+            title: 'Tekrarı azalt. Mobilde de kontrolü bırakma.',
+            text: 'Otomasyon paneli tekrar eden işi düşürür. Mobil görseller ise yönetimin masaya bağlı kalmadan da devam ettiğini kanıtlar.',
+            image: LANDING_IMAGES.automation,
+            companion: LANDING_IMAGES.mobileMain,
+            tertiary: LANDING_IMAGES.mobileSecondary,
+            theme: 'dark',
+            bullets: ['Hazır yanıt ve otomatik akış kur', 'Mobilde yeni mesajı anında gör', 'İkinci mobil görünüm ile kullanım kanıtı ver'],
+            reverse: true
         }
     ]
 
@@ -163,7 +236,7 @@ export default function LandingPage() {
         },
         {
             q: 'Mobilde düzgün çalışır mı?',
-            a: 'Evet. Deneyim mobil öncelikli düşünülerek tasarlandı.'
+            a: 'Evet. Mobil deneyim bu sayfada doğrudan gerçek ekranlarla gösteriliyor.'
         },
         {
             q: 'Yönetici paneli güvenli mi?',
@@ -219,13 +292,7 @@ export default function LandingPage() {
     const fmt = (n) => String(n).padStart(2, '0')
 
     return (
-        <Box
-            sx={{
-                background: '#fff',
-                color: '#111827',
-                overflowX: 'hidden'
-            }}
-        >
+        <Box sx={{ background: '#fff', color: '#111827', overflowX: 'hidden' }}>
             <HeroBackground />
 
             <Box
@@ -245,19 +312,17 @@ export default function LandingPage() {
                             <Stack direction='row' alignItems='center' spacing={1.5}>
                                 <Box
                                     component='img'
-                                    src='/marketingblocks-ref/logo.webp'
-                                    alt='Netlify Lite'
-                                    sx={{ width: 44, height: 44, borderRadius: 2 }}
+                                    src={LANDING_IMAGES.logo.src}
+                                    alt={LANDING_IMAGES.logo.alt}
+                                    sx={{ width: 44, height: 44, borderRadius: 2, objectFit: 'cover' }}
                                 />
-                                <Typography sx={{ color: '#fff', fontSize: 24, fontWeight: 900 }}>
-                                    Netlify-Lite
-                                </Typography>
+                                <Typography sx={{ color: '#fff', fontSize: 24, fontWeight: 900 }}>NISSAI</Typography>
                             </Stack>
 
                             <Stack direction='row' spacing={1.2} flexWrap='wrap'>
                                 <Chip label='Premium UI' sx={topChipSx} />
                                 <Chip label='CRO Odaklı' sx={topChipSx} />
-                                <Chip label='Simülasyonlu Demo' sx={topChipSx} />
+                                <Chip label='Gerçek Görsel Akışı' sx={topChipSx} />
                             </Stack>
                         </Stack>
 
@@ -296,9 +361,8 @@ export default function LandingPage() {
                                                 maxWidth: 620
                                             }}
                                         >
-                                            Netlify-Lite; ekip yükünü azaltır, süreci hızlandırır ve kontrolü tek panelde toplar.
-                                            Daha fazla personel almadan daha fazla işi yönetmek isteyenler için tasarlandı. Bu
-                                            sayfa bilgi vermek için değil, dönüşüm almak için var.
+                                            NISSAI; ekip yükünü azaltır, süreci hızlandırır ve kontrolü tek panelde toplar.
+                                            Daha fazla personel almadan daha fazla işi yönetmek isteyenler için tasarlandı.
                                         </Typography>
 
                                         <Stack spacing={1.3} mt={3}>
@@ -331,7 +395,7 @@ export default function LandingPage() {
                                         </Stack>
 
                                         <Typography sx={{ mt: 2.5, color: 'rgba(255,255,255,0.68)', fontSize: 13 }}>
-                                            Hızlı kurulum • Mobil uyumlu • Yönetici paneli • Demo akışı • Simülasyon etiketi
+                                            Hızlı kurulum • Mobil uyumlu • Yönetici paneli • Demo akışı • Gerçek arayüz görselleri
                                         </Typography>
                                     </Box>
                                 </Grid>
@@ -346,7 +410,12 @@ export default function LandingPage() {
                                         }}
                                     >
                                         <Paper elevation={0} sx={mockFrameSx}>
-                                            <Box component='img' src='/marketingblocks-ref/hero-main.webp' alt='Hero preview' sx={mockImageSx} />
+                                            <Box
+                                                component='img'
+                                                src={LANDING_IMAGES.hero.src}
+                                                alt={LANDING_IMAGES.hero.alt}
+                                                sx={mockImageSx}
+                                            />
                                         </Paper>
 
                                         <Grid container spacing={2} mt={0.5}>
@@ -422,17 +491,8 @@ export default function LandingPage() {
                         </Grid>
                     </Grid>
 
-                    {modules.map((module, index) => (
-                        <FeatureMegaSection
-                            key={module.title}
-                            reverse={index % 2 === 1}
-                            badge={module.badge}
-                            title={module.title}
-                            text={module.text}
-                            visual={module.visual}
-                            items={module.items}
-                            dark={module.theme === 'dark'}
-                        />
+                    {sections.map((section) => (
+                        <ShowcaseSection key={section.title} {...section} />
                     ))}
 
                     <SectionHeadline
@@ -528,8 +588,9 @@ export default function LandingPage() {
 
                             <Box
                                 component='img'
-                                src='/marketingblocks-ref/final-proof.webp'
-                                alt='Final preview'
+                                src={LANDING_IMAGES.singleCenter.src}
+                                alt='Final operasyon görünürlüğü görseli'
+                                loading='lazy'
                                 sx={{
                                     mt: 2,
                                     width: '100%',
@@ -599,7 +660,7 @@ function SectionHeadline({ top, title, text }) {
     )
 }
 
-function FeatureMegaSection({ badge, title, text, visual, items, dark = false, reverse = false }) {
+function ShowcaseSection({ badge, title, text, image, companion, tertiary, bullets, dark = false, reverse = false }) {
     return (
         <Paper
             elevation={0}
@@ -622,11 +683,22 @@ function FeatureMegaSection({ badge, title, text, visual, items, dark = false, r
                             {text}
                         </Typography>
 
+                        <Stack spacing={1.4} mt={3}>
+                            {bullets.map((item) => (
+                                <Stack key={item} direction='row' spacing={1.2} alignItems='center'>
+                                    <CheckCircleRoundedIcon sx={{ color: dark ? '#93c5fd' : '#2563eb' }} />
+                                    <Typography sx={{ color: dark ? 'rgba(255,255,255,0.88)' : '#374151', fontWeight: 700 }}>
+                                        {item}
+                                    </Typography>
+                                </Stack>
+                            ))}
+                        </Stack>
+
                         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} mt={3.5}>
                             <Button variant='contained' sx={modulePrimarySx}>
                                 HEMEN BAŞLA
                             </Button>
-                            <Button variant='outlined' sx={moduleSecondarySx}>
+                            <Button variant='outlined' sx={{ ...moduleSecondarySx, color: dark ? '#fff' : '#111827', borderColor: dark ? 'rgba(255,255,255,0.24)' : '#cbd5e1' }}>
                                 DEMOYU GÖR
                             </Button>
                         </Stack>
@@ -636,48 +708,46 @@ function FeatureMegaSection({ badge, title, text, visual, items, dark = false, r
                 <Grid item xs={12} md={6}>
                     <Box sx={{ p: { xs: 2.5, md: 4 }, height: '100%' }}>
                         <Paper elevation={0} sx={{ ...mockFrameSx, background: dark ? '#0b1220' : '#fff' }}>
-                            <Box component='img' src={visual} alt={title} sx={mockImageSx} />
+                            <Box component='img' src={image.src} alt={image.alt} loading='lazy' sx={showcaseMainImageSx} />
                         </Paper>
+
+                        {(companion || tertiary) && (
+                            <Grid container spacing={2} mt={0.5}>
+                                {companion && (
+                                    <Grid item xs={12} sm={tertiary ? 6 : 12}>
+                                        <MediaCard image={companion} dark={dark} />
+                                    </Grid>
+                                )}
+                                {tertiary && (
+                                    <Grid item xs={12} sm={6}>
+                                        <MediaCard image={tertiary} dark={dark} />
+                                    </Grid>
+                                )}
+                            </Grid>
+                        )}
                     </Box>
                 </Grid>
             </Grid>
+        </Paper>
+    )
+}
 
-            <Box sx={{ px: { xs: 2.5, md: 4 }, pb: { xs: 3, md: 4 } }}>
-                <Grid container spacing={2}>
-                    {items.map((item) => (
-                        <Grid item xs={12} sm={6} md={4} key={item.text}>
-                            <Paper
-                                elevation={0}
-                                sx={{
-                                    borderRadius: 4,
-                                    p: 2,
-                                    height: '100%',
-                                    background: dark ? 'rgba(255,255,255,0.04)' : '#ffffff',
-                                    border: dark ? '1px solid rgba(255,255,255,0.08)' : '1px solid #e5e7eb'
-                                }}
-                            >
-                                <Stack spacing={1.3}>
-                                    <Box
-                                        component='img'
-                                        src={item.image}
-                                        alt={item.text}
-                                        sx={{
-                                            width: '100%',
-                                            borderRadius: 3,
-                                            aspectRatio: '16/10',
-                                            objectFit: 'cover',
-                                            border: dark ? '1px solid rgba(255,255,255,0.08)' : '1px solid #eef2f7'
-                                        }}
-                                    />
-                                    <Typography sx={{ fontWeight: 800, lineHeight: 1.6, color: dark ? '#fff' : '#1f2937' }}>
-                                        {item.text}
-                                    </Typography>
-                                </Stack>
-                            </Paper>
-                        </Grid>
-                    ))}
-                </Grid>
-            </Box>
+function MediaCard({ image, dark }) {
+    return (
+        <Paper
+            elevation={0}
+            sx={{
+                p: 1.2,
+                borderRadius: 4,
+                background: dark ? 'rgba(255,255,255,0.04)' : '#fff',
+                border: dark ? '1px solid rgba(255,255,255,0.08)' : '1px solid #e5e7eb',
+                height: '100%'
+            }}
+        >
+            <Box component='img' src={image.src} alt={image.alt} loading='lazy' sx={showcaseSecondaryImageSx} />
+            <Typography sx={{ mt: 1.2, px: 0.6, fontWeight: 800, color: dark ? '#fff' : '#1f2937' }}>
+                {image.slot}
+            </Typography>
         </Paper>
     )
 }
@@ -794,7 +864,24 @@ const mockImageSx = {
     width: '100%',
     display: 'block',
     borderRadius: 4,
-    objectFit: 'cover'
+    objectFit: 'cover',
+    aspectRatio: '16/10'
+}
+
+const showcaseMainImageSx = {
+    width: '100%',
+    display: 'block',
+    borderRadius: 4,
+    objectFit: 'cover',
+    aspectRatio: '16/10'
+}
+
+const showcaseSecondaryImageSx = {
+    width: '100%',
+    display: 'block',
+    borderRadius: 3,
+    objectFit: 'cover',
+    aspectRatio: '16/10'
 }
 
 const trustCardSx = {
