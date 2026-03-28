@@ -79,26 +79,23 @@ const NetlifyLiteLayout = () => <Outlet />
 
 const MainRoutes = {
     path: '/',
-    // Bu koşul Netlify hafif prototip modunda ana ağır yerleşimi devre dışı bırakıp netlify-lite sayfalarını doğrudan gösterir.
-    element: import.meta.env.VITE_NETLIFY_LITE === 'true' ? <NetlifyLiteLandingPage /> : <DefaultRedirect />
+    // Netlify Lite modunda ana yerleşim korunur, ancak kök rota landing page'e gider.
+    element: import.meta.env.VITE_NETLIFY_LITE === 'true' ? <NetlifyLiteLayout /> : <MainLayout />,
     children: [
         {
             path: '/',
-            // Bu koşul Netlify hafif prototip modunda kök yolu doğrudan açılış sayfasına güvenli biçimde yönlendirir.
+            // Kök URL açıldığında admin değil landing page görünür.
             element: import.meta.env.VITE_NETLIFY_LITE === 'true' ? <NetlifyLiteLandingPage /> : <DefaultRedirect />
         },
         {
-            // Bu route açılış sayfasını netlify-lite akışı için bağımsız ve sade bir giriş katmanı olarak sunar.
             path: '/netlify-lite',
             element: <NetlifyLiteLandingPage />
         },
         {
-            // Bu doğrudan eşleşme netlify-lite admin ekranının yalnızca ana iskelet değil içerik de göstermesini güvenli biçimde sağlar.
             path: '/netlify-lite/admin',
             element: <NetlifyLiteAdminPage />
         },
         {
-            // Bu doğrudan eşleşme netlify-lite sohbet ekranının yalnızca ana iskelet değil içerik de göstermesini güvenli biçimde sağlar.
             path: '/netlify-lite/chat',
             element: <NetlifyLiteChatPage />
         },
