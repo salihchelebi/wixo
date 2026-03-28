@@ -13,8 +13,16 @@ const messages = {
         systemPrompt: 'Sistem Promptu',
         welcomeMessage: 'Karşılama Mesajı',
         primaryColor: 'Ana Renk',
+        provider: 'Provider',
+        baseUrl: 'Base URL',
+        apiKey: 'API Key (Opsiyonel)',
         model: 'Model',
         temperature: 'Sıcaklık',
+        sectorKey: 'Sektör Anahtarı',
+        landingVariant: 'Landing Varyantı',
+        assistantRole: 'Asistan Rolü',
+        ctaTarget: 'CTA Hedefi',
+        theme: 'Tema',
         enabled: 'Asistan Aktif',
         save: 'Kaydet',
         reset: 'Sıfırla',
@@ -31,7 +39,13 @@ const messages = {
         loginUsername: 'Kullanıcı Adı',
         loginPassword: 'Parola',
         loginButton: 'Panele Gir',
-        loginError: 'Giriş bilgileri doğrulanamadı.'
+        loginError: 'Giriş bilgileri doğrulanamadı.',
+        logout: 'Çıkış Yap',
+        sectorShowcaseTitle: 'Sektörlere göre kullanım senaryoları',
+        sectorShowcaseSubtitle: '14 sektör altyapısı hazır. İlk yayında yalnızca avukatlar sayfası aktif.',
+        sectorOpen: 'Sayfayı Aç',
+        sectorSoon: 'Yakında',
+        lawyersLink: 'Avukat asistanını canlı önizle'
     },
     en: {
         loading: 'Loading...',
@@ -46,8 +60,16 @@ const messages = {
         systemPrompt: 'System Prompt',
         welcomeMessage: 'Welcome Message',
         primaryColor: 'Primary Color',
+        provider: 'Provider',
+        baseUrl: 'Base URL',
+        apiKey: 'API Key (Optional)',
         model: 'Model',
         temperature: 'Temperature',
+        sectorKey: 'Sector Key',
+        landingVariant: 'Landing Variant',
+        assistantRole: 'Assistant Role',
+        ctaTarget: 'CTA Target',
+        theme: 'Theme',
         enabled: 'Assistant Enabled',
         save: 'Save',
         reset: 'Reset',
@@ -64,14 +86,19 @@ const messages = {
         loginUsername: 'Username',
         loginPassword: 'Password',
         loginButton: 'Enter Panel',
-        loginError: 'Unable to validate credentials.'
+        loginError: 'Unable to validate credentials.',
+        logout: 'Sign Out',
+        sectorShowcaseTitle: 'Industry-specific scenarios',
+        sectorShowcaseSubtitle: 'Infrastructure for 14 sectors is ready. Only lawyers is active in first release.',
+        sectorOpen: 'Open Page',
+        sectorSoon: 'Coming Soon',
+        lawyersLink: 'Preview the lawyers assistant live'
     }
 }
 
 export const getNetlifyLiteTexts = () => {
     // Bu seçim kullanıcıya varsayılan olarak Türkçe metin gösterirken gerektiğinde URL ile dil değişimini güvenli biçimde açık tutar.
-    const forcedLang =
-        typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('lang')?.toLowerCase() : null
+    const forcedLang = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('lang')?.toLowerCase() : null
     const locale = forcedLang === 'en' ? 'en' : 'tr'
     return messages[locale]
 }

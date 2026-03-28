@@ -24,6 +24,11 @@ to = "/.netlify/functions/admin-login"
 status = 200
 
 [[redirects]]
+from = "/api/admin-session"
+to = "/.netlify/functions/admin-session"
+status = 200
+
+[[redirects]]
 from = "/*"
 to = "/index.html"
 status = 200

@@ -1,11 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Alert, Box, Button, Paper, Stack, TextField, Typography } from '@mui/material'
-import { useNavigate } from 'react-router-dom'
 import { getNetlifyLiteTexts } from './texts'
 
-// Bu ekran tek chat/demo akışını config renk ve asistan adıyla Netlify uyumlu şekilde çalıştırır.
 export default function NetlifyLiteChatPage() {
-    const navigate = useNavigate()
     const [assistantName, setAssistantName] = useState('Asistan')
     const [primaryColor, setPrimaryColor] = useState('#2563eb')
     const [welcomeMessage, setWelcomeMessage] = useState(getNetlifyLiteTexts().loading)
@@ -16,24 +13,20 @@ export default function NetlifyLiteChatPage() {
 
     useEffect(() => {
         const load = async () => {
-            // Bu kontrol sohbet ekranına yalnız giriş tokenı olan kullanıcının erişmesini güvenli biçimde sağlar.
-            if (!sessionStorage.getItem('netlifyLiteAdminToken')) {
-                navigate('/netlify-lite', { replace: true })
-                return
-            }
             try {
-                const response = await fetch('/api/admin-config')
+                const response = await fetch('/api/admin-config', { credentials: 'include' })
                 const data = await response.json()
                 if (!response.ok) throw new Error(data.error || t.fetchConfigError)
                 setAssistantName(data.config.assistantName)
                 setPrimaryColor(data.config.primaryColor)
                 setWelcomeMessage(data.config.welcomeMessage)
-            } catch (err) {
-                setError(err.message)
+            } catch {
+                setWelcomeMessage('Merhaba, ben demo asistanıyım. Mesaj bırakabilirsiniz.')
             }
         }
         load()
-    }, [navigate])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     const onSend = async () => {
         setError('')
