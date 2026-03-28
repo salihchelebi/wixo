@@ -1131,21 +1131,17 @@ function CompareCard({ title, subtitle, items, tone }) {
 
 function StatCard({ label, value, sx }) {
     return (
-        <Paper elevation={0} sx={{ ...statCardBaseSx, ...sx }}>
-            <Typography sx={{ color: 'rgba(255,255,255,0.82)', fontSize: 14.5 }}>
-                {label}
-            </Typography>
-            <Typography
-                sx={{
-                    color: '#fff',
-                    fontWeight: 900,
-                    fontSize: { xs: 24, md: 30 },
-                    mt: 1,
-                    lineHeight: 1.1
-                }}
-            >
-                {value}
-            </Typography>
+        <Paper
+            elevation={0}
+            sx={{
+                p: 2,
+                borderRadius: 3,
+                background: 'rgba(255,255,255,0.06)',
+                border: '1px solid rgba(255,255,255,0.08)'
+            }}
+        >
+            <Typography sx={{ color: 'rgba(255,255,255,0.7)', fontSize: 12 }}>{label}</Typography>
+            <Typography sx={{ color: '#fff', fontWeight: 900, fontSize: 22, mt: 0.4 }}>{value}</Typography>
         </Paper>
     )
 }
