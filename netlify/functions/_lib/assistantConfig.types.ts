@@ -1,13 +1,30 @@
 // Bu tipler hafif prototipte tek workspace asistan ayar sözleşmesini güvenli biçimde tanımlar.
+export type ProviderOption = {
+    value: string
+    label: string
+    defaultBaseUrl: string
+    defaultModel: string
+    order: number
+}
+
 export type AssistantConfig = {
     workspaceId: string
     assistantName: string
+    assistantRole: string
     systemPrompt: string
     welcomeMessage: string
     primaryColor: string
+    provider: string
+    providerOptions: ProviderOption[]
+    baseUrl: string
+    apiKey?: string
     model: string
     temperature: number
     enabled: boolean
+    sectorKey: string
+    landingVariant: string
+    ctaTarget: string
+    theme: string
     updatedAt: string
 }
 
