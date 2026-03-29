@@ -39,6 +39,13 @@ export default function NetlifyLiteAdminPage() {
         return false
     }
 
+    const ensureAuth = async () => {
+        const response = await fetch('/api/admin-session', { credentials: 'include' })
+        if (response.ok) return true
+        navigate('/netlify-lite/login', { replace: true })
+        return false
+    }
+
     const loadConfig = async () => {
         setLoading(true)
         setError('')

@@ -107,6 +107,53 @@ async function callOllama({ baseUrl, apiKey, model, temperature, prompt }) {
     return text
 }
 
+async function buildReply({ config, message }) {
+    if (config.provider === 'ollama') {
+        return callOllama({
+            baseUrl: config.baseUrl,
+            apiKey: config.apiKey,
+            model: config.model,
+            temperature: config.temperature,
+            prompt: `${config.systemPrompt}\n\nKullanıcı mesajı: ${message}`
+        })
+    }
+
+    return `${config.assistantName}: ${config.systemPrompt} | Kullanıcı mesajı: ${message}`
+}
+
+async function callOllama({ baseUrl, apiKey, model, temperature, prompt }) {
+    const endpoint = `${String(baseUrl || 'http://localhost:11434').replace(/\/$/, '')}/api/generate`
+    const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json',
+            ...(apiKey ? { authorization: `Bearer ${apiKey}` } : {})
+        },
+        body: JSON.stringify({
+            model,
+            prompt,
+            stream: false,
+            options: { temperature }
+        })
+    })
+
+    const data = await response.json().catch(() => ({}))
+    if (!response.ok) {
+        const error = new Error(data.error || `Ollama isteği başarısız oldu (${response.status}).`)
+        error.code = 'PROVIDER_BAD_RESPONSE'
+        throw error
+    }
+
+    const text = typeof data.response === 'string' ? data.response.trim() : ''
+    if (!text) {
+        const error = new Error('Ollama boş yanıt döndürdü.')
+        error.code = 'PROVIDER_BAD_RESPONSE'
+        throw error
+    }
+
+    return text
+}
+
 function jsonResponse(statusCode, body) {
     return {
         statusCode,
