@@ -121,3 +121,6 @@ apps/*/
 
 # Netlify local state
 .netlify/
+
+# Wixoo local state
+.wixoo/
