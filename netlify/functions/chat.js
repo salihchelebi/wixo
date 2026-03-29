@@ -57,14 +57,32 @@ async function buildReply({ config, message }) {
     }
 
     if (['tavily', 'openai', 'gemini', 'claude'].includes(config.provider)) {
-        const error = new Error(`${config.provider} sağlayıcısı bu sürümde henüz aktif değil.`)
-        error.code = 'config'
-        throw error
+        return buildProviderFallbackReply({ config, message })
     }
 
     const error = new Error('Seçilen sağlayıcı desteklenmiyor.')
     error.code = 'config'
     throw error
+}
+
+
+function buildProviderFallbackReply({ config, message }) {
+    const promptSummary = String(config.systemPrompt || '')
+        .replace(/\s+/g, ' ')
+        .trim()
+        .slice(0, 180)
+
+    const userMessage = String(message || '').replace(/\s+/g, ' ').trim()
+    const providerLabel = String(config.provider || 'assistant').toUpperCase()
+
+    return [
+        `${providerLabel} modu etkin.`,
+        promptSummary ? `Bağlam: ${promptSummary}` : null,
+        `Mesajınızı aldım: "${userMessage}"`,
+        'Bu sağlayıcı için canlı API entegrasyonu hazır olana kadar yanıtlar güvenli yerel fallback ile üretilir.'
+    ]
+        .filter(Boolean)
+        .join(' ')
 }
 
 async function callOllama({ baseUrl, apiKey, model, temperature, prompt }) {
