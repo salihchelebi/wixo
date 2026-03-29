@@ -9,6 +9,7 @@ let pool
 let schemaPromise
 
 const DB_ENV_NAME = 'SUPABASE_CONNECT'
+const LEGACY_BROKEN_HOST = 'db.xfthbqcmmbllftxgmvau.supabase.co'
 
 function resolveDatabaseUrl() {
     const connectionString = process.env[DB_ENV_NAME]
@@ -18,9 +19,37 @@ function resolveDatabaseUrl() {
         throw error
     }
 
+    const parsed = parseConnectionString(String(connectionString).trim())
+    if (parsed.hostname === LEGACY_BROKEN_HOST) {
+        const error = new Error('Veritabanı host ayarı güncel değil. SUPABASE_CONNECT değerini pooler DSN ile güncelleyin.')
+        error.code = 'db_legacy_host'
+        throw error
+    }
+
     return {
         envName: DB_ENV_NAME,
-        connectionString: String(connectionString).trim()
+        connectionString: parsed.connectionString,
+        hostname: parsed.hostname,
+        port: parsed.port,
+        protocol: parsed.protocol,
+        database: parsed.database
+    }
+}
+
+function parseConnectionString(connectionString) {
+    try {
+        const url = new URL(connectionString)
+        return {
+            connectionString,
+            hostname: url.hostname,
+            port: url.port || '5432',
+            protocol: url.protocol.replace(':', ''),
+            database: url.pathname.replace(/^\//, '') || 'postgres'
+        }
+    } catch {
+        const error = new Error('SUPABASE_CONNECT geçerli bir PostgreSQL DSN formatında değil.')
+        error.code = 'db_dsn_invalid'
+        throw error
     }
 }
 
@@ -45,7 +74,11 @@ function getPool() {
 }
 
 async function query(text, params) {
-    return getPool().query(text, params)
+    try {
+        return await getPool().query(text, params)
+    } catch (error) {
+        throw mapDatabaseError(error)
+    }
 }
 
 async function withTransaction(work) {
@@ -57,7 +90,7 @@ async function withTransaction(work) {
         return result
     } catch (error) {
         await client.query('ROLLBACK')
-        throw error
+        throw mapDatabaseError(error)
     } finally {
         client.release()
     }
@@ -155,12 +188,53 @@ async function ensureSchema() {
     return schemaPromise
 }
 
+function mapDatabaseError(error) {
+    if (!error) return new Error('Veritabanı işlemi başarısız oldu.')
+    if (error.code === 'ENOTFOUND' || error.code === 'EAI_AGAIN') {
+        const mapped = new Error('Veritabanı adresine erişilemedi. DNS ayarını kontrol edin.')
+        mapped.code = 'db_dns'
+        return mapped
+    }
+    if (error.code === 'ECONNREFUSED' || error.code === 'ENETUNREACH') {
+        const mapped = new Error('Veritabanı ağına erişilemedi. Ağ/port ayarını kontrol edin.')
+        mapped.code = 'db_network'
+        return mapped
+    }
+    if (error.code === '28P01') {
+        const mapped = new Error('Veritabanı kimlik bilgileri geçersiz.')
+        mapped.code = 'db_auth'
+        return mapped
+    }
+    return error
+}
+
 function getDbResolutionReport() {
-    const hasSupabaseConnect = Boolean(process.env.SUPABASE_CONNECT)
+    const selected = process.env.SUPABASE_CONNECT ? 'SUPABASE_CONNECT' : null
+    let runtime = null
+    let error = null
+
+    if (selected) {
+        try {
+            runtime = resolveDatabaseUrl()
+        } catch (err) {
+            error = { code: err?.code || null, message: err?.message || 'Bilinmeyen hata' }
+        }
+    }
+
     return {
         read: ['SUPABASE_CONNECT', 'DATABASE_URL', 'NETLIFY_DATABASE_URL', 'NETLIFY_DATABASE_URL_PRODUCTION'],
-        selected: hasSupabaseConnect ? 'SUPABASE_CONNECT' : null,
-        ignored: ['DATABASE_URL', 'NETLIFY_DATABASE_URL', 'NETLIFY_DATABASE_URL_PRODUCTION']
+        selected,
+        ignored: ['DATABASE_URL', 'NETLIFY_DATABASE_URL', 'NETLIFY_DATABASE_URL_PRODUCTION'],
+        runtime: runtime
+            ? {
+                  host: runtime.hostname,
+                  port: runtime.port,
+                  protocol: runtime.protocol,
+                  database: runtime.database
+              }
+            : null,
+        runtimeError: error,
+        appRuntimeEnvTableUsed: false
     }
 }
 
@@ -170,5 +244,6 @@ module.exports = {
     ensureSchema,
     resolveDatabaseUrl,
     getDbResolutionReport,
-    DB_ENV_NAME
+    DB_ENV_NAME,
+    LEGACY_BROKEN_HOST
 }

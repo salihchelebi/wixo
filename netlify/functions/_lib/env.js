@@ -24,6 +24,16 @@ const envConfig = {
     ]
 }
 
+function getDeploymentContextReport() {
+    return {
+        siteUrl: process.env.NETLIFY_SITE_URL || null,
+        branchUrl: process.env.NETLIFY_BRANCH_URL || null,
+        productionUrl: process.env.NETLIFY_PRODUCTION_URL || null,
+        mainBranchUrl: process.env.NETLIFY_MAIN_BRANCH_URL || null
+    }
+}
+
 module.exports = {
-    envConfig
+    envConfig,
+    getDeploymentContextReport
 }

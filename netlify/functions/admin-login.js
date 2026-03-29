@@ -45,7 +45,8 @@ exports.handler = async (event) => {
 
         return jsonResponse(200, { success: true }, { 'set-cookie': buildSessionCookie(token) })
     } catch (error) {
-        return jsonResponse(400, { code: 'auth', error: String(error?.message || 'Giriş doğrulanamadı.') }, { 'set-cookie': buildSessionCookieClear() })
+        console.error('[admin-login] hata', { code: error?.code, message: error?.message })
+        return jsonResponse(400, { code: 'auth', error: 'Giriş işlemi şu anda tamamlanamadı. Lütfen tekrar deneyin.' }, { 'set-cookie': buildSessionCookieClear() })
     }
 }
 

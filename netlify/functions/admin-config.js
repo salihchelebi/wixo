@@ -1,5 +1,5 @@
 const { getAssistantConfig, saveAssistantConfig, resetAssistantConfig } = require('./_lib/assistantConfig.kv')
-const { envConfig } = require('./_lib/env')
+const { envConfig, getDeploymentContextReport } = require('./_lib/env')
 const { getDbResolutionReport } = require('./_lib/db')
 const { requireAdmin } = require('./_lib/adminAuth')
 
@@ -8,7 +8,7 @@ exports.handler = async (event) => {
         if (event.httpMethod === 'GET') {
             await requireAdmin(event)
             const config = await getAssistantConfig()
-            return jsonResponse(200, { config, env: envConfig, db: getDbResolutionReport() })
+            return jsonResponse(200, { config, env: envConfig, db: getDbResolutionReport(), deploy: getDeploymentContextReport() })
         }
 
         if (event.httpMethod === 'POST') {
@@ -105,6 +105,9 @@ function normalizeErrorMessage(error) {
     const message = String(error?.message || '')
     if (message.includes('ENOENT') || message.includes('EACCES') || message.includes('EROFS')) {
         return 'Depolama alanına erişim sırasında geçici bir sorun oluştu.'
+    }
+    if (message.includes('Veritabanı') || message.includes('db_')) {
+        return 'Veritabanı bağlantısı doğrulanamadı. Lütfen yöneticiye haber verin.'
     }
     return message || 'İşlem başarısız oldu.'
 }
