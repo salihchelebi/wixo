@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Box, Button, Chip, Container, Divider, Grid, Paper, Stack, Typography } from '@mui/material'
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded'
+import PlayCircleRoundedIcon from '@mui/icons-material/PlayCircleRounded'
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded'
 import ShieldRoundedIcon from '@mui/icons-material/ShieldRounded'
 import { getNetlifyLiteTexts } from './texts'
@@ -15,7 +16,7 @@ const LANDING_IMAGES = {
     },
     hero: {
         src: '/images/nissai-operasyon-paneli-hero.jpg',
-        alt: 'NISSAI operasyon paneli ana görünümü',
+        alt: 'NISSAI operasyon paneli hero görseli',
         slot: 'Hero ana ürün görseli'
     },
     demoCta: {
@@ -35,48 +36,48 @@ const LANDING_IMAGES = {
     },
     newLeadFlow: {
         src: '/images/nissai-yeni-talep-akisi.jpg',
-        alt: 'Yeni talep akışı görünümü',
-        slot: 'Yeni talep akışı'
+        alt: 'Yeni talep akışı görseli',
+        slot: 'Yeni talep geldiğinde ne oluyor bölümü'
     },
     firstResponse: {
         src: '/images/nissai-ilk-yanit-talep-paneli.jpg',
-        alt: 'İlk yanıt ve talep yönetimi paneli',
-        slot: 'İlk yanıt ve talep yönetimi'
+        alt: 'İlk yanıt ve talep paneli görseli',
+        slot: 'İlk yanıt ve talep oluşturma bölümü'
     },
     customerFlow: {
         src: '/images/nissai-musteri-akisi-paneli.jpg',
         alt: 'Müşteri akışı ve yanıt hızı paneli',
-        slot: 'Müşteri akışı'
+        slot: 'Müşteri akışı bölümü'
     },
     singleCenter: {
         src: '/images/nissai-tek-merkez-paneli.jpg',
         alt: 'Tek merkez operasyon paneli',
-        slot: 'Tek merkez operasyon'
+        slot: 'Tek merkez operasyon görünürlüğü bölümü'
     },
     loadBalance: {
         src: '/images/nissai-yuk-dengesi-paneli.jpg',
         alt: 'Yük dengesi ve ekip dağılımı paneli',
-        slot: 'Yük dengesi'
+        slot: 'Yük dengesi bölümü'
     },
     lossDetection: {
         src: '/images/nissai-kayip-tespit-paneli.jpg',
         alt: 'Kayıp tespit ve bekleme riski paneli',
-        slot: 'Kayıp tespiti'
+        slot: 'Kayıp tespit bölümü'
     },
     automation: {
         src: '/images/nissai-tekrari-azalt-otomasyon.jpg',
         alt: 'Tekrarı azaltan otomasyon paneli',
-        slot: 'Otomasyon'
+        slot: 'Otomasyon bölümü'
     },
     mobileMain: {
         src: '/images/nissai-yeni-mesaj-mobil-ekran.jpg',
         alt: 'Mobil ana deneyim ekranı',
-        slot: 'Mobil deneyim'
+        slot: 'Mobil deneyim ana görseli'
     },
     mobileSecondary: {
         src: '/images/nissai-mobil-mesajlar-ekrani.jpg',
         alt: 'Mobil ikinci mesaj ekranı',
-        slot: 'İkinci mobil görünüm'
+        slot: 'Mobil deneyim ikinci görseli'
     }
 }
 
@@ -160,47 +161,7 @@ export default function LandingPage() {
             bullets: ['Hazır yanıt ve otomatik akış kur', 'Mobilde yeni mesajı anında gör', 'İkinci mobil görünüm ile kullanım kanıtı ver'],
             reverse: true
         }
-    },
-    {
-        label: 'Ekip Hızı',
-        value: '%289 Daha Hızlı',
-        sx: {
-            background:
-                'linear-gradient(135deg, rgba(196,116,18,0.34), rgba(73,43,17,0.94))',
-            border: '1px solid rgba(255,197,102,0.28)',
-            boxShadow: '0 18px 44px rgba(202,129,29,0.16)'
-        }
-    },
-    {
-        label: 'Tüm Cihazlardan Erişim',
-        value: '7/24 Aktif',
-        sx: {
-            background:
-                'linear-gradient(135deg, rgba(114,84,255,0.32), rgba(43,31,91,0.94))',
-            border: '1px solid rgba(187,168,255,0.26)',
-            boxShadow: '0 18px 44px rgba(114,84,255,0.15)'
-        }
-    }
-]
-
-const compareData = {
-    before: [
-        'Dağınık takip',
-        'Yoğun ekip baskısı',
-        'Geç yanıt',
-        'Kontrol eksikliği',
-        'Sürekli manuel müdahale',
-        'Kaçan fırsatlar'
-    ],
-    after: [
-        'Merkezi görünüm',
-        'Hızlanan iş akışı',
-        'Daha az ekip yükü',
-        'Daha hızlı geri dönüş',
-        'Daha net kontrol',
-        'Daha yüksek görünürlük'
     ]
-}
 
     const comparisons = {
         before: ['Dağınık takip', 'Yoğun ekip baskısı', 'Geç dönüş', 'Kontrol eksikliği', 'Sürekli manuel müdahale', 'Kaçan fırsatlar'],
@@ -213,137 +174,25 @@ const compareData = {
             'Daha yüksek dönüşüm baskısı'
         ]
     }
-]
 
-const faqs = [
-    {
-        q: 'Kurulum ağır mı?',
-        a: 'Hayır. Yapı hızlı açılacak şekilde tasarlandı. Teknik yükü büyütmeden hızlı başlangıç hedeflenir.'
-    },
-    {
-        q: 'Küçük ekipte anlamlı olur mu?',
-        a: 'Evet. En büyük fark küçük ve orta ekipte görünür olur çünkü dağınıklığı hızla toplar.'
-    },
-    {
-        q: 'Mobilde erişim güçlü mü?',
-        a: 'Evet. Yönetim ve takip yalnızca masaüstüne bağlı kalmaz. Tüm cihazlarda görünür kalır.'
-    },
-    {
-        q: 'Yetki ve görünürlük ayrılıyor mu?',
-        a: 'Evet. Yönetici alanı ve mesaj akışı rol mantığıyla ayrılır; genel görünüm ile karışmaz.'
-    },
-    {
-        q: 'Bu yapı yalnızca vitrin mi?',
-        a: 'Hayır. Bu sayfa gerçek ürün akışını ve operasyon kazanımını satış diline çeviren açılış katmanıdır.'
-    },
-    {
-        q: 'Daha fazla personel almadan kapasite artar mı?',
-        a: 'Doğru kullanımda evet. Amaç yeni yük eklemek değil, mevcut yükü daha görünür ve daha hızlı yönetmektir.'
-    }
-]
-
-const sections = [
-    {
-        badge: 'MESAJ MERKEZİ',
-        title: 'Her konuşmayı tek ekrandan sonuca bağla.',
-        text: 'Mesajı yakala, ilgili kişiye ata, bekleyen işi görünür kıl. Sohbet yalnızca yazışma olarak değil, operasyon girişi olarak çalışsın.',
-        image: LANDING_IMAGES.chatDemo,
-        companion: LANDING_IMAGES.liveSupport,
-        theme: 'dark',
-        bullets: ['Bekleyen mesajı saklama', 'İlgili kişiye anında aktar', 'Yanıt ve işlem akışını aynı yerde gör'],
-        reverse: true
-    },
-    {
-        badge: 'TALEP AKIŞI',
-        title: 'Yeni talep geldiği anda düzen başlasın.',
-        text: 'İlk temasın sisteme nasıl düştüğünü, ilk yanıtın nasıl hızlandığını ve akışın nasıl toparlandığını net göster.',
-        image: LANDING_IMAGES.newLeadFlow,
-        companion: LANDING_IMAGES.firstResponse,
-        theme: 'light',
-        bullets: ['İlk temas kaybolmaz', 'Talep anında görünür olur', 'İlk yanıt gecikmeden ilerler'],
-        reverse: false
-    },
-    {
-        badge: 'TEK MERKEZ OPERASYON',
-        title: 'Açık işi, sırayı ve yükü tek merkezde gör.',
-        text: 'Farklı kanalları ve farklı ekip hareketlerini tek pencerede topladığında hız yalnızca hissedilmez; ölçülür hale gelir.',
-        image: LANDING_IMAGES.customerFlow,
-        companion: LANDING_IMAGES.singleCenter,
-        theme: 'dark',
-        bullets: ['Sıra ve bekleme görünür olur', 'Açık iş tek merkezde toplanır', 'Dağınık iş takibi sona erer'],
-        reverse: true
-    },
-    {
-        badge: 'YÖNETİM GÖRÜNÜRLÜĞÜ',
-        title: 'Yükü dengele. Riski erkenden gör.',
-        text: 'Yöneticinin ihtiyacı daha fazla rapor değil; daha erken fark etmektir. Gecikeni, sıkışanı ve yüklenen tarafı tek bakışta gör.',
-        image: LANDING_IMAGES.loadBalance,
-        companion: LANDING_IMAGES.lossDetection,
-        theme: 'light',
-        bullets: ['Ekip yükünü daha net dağıt', 'Riskli akışı erken yakala', 'Kaçan işi geç fark etme'],
-        reverse: false
-    },
-    {
-        badge: 'OTOMASYON + MOBİL',
-        title: 'Tekrar eden işi azalt. Her cihazda kontrolü koru.',
-        text: 'Operasyon masaya bağlı kalmasın. Hazır akışlar ve mobil görünüm bir araya geldiğinde hız yalnızca ofiste değil, hareket halindeyken de korunur.',
-        image: LANDING_IMAGES.automation,
-        companion: LANDING_IMAGES.mobileMain,
-        tertiary: LANDING_IMAGES.mobileSecondary,
-        theme: 'dark',
-        bullets: ['Tekrar eden yükü erit', 'Mobilde yeni akışı anında gör', 'Cihaz küçülse de kontrol kaybolmasın'],
-        reverse: true
-    }
-]
-
-export default function LandingPage() {
-    const navigate = useNavigate()
-
-    const actionProps = (href) =>
-        href.startsWith('/')
-            ? { onClick: () => navigate(href) }
-            : { component: 'a', href }
-
-    const heroQuickActions = [
+    const useCases = [
         {
-            title: 'Yönetici Panelini Aç',
-            subtitle: 'Yetki, görünürlük, kontrol',
-            href: '/netlify-lite/admin',
-            icon: DashboardRoundedIcon,
-            sx: {
-                background:
-                    'linear-gradient(135deg, rgba(37,99,235,0.96), rgba(67,56,202,0.92))',
-                color: '#fff'
-            }
+            title: 'Ajanslar',
+            text: 'Birden fazla müşteriyi dağılmadan yönet. Ekip yükünü artırmadan daha çok iş çevir.'
         },
         {
-            title: 'Mesaj Merkezine Geç',
-            subtitle: 'Canlı akışı yönet',
-            href: '/netlify-lite/chat',
-            icon: ForumRoundedIcon,
-            sx: {
-                background:
-                    'linear-gradient(135deg, rgba(124,58,237,0.96), rgba(91,33,182,0.92))',
-                color: '#fff'
-            }
+            title: 'E-Ticaret',
+            text: 'Yoğun mesaj, lead ve dönüş akışını tek düzen içinde topla.'
         },
         {
-            q: 'Ürünü incelemeden karar vermek zorunda mıyım?',
-            a: 'Hayır. Önce akışı incele, sonra değerlendir ve karar ver.'
+            title: 'Emlak',
+            text: 'Lead’leri sıcak tut, geri dönüş süresini düşür, ilgiyi kaybetme.'
         },
         {
-            title: 'Modülleri İncele',
-            subtitle: 'Tüm akışı gör',
-            href: '#moduller',
-            icon: VisibilityRoundedIcon,
-            sx: {
-                background:
-                    'linear-gradient(135deg, rgba(16,185,129,0.96), rgba(5,150,105,0.92))',
-                color: '#fff'
-            }
+            title: 'Destek Yoğun İşletmeler',
+            text: 'Soruları biriktiği yerde erit, yanıt kalitesini korurken süreyi kısalt.'
         }
     ]
-<<<<<<< HEAD:packages/ui/src/views/Ai_Asistan/LandingPage.jsx
 
     const faqs = [
         {
@@ -371,8 +220,6 @@ export default function LandingPage() {
             a: 'Risk senin değil, sistemin üzerinde olmalı. Garanti dilini ve itiraz kırıcı yapıyı bunun için ekliyoruz.'
         }
     ]
-=======
->>>>>>> origin/main:packages/ui/src/views/netlifyLite/LandingPage.jsx
     const sectorCards = SECTORS
 
     return (
@@ -392,115 +239,69 @@ export default function LandingPage() {
                                     component='img'
                                     src={LANDING_IMAGES.logo.src}
                                     alt={LANDING_IMAGES.logo.alt}
-                                    sx={{
-                                        width: 46,
-                                        height: 46,
-                                        borderRadius: 2,
-                                        objectFit: 'cover',
-                                        boxShadow: '0 12px 32px rgba(0,0,0,0.18)'
-                                    }}
+                                    sx={{ width: 44, height: 44, borderRadius: 2, objectFit: 'cover' }}
                                 />
-                                <Typography sx={{ color: '#fff', fontSize: 24, fontWeight: 900 }}>
-                                    NISSAI
-                                </Typography>
+                                <Typography sx={{ color: '#fff', fontSize: 24, fontWeight: 900 }}>NISSAI</Typography>
                             </Stack>
 
-<<<<<<< HEAD:packages/ui/src/views/Ai_Asistan/LandingPage.jsx
                             <Stack direction='row' spacing={1.2} flexWrap='wrap'>
                                 <Chip label='Üst Düzey Arayüz' sx={topChipSx} />
-=======
-                            <Stack direction='row' spacing={1.2} flexWrap='wrap' useFlexGap>
-                                <Chip label='Premium UI' sx={topChipSx} />
->>>>>>> origin/main:packages/ui/src/views/netlifyLite/LandingPage.jsx
                                 <Chip label='CRO Odaklı' sx={topChipSx} />
-                                <Chip label='Gerçek Operasyon Akışı' sx={topChipSx} />
+                                <Chip label='Gerçek Görsel Akışı' sx={topChipSx} />
                             </Stack>
                         </Stack>
 
-                        <Paper elevation={0} sx={heroWrapSx}>
+                        <Paper
+                            elevation={0}
+                            sx={{
+                                borderRadius: 6,
+                                overflow: 'hidden',
+                                border: '1px solid rgba(255,255,255,0.12)',
+                                background: 'linear-gradient(135deg, rgba(255,255,255,0.10), rgba(255,255,255,0.03))',
+                                backdropFilter: 'blur(10px)'
+                            }}
+                        >
                             <Grid container>
                                 <Grid item xs={12} md={6}>
-                                    <Box
-                                        sx={{
-                                            p: { xs: 3, sm: 4, md: 6 },
-                                            minHeight: '100%',
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                            justifyContent: 'center'
-                                        }}
-                                    >
-                                        <Chip
-                                            label='YÜKSEK DÖNÜŞÜMLÜ AÇILIŞ SİSTEMİ'
-                                            sx={heroMiniChipSx}
-                                        />
-
+                                    <Box sx={{ p: { xs: 3, md: 6 } }}>
+                                        <Chip label='YÜKSEK DÖNÜŞÜMLÜ AÇILIŞ SİSTEMİ' sx={heroMiniChipSx} />
                                         <Typography
                                             sx={{
                                                 mt: 2.5,
                                                 color: '#fff',
                                                 fontWeight: 900,
-                                                lineHeight: 1.02,
-                                                letterSpacing: '-0.05em',
-                                                fontSize: {
-                                                    xs: '2.65rem',
-                                                    sm: '3.35rem',
-                                                    md: '4.6rem',
-                                                    lg: '5.25rem'
-                                                },
-                                                maxWidth: 660
+                                                lineHeight: 1.06,
+                                                fontSize: { xs: '2.2rem', md: '4.4rem' },
+                                                letterSpacing: '-0.03em'
                                             }}
                                         >
                                             Dağınık operasyon yüzünden müşteri kaçırmayı bırak.
                                         </Typography>
-
                                         <Typography
                                             sx={{
-                                                mt: 2.4,
+                                                mt: 2,
                                                 color: 'rgba(255,255,255,0.82)',
-                                                fontSize: { xs: '1rem', md: '1.22rem' },
-                                                lineHeight: 1.82,
-                                                maxWidth: 640
+                                                fontSize: { xs: '1rem', md: '1.2rem' },
+                                                lineHeight: 1.8,
+                                                maxWidth: 620
                                             }}
                                         >
                                             NISSAI; ekip yükünü azaltır, süreci hızlandırır ve kontrolü tek panelde toplar. Daha fazla
                                             personel almadan daha fazla işi yönetmek isteyenler için tasarlandı.
                                         </Typography>
 
-                                        <Stack spacing={1.35} mt={3.2}>
+                                        <Stack spacing={1.3} mt={3}>
                                             {heroBullets.map((item) => (
-                                                <Stack
-                                                    direction='row'
-                                                    spacing={1.2}
-                                                    alignItems='center'
-                                                    key={item}
-                                                >
-                                                    <CheckCircleRoundedIcon
-                                                        sx={{ color: '#6aa7ff', fontSize: 24 }}
-                                                    />
-                                                    <Typography
-                                                        sx={{
-                                                            color: '#fff',
-                                                            fontWeight: 800,
-                                                            fontSize: { xs: 16, md: 17 }
-                                                        }}
-                                                    >
-                                                        {item}
-                                                    </Typography>
+                                                <Stack direction='row' spacing={1.2} alignItems='center' key={item}>
+                                                    <CheckCircleRoundedIcon sx={{ color: '#60a5fa' }} />
+                                                    <Typography sx={{ color: '#fff', fontWeight: 700 }}>{item}</Typography>
                                                 </Stack>
                                             ))}
                                         </Stack>
 
-                                        <Stack
-                                            direction={{ xs: 'column', sm: 'row' }}
-                                            spacing={2}
-                                            mt={4}
-                                        >
+                                        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} mt={4}>
                                             <Button
-<<<<<<< HEAD:packages/ui/src/views/Ai_Asistan/LandingPage.jsx
                                                 onClick={() => navigate('/login')}
-=======
-                                                onClick={() => navigate('/netlify-lite/login')}
->>>>>>> origin/main:packages/ui/src/views/netlifyLite/LandingPage.jsx
                                                 variant='contained'
                                                 endIcon={<ArrowForwardRoundedIcon />}
                                                 sx={primaryCtaSx}
@@ -509,13 +310,9 @@ export default function LandingPage() {
                                             </Button>
 
                                             <Button
-<<<<<<< HEAD:packages/ui/src/views/Ai_Asistan/LandingPage.jsx
                                                 onClick={() => navigate('/chatflows')}
-=======
-                                                {...actionProps('/netlify-lite/chat')}
->>>>>>> origin/main:packages/ui/src/views/netlifyLite/LandingPage.jsx
                                                 variant='outlined'
-                                                startIcon={<ForumRoundedIcon />}
+                                                startIcon={<PlayCircleRoundedIcon />}
                                                 sx={secondaryCtaSx}
                                             >
                                                 MESAJ MERKEZİNİ AÇ
@@ -557,279 +354,137 @@ export default function LandingPage() {
                                             </Box>
                                         </Paper>
 
-                                        <Grid container spacing={2}>
-                                            {statCards.map((item) => (
-                                                <Grid item xs={12} sm={6} key={item.label}>
-                                                    <StatCard
-                                                        label={item.label}
-                                                        value={item.value}
-                                                        sx={item.sx}
-                                                    />
-                                                </Grid>
-                                            ))}
+                                        <Grid container spacing={2} mt={0.5}>
+                                            <Grid item xs={6}>
+                                                <MiniStat label='Kurulum Süresi' value='15 Dakika' />
+                                            </Grid>
+                                            <Grid item xs={6}>
+                                                <MiniStat label='Operasyon Kazancı' value='%68 Daha Hızlı' />
+                                            </Grid>
+                                            <Grid item xs={6}>
+                                                <MiniStat label='Ekip Yükü' value='%41 Daha Az Baskı' />
+                                            </Grid>
+                                            <Grid item xs={6}>
+                                                <MiniStat label='Mobil Erişim' value='7/24 Aktif' />
+                                            </Grid>
                                         </Grid>
                                     </Box>
                                 </Grid>
                             </Grid>
                         </Paper>
 
-<<<<<<< HEAD:packages/ui/src/views/Ai_Asistan/LandingPage.jsx
                         <Paper elevation={0} sx={{ borderRadius: 4, p: { xs: 2.5, md: 3 }, background: '#fff' }}>
                             <Grid container spacing={2} alignItems='center'>
                                 <Grid item xs={12} md={3}>
                                     <Typography sx={{ fontWeight: 900, fontSize: 22 }}>Güven Bandı</Typography>
                                     <Typography sx={{ color: '#6b7280', mt: 0.5 }}>
                                         Modern altyapı. Hızlı erişim. Üst düzey görünüm. Güven veren akış.
-=======
-                        <Paper elevation={0} sx={trustBandWrapSx}>
-                            <Stack
-                                direction={{ xs: 'column', md: 'row' }}
-                                spacing={{ xs: 2, md: 3 }}
-                                alignItems={{ xs: 'flex-start', md: 'center' }}
-                            >
-                                <Box sx={{ minWidth: { md: 250 } }}>
-                                    <Typography sx={{ fontWeight: 900, fontSize: 22 }}>
-                                        Güven Bandı
->>>>>>> origin/main:packages/ui/src/views/netlifyLite/LandingPage.jsx
                                     </Typography>
-                                    <Typography
-                                        sx={{
-                                            color: '#64748b',
-                                            mt: 0.6,
-                                            lineHeight: 1.7
-                                        }}
-                                    >
-                                        Hızlı yayın, modern veri yapısı ve tek merkez görünürlüğü aynı
-                                        yerde.
-                                    </Typography>
-                                </Box>
-
-                                <Box sx={trustGridSx}>
-                                    {trustItems.map((item) => (
-                                        <Paper elevation={0} sx={trustCardSx} key={item}>
-                                            <Typography
-                                                sx={{
-                                                    fontWeight: 800,
-                                                    textAlign: 'center',
-                                                    color: '#0f172a',
-                                                    fontSize: 13.5,
-                                                    lineHeight: 1.35
-                                                }}
-                                            >
-                                                {item}
-                                            </Typography>
-                                        </Paper>
-                                    ))}
-                                </Box>
-                            </Stack>
+                                </Grid>
+                                <Grid item xs={12} md={9}>
+                                    <Grid container spacing={1.5}>
+                                        {trustItems.map((item) => (
+                                            <Grid item xs={6} sm={4} md={2.4} key={item}>
+                                                <Paper elevation={0} sx={trustCardSx}>
+                                                    <Typography sx={{ fontWeight: 800, textAlign: 'center', fontSize: 13 }}>
+                                                        {item}
+                                                    </Typography>
+                                                </Paper>
+                                            </Grid>
+                                        ))}
+                                    </Grid>
+                                </Grid>
+                            </Grid>
                         </Paper>
                     </Stack>
                 </Container>
             </Box>
 
-            <Box
-                sx={{
-                    background: '#ffffff',
-                    borderTopLeftRadius: { xs: 28, md: 42 },
-                    borderTopRightRadius: { xs: 28, md: 42 },
-                    mt: { xs: -1, md: -2 },
-                    position: 'relative'
-                }}
-            >
-                <Container maxWidth='xl' sx={{ py: { xs: 6, md: 10 } }}>
-                    <Stack spacing={{ xs: 7, md: 10 }}>
-                        <SectionHeadline
-                            top='PROBLEM + AJİTASYON'
-                            title='Sorun küçük değil. Sessizce para kaybettiriyor.'
-                            text='İş büyürken süreç toparlanmıyorsa kayıp görünmez ama gerçektir. Yavaş ekip, düzensiz takip ve geciken dönüş büyümenin önüne fren koyar.'
-                        />
+            <Container maxWidth='xl' sx={{ py: { xs: 6, md: 10 } }}>
+                <Stack spacing={{ xs: 7, md: 10 }}>
+                    <SectionHeadline
+                        top='PROBLEM + AJİTASYON'
+                        title='Sorun küçük değil. Sessizce para kaybettiriyor.'
+                        text='İşler büyürken süreçler toparlanmıyorsa kayıp görünmez ama gerçektir. Yavaş ekip, düzensiz takip, geciken dönüş ve görünmeyen maliyet büyümenin önüne fren koyar.'
+                    />
 
-                        <Grid container spacing={3}>
-                            <Grid item xs={12} md={6}>
-                                <CompareCard
-                                    tone='light'
-                                    title='ÖNCE'
-                                    subtitle='Dağınık takip, yoğun ekip baskısı ve sürekli manuel müdahale'
-                                    items={compareData.before}
-                                />
-                            </Grid>
-                            <Grid item xs={12} md={6}>
-                                <CompareCard
-                                    tone='dark'
-                                    title='SONRA'
-                                    subtitle='Merkezi görünüm, daha hızlı iş akışı ve daha net kontrol'
-                                    items={compareData.after}
-                                />
-                            </Grid>
+                    <Grid container spacing={3}>
+                        <Grid item xs={12} md={6}>
+                            <CompareCard
+                                tone='light'
+                                title='ÖNCE'
+                                items={comparisons.before}
+                                subtitle='Dağınık takip, yoğun ekip baskısı ve sürekli manuel müdahale'
+                            />
                         </Grid>
-
-                        <Box id='moduller'>
-                            <Stack spacing={{ xs: 6, md: 8 }}>
-                                {sections.map((section) => (
-                                    <ShowcaseSection
-                                        key={section.title}
-                                        {...section}
-                                        actionProps={actionProps}
-                                    />
-                                ))}
-                            </Stack>
-                        </Box>
-
-                        <SectionHeadline
-                            top='KİMLER İÇİN'
-                            title='Bu sistem herkes için değil. Hız isteyenler için.'
-                            text='Ajanslar, e-ticaret ekipleri, emlak ekipleri, operasyon yöneticileri ve destek yükü yüksek işletmeler için tasarlandı.'
-                        />
-
-                        <Grid container spacing={2.5}>
-                            {useCases.map((item) => (
-                                <Grid item xs={12} md={3} key={item.title}>
-                                    <Paper elevation={0} sx={useCaseCardSx}>
-                                        <Typography sx={{ fontWeight: 900, fontSize: 22 }}>
-                                            {item.title}
-                                        </Typography>
-                                        <Typography
-                                            sx={{
-                                                mt: 1.2,
-                                                color: '#475569',
-                                                lineHeight: 1.8
-                                            }}
-                                        >
-                                            {item.text}
-                                        </Typography>
-                                    </Paper>
-                                </Grid>
-                            ))}
+                        <Grid item xs={12} md={6}>
+                            <CompareCard
+                                tone='dark'
+                                title='SONRA'
+                                items={comparisons.after}
+                                subtitle='Merkezi görünüm, daha hızlı iş akışı ve daha net kontrol'
+                            />
                         </Grid>
+                    </Grid>
 
-                        <Grid container spacing={3} id='kurulum'>
-                            <Grid item xs={12} md={6}>
-                                <Paper elevation={0} sx={guaranteeSx}>
-                                    <Stack spacing={2.1}>
-                                        <Stack direction='row' spacing={1.2} alignItems='center'>
-                                            <ShieldRoundedIcon
-                                                sx={{ color: '#16a34a', fontSize: 30 }}
-                                            />
-                                            <Typography sx={{ fontWeight: 900, fontSize: 26 }}>
-                                                Güvenli Geçiş
-                                            </Typography>
-                                        </Stack>
+                    {sections.map((section) => (
+                        <ShowcaseSection key={section.title} {...section} />
+                    ))}
 
-                                        <Typography
-                                            sx={{
-                                                fontWeight: 900,
-                                                fontSize: { xs: 28, md: 42 },
-                                                lineHeight: 1.12
-                                            }}
-                                        >
-                                            Operasyonu büyütürken kontrolü dağıtma.
-                                        </Typography>
+                    <SectionHeadline
+                        top='KİMLER İÇİN'
+                        title='Bu sistem herkes için değil. Bu sistem hız isteyenler için.'
+                        text='Bu yapı özellikle ajanslar, e-ticaret ekipleri, emlak ekipleri, operasyon yöneticileri ve destek yükü yüksek işletmeler için tasarlandı.'
+                    />
 
-                                        <Typography
-                                            sx={{
-                                                color: '#334155',
-                                                lineHeight: 1.9,
-                                                fontSize: 16
-                                            }}
-                                        >
-                                            Yapı yalnızca hızlı görünmek için değil, güven vermek için
-                                            kuruldu. Yetki ayrımı, görünürlük ve merkezi takip aynı
-                                            omurgada birleşir.
-                                        </Typography>
-                                    </Stack>
+                    <Grid container spacing={2.5}>
+                        {useCases.map((item) => (
+                            <Grid item xs={12} md={3} key={item.title}>
+                                <Paper elevation={0} sx={useCaseCardSx}>
+                                    <Typography sx={{ fontWeight: 900, fontSize: 22 }}>{item.title}</Typography>
+                                    <Typography sx={{ mt: 1.2, color: '#6b7280', lineHeight: 1.8 }}>{item.text}</Typography>
                                 </Paper>
                             </Grid>
+                        ))}
+                    </Grid>
 
-                            <Grid item xs={12} md={6}>
-                                <Paper elevation={0} sx={setupCardSx}>
-                                    <Typography sx={{ color: '#fff', fontWeight: 900, fontSize: 18 }}>
-                                        Hızlı Kurulum Protokolü
+                    <Grid container spacing={3}>
+                        <Grid item xs={12} md={6}>
+                            <Paper elevation={0} sx={guaranteeSx}>
+                                <Stack spacing={2.2}>
+                                    <Stack direction='row' spacing={1.2} alignItems='center'>
+                                        <ShieldRoundedIcon sx={{ color: '#16a34a', fontSize: 30 }} />
+                                        <Typography sx={{ fontWeight: 900, fontSize: 26 }}>Risk İmhası</Typography>
+                                    </Stack>
+                                    <Typography sx={{ fontWeight: 900, fontSize: { xs: 28, md: 42 }, lineHeight: 1.12 }}>
+                                        30 Gün Memnuniyet Odaklı Garanti
                                     </Typography>
                                     <Typography sx={{ color: '#374151', lineHeight: 1.9, fontSize: 16 }}>
                                         Kuru vaat değil, güven veren yapı. “Ya uymazsa?”, “Ya ekip kullanamazsa?”, “Ya gereksiz çıkarsa?”
                                         gibi itirazlar için sayfanın bu alanı kullanıcıyı rahatlatmalı. Riski kullanıcı değil, sistem
                                         taşıyor hissi burada açıkça verilmeli.
                                     </Typography>
-                                </Paper>
-                            </Grid>
+                                </Stack>
+                            </Paper>
                         </Grid>
 
-                        <SectionHeadline
-                            top='MİNİ SSS'
-                            title='İtirazları en baştan temizleyelim.'
-                            text='Kararı yavaşlatan soruların cevabı burada. Kısa, net ve itiraz kırıcı.'
-                        />
-
-                        <Grid container spacing={2}>
-                            {faqs.map((faq) => (
-                                <Grid item xs={12} md={6} key={faq.q}>
-                                    <Paper elevation={0} sx={faqCardSx}>
-                                        <Typography sx={{ fontWeight: 900, fontSize: 20 }}>
-                                            {faq.q}
-                                        </Typography>
-                                        <Typography
-                                            sx={{
-                                                mt: 1,
-                                                color: '#64748b',
-                                                lineHeight: 1.8
-                                            }}
-                                        >
-                                            {faq.a}
-                                        </Typography>
-                                    </Paper>
-                                </Grid>
-                            ))}
-                        </Grid>
-
-                        <Paper elevation={0} sx={finalCtaWrapSx}>
-                            <Stack spacing={2.5} alignItems='center' textAlign='center'>
-                                <Chip label='FINAL PUSH' sx={finalChipSx} />
-
-                                <Typography
-                                    sx={{
-                                        fontWeight: 900,
-                                        fontSize: { xs: '2rem', md: '3.85rem' },
-                                        lineHeight: 1.05,
-                                        maxWidth: 920,
-                                        color: '#fff'
-                                    }}
-                                >
-                                    Sorun zaten ortada. Yük zaten büyüyor. Şimdi mesele şu: Bunu daha ne
-                                    kadar taşıyacaksın?
+                        <Grid item xs={12} md={6}>
+                            <Paper elevation={0} sx={countdownCardSx}>
+                                <Typography sx={{ color: '#b91c1c', fontWeight: 900, fontSize: 18 }}>
+                                    Fiyat artışı öncesi kalan süre
                                 </Typography>
                                 <Typography sx={{ mt: 2.5, color: '#6b7280', lineHeight: 1.8 }}>
                                     NISSAI ile ilk temastan operasyon devrine kadar akışı görünür ve yönetilebilir hale getirin.
                                 </Typography>
+                            </Paper>
+                        </Grid>
+                    </Grid>
 
-                                <Stack
-                                    direction={{ xs: 'column', sm: 'row' }}
-                                    spacing={2}
-                                    flexWrap='wrap'
-                                    useFlexGap
-                                    justifyContent='center'
-                                >
-                                    <Button
-                                        {...actionProps('/netlify-lite/admin')}
-                                        variant='contained'
-                                        sx={bottomPrimarySx}
-                                    >
-                                        ŞİMDİ ERİŞ
-                                    </Button>
-                                    <Button
-                                        {...actionProps('/netlify-lite/chat')}
-                                        variant='outlined'
-                                        sx={bottomSecondarySx}
-                                    >
-                                        MESAJ AKIŞINI GÖR
-                                    </Button>
-                                    <Button
-                                        {...actionProps('#moduller')}
-                                        variant='outlined'
-                                        sx={bottomGhostBlueSx}
-                                    >
-                                        MODÜLLERİ İNCELE
-                                    </Button>
-                                </Stack>
+                    <SectionHeadline
+                        top='MİNİ SSS'
+                        title='İtirazları en baştan temizleyelim.'
+                        text='Kararı yavaşlatan soruların cevabı burada. Kısa, net ve itiraz kırıcı.'
+                    />
 
                     <Grid container spacing={2}>
                         {faqs.map((faq) => (
@@ -853,11 +508,7 @@ export default function LandingPage() {
                                         <Button
                                             variant={sector.active ? 'contained' : 'outlined'}
                                             disabled={!sector.active}
-<<<<<<< HEAD:packages/ui/src/views/Ai_Asistan/LandingPage.jsx
                                             onClick={() => navigate('/ai-asistan')}
-=======
-                                            onClick={() => navigate(`/netlify-lite/sektor/${sector.key}`)}
->>>>>>> origin/main:packages/ui/src/views/netlifyLite/LandingPage.jsx
                                         >
                                             {sector.active ? t.sectorOpen : t.sectorSoon}
                                         </Button>
@@ -879,20 +530,12 @@ export default function LandingPage() {
                             </Typography>
 
                             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-<<<<<<< HEAD:packages/ui/src/views/Ai_Asistan/LandingPage.jsx
                                 <Button variant='contained' onClick={() => navigate('/login')} sx={bottomPrimarySx}>
-=======
-                                <Button variant='contained' onClick={() => navigate('/netlify-lite/login')} sx={bottomPrimarySx}>
->>>>>>> origin/main:packages/ui/src/views/netlifyLite/LandingPage.jsx
                                     {t.loginButton}
                                 </Button>
                                 <Button
                                     variant='outlined'
-<<<<<<< HEAD:packages/ui/src/views/Ai_Asistan/LandingPage.jsx
                                     onClick={() => navigate('/ai-asistan')}
-=======
-                                    onClick={() => navigate('/netlify-lite/sektor/avukatlar')}
->>>>>>> origin/main:packages/ui/src/views/netlifyLite/LandingPage.jsx
                                     sx={bottomSecondarySx}
                                 >
                                     {t.lawyersLink}
@@ -920,14 +563,9 @@ export default function LandingPage() {
 
             <Box sx={floatingBarSx}>
                 <Button
-                    {...actionProps('/netlify-lite/admin')}
                     variant='contained'
                     endIcon={<ArrowForwardRoundedIcon />}
-<<<<<<< HEAD:packages/ui/src/views/Ai_Asistan/LandingPage.jsx
                     onClick={() => navigate('/ai-asistan')}
-=======
-                    onClick={() => navigate('/netlify-lite/sektor/avukatlar')}
->>>>>>> origin/main:packages/ui/src/views/netlifyLite/LandingPage.jsx
                     sx={floatingCtaSx}
                 >
                     {t.lawyersLink}
@@ -937,30 +575,17 @@ export default function LandingPage() {
     )
 }
 
-function HeroVideoFrame({ src, poster, title }) {
+function HeroBackground() {
     return (
-        <Paper elevation={0} sx={videoFrameSx}>
-            <Box sx={videoViewportSx}>
-                {src ? (
-                    <Box
-                        component='iframe'
-                        src={src}
-                        title={title}
-                        allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-                        allowFullScreen
-                        sx={videoEmbedSx}
-                    />
-                ) : (
-                    <>
-                        <Box component='img' src={poster} alt={title} sx={videoPosterSx} />
-                        <Box sx={videoOverlaySx} />
-                        <Stack sx={videoPlaySx}>
-                            <PlayCircleRoundedIcon sx={{ fontSize: 82, color: '#fff' }} />
-                        </Stack>
-                    </>
-                )}
-            </Box>
-        </Paper>
+        <Box
+            sx={{
+                position: 'fixed',
+                inset: 0,
+                zIndex: -1,
+                background:
+                    'radial-gradient(circle at 10% 10%, rgba(59,130,246,0.12), transparent 24%), radial-gradient(circle at 90% 10%, rgba(168,85,247,0.12), transparent 24%), linear-gradient(180deg, #07111f 0%, #0b1831 32%, #ffffff 32%, #ffffff 100%)'
+            }}
+        />
     )
 }
 
@@ -974,82 +599,34 @@ function SectionHeadline({ top, title, text }) {
     )
 }
 
-function ShowcaseSection({
-    badge,
-    title,
-    text,
-    image,
-    companion,
-    tertiary,
-    bullets,
-    theme,
-    reverse,
-    actionProps
-}) {
-    const dark = theme === 'dark'
-
+function ShowcaseSection({ badge, title, text, image, companion, tertiary, bullets, dark = false, reverse = false }) {
     return (
         <Paper
             elevation={0}
             sx={{
                 borderRadius: 6,
                 overflow: 'hidden',
-                background: dark ? '#111827' : '#f8fafc',
+                background: dark ? '#121827' : '#f8fafc',
                 color: dark ? '#fff' : '#111827',
-                border: dark
-                    ? '1px solid rgba(255,255,255,0.08)'
-                    : '1px solid #e2e8f0'
+                border: dark ? '1px solid rgba(255,255,255,0.08)' : '1px solid #e5e7eb'
             }}
         >
             <Grid container direction={reverse ? 'row-reverse' : 'row'}>
                 <Grid item xs={12} md={6}>
                     <Box sx={{ p: { xs: 3, md: 5 } }}>
-                        <Chip
-                            label={badge}
-                            sx={dark ? moduleChipDarkSx : moduleChipLightSx}
-                        />
-
-                        <Typography
-                            sx={{
-                                mt: 2,
-                                fontWeight: 900,
-                                fontSize: { xs: '2rem', md: '3rem' },
-                                lineHeight: 1.12
-                            }}
-                        >
+                        <Chip label={badge} sx={dark ? moduleChipDarkSx : moduleChipLightSx} />
+                        <Typography sx={{ mt: 2, fontWeight: 900, fontSize: { xs: '2rem', md: '3rem' }, lineHeight: 1.12 }}>
                             {title}
                         </Typography>
-
-                        <Typography
-                            sx={{
-                                mt: 2,
-                                color: dark ? 'rgba(255,255,255,0.78)' : '#475569',
-                                lineHeight: 1.9,
-                                fontSize: 16
-                            }}
-                        >
+                        <Typography sx={{ mt: 2, color: dark ? 'rgba(255,255,255,0.78)' : '#4b5563', lineHeight: 1.9, fontSize: 16 }}>
                             {text}
                         </Typography>
 
                         <Stack spacing={1.4} mt={3}>
                             {bullets.map((item) => (
-                                <Stack
-                                    key={item}
-                                    direction='row'
-                                    spacing={1.2}
-                                    alignItems='center'
-                                >
-                                    <CheckCircleRoundedIcon
-                                        sx={{ color: dark ? '#93c5fd' : '#2563eb' }}
-                                    />
-                                    <Typography
-                                        sx={{
-                                            color: dark
-                                                ? 'rgba(255,255,255,0.88)'
-                                                : '#334155',
-                                            fontWeight: 700
-                                        }}
-                                    >
+                                <Stack key={item} direction='row' spacing={1.2} alignItems='center'>
+                                    <CheckCircleRoundedIcon sx={{ color: dark ? '#93c5fd' : '#2563eb' }} />
+                                    <Typography sx={{ color: dark ? 'rgba(255,255,255,0.88)' : '#374151', fontWeight: 700 }}>
                                         {item}
                                     </Typography>
                                 </Stack>
@@ -1057,12 +634,8 @@ function ShowcaseSection({
                         </Stack>
 
                         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} mt={3.5}>
-                            <Button
-                                {...actionProps('/netlify-lite/admin')}
-                                variant='contained'
-                                sx={modulePrimarySx}
-                            >
-                                SİSTEMİ AÇ
+                            <Button variant='contained' sx={modulePrimarySx}>
+                                HEMEN BAŞLA
                             </Button>
                             <Button
                                 variant='outlined'
@@ -1080,30 +653,17 @@ function ShowcaseSection({
 
                 <Grid item xs={12} md={6}>
                     <Box sx={{ p: { xs: 2.5, md: 4 }, height: '100%' }}>
-                        <Paper
-                            elevation={0}
-                            sx={{
-                                ...mockFrameSx,
-                                background: dark ? '#0b1220' : '#fff'
-                            }}
-                        >
-                            <Box
-                                component='img'
-                                src={image.src}
-                                alt={image.alt}
-                                loading='lazy'
-                                sx={showcaseMainImageSx}
-                            />
+                        <Paper elevation={0} sx={{ ...mockFrameSx, background: dark ? '#0b1220' : '#fff' }}>
+                            <Box component='img' src={image.src} alt={image.alt} loading='lazy' sx={showcaseMainImageSx} />
                         </Paper>
 
                         {(companion || tertiary) && (
-                            <Grid container spacing={2} mt={0.6}>
+                            <Grid container spacing={2} mt={0.5}>
                                 {companion && (
                                     <Grid item xs={12} sm={tertiary ? 6 : 12}>
                                         <MediaCard image={companion} dark={dark} />
                                     </Grid>
                                 )}
-
                                 {tertiary && (
                                     <Grid item xs={12} sm={6}>
                                         <MediaCard image={tertiary} dark={dark} />
@@ -1126,9 +686,7 @@ function MediaCard({ image, dark }) {
                 p: 1.2,
                 borderRadius: 4,
                 background: dark ? 'rgba(255,255,255,0.04)' : '#fff',
-                border: dark
-                    ? '1px solid rgba(255,255,255,0.08)'
-                    : '1px solid #e2e8f0',
+                border: dark ? '1px solid rgba(255,255,255,0.08)' : '1px solid #e5e7eb',
                 height: '100%'
             }}
         >
@@ -1140,7 +698,6 @@ function MediaCard({ image, dark }) {
 
 function CompareCard({ title, subtitle, items, tone }) {
     const dark = tone === 'dark'
-
     return (
         <Paper
             elevation={0}
@@ -1150,46 +707,19 @@ function CompareCard({ title, subtitle, items, tone }) {
                 height: '100%',
                 background: dark ? '#111827' : '#f8fafc',
                 color: dark ? '#fff' : '#111827',
-                border: dark
-                    ? '1px solid rgba(255,255,255,0.08)'
-                    : '1px solid #e2e8f0'
+                border: dark ? '1px solid rgba(255,255,255,0.08)' : '1px solid #e5e7eb'
             }}
         >
-            <Typography
-                sx={{
-                    fontWeight: 900,
-                    fontSize: 14,
-                    letterSpacing: '0.14em',
-                    color: dark ? '#93c5fd' : '#2563eb'
-                }}
-            >
+            <Typography sx={{ fontWeight: 900, fontSize: 14, letterSpacing: '0.14em', color: dark ? '#93c5fd' : '#2563eb' }}>
                 {title}
             </Typography>
-
-            <Typography sx={{ mt: 1.2, fontWeight: 900, fontSize: 28 }}>
-                {subtitle}
-            </Typography>
-
-            <Divider
-                sx={{
-                    my: 2.2,
-                    borderColor: dark ? 'rgba(255,255,255,0.08)' : '#e2e8f0'
-                }}
-            />
-
+            <Typography sx={{ mt: 1.2, fontWeight: 900, fontSize: 28 }}>{subtitle}</Typography>
+            <Divider sx={{ my: 2.2, borderColor: dark ? 'rgba(255,255,255,0.08)' : '#e5e7eb' }} />
             <Stack spacing={1.35}>
                 {items.map((item) => (
                     <Stack direction='row' spacing={1.2} alignItems='center' key={item}>
-                        <CheckCircleRoundedIcon
-                            sx={{ color: dark ? '#60a5fa' : '#2563eb' }}
-                        />
-                        <Typography
-                            sx={{
-                                color: dark ? 'rgba(255,255,255,0.82)' : '#475569'
-                            }}
-                        >
-                            {item}
-                        </Typography>
+                        <CheckCircleRoundedIcon sx={{ color: dark ? '#60a5fa' : '#2563eb' }} />
+                        <Typography sx={{ color: dark ? 'rgba(255,255,255,0.82)' : '#4b5563' }}>{item}</Typography>
                     </Stack>
                 ))}
             </Stack>
@@ -1197,7 +727,7 @@ function CompareCard({ title, subtitle, items, tone }) {
     )
 }
 
-function StatCard({ label, value, sx }) {
+function MiniStat({ label, value }) {
     return (
         <Paper
             elevation={0}
@@ -1229,153 +759,37 @@ const heroMiniChipSx = {
 }
 
 const primaryCtaSx = {
-    minHeight: 58,
-    px: 3.6,
+    minHeight: 56,
+    px: 3.5,
     borderRadius: 999,
     fontWeight: 900,
     background: 'linear-gradient(90deg, #2563eb, #7c3aed)',
-    boxShadow: '0 18px 40px rgba(37,99,235,0.32)',
-    whiteSpace: 'nowrap'
+    boxShadow: '0 18px 40px rgba(37,99,235,0.32)'
 }
 
 const secondaryCtaSx = {
-    minHeight: 58,
+    minHeight: 56,
     px: 3.2,
     borderRadius: 999,
     fontWeight: 900,
     color: '#fff',
-    borderColor: 'rgba(255,255,255,0.28)',
-    whiteSpace: 'nowrap'
-}
-
-const heroQuickCtaBaseSx = {
-    width: '100%',
-    borderRadius: 3.5,
-    px: 2,
-    py: 1.65,
-    justifyContent: 'flex-start',
-    textTransform: 'none',
-    boxShadow: '0 16px 34px rgba(2,6,23,0.22)'
-}
-
-const heroQuickIconWrapSx = {
-    width: 42,
-    height: 42,
-    borderRadius: 2.5,
-    display: 'grid',
-    placeItems: 'center',
-    background: 'rgba(255,255,255,0.14)',
-    flexShrink: 0
-}
-
-const heroMediaColumnSx = {
-    p: { xs: 2.5, md: 4 },
-    height: '100%',
-    background:
-        'radial-gradient(circle at top right, rgba(96,165,250,0.18), transparent 36%), linear-gradient(180deg, rgba(4,9,22,0.78), rgba(11,18,32,0.94))'
-}
-
-const videoFrameSx = {
-    p: { xs: 1.1, md: 1.25 },
-    borderRadius: { xs: 4.5, md: 5 },
-    background: '#f8fafc',
-    border: '1px solid rgba(255,255,255,0.28)',
-    boxShadow: '0 24px 80px rgba(2,6,23,0.24)'
-}
-
-const videoViewportSx = {
-    position: 'relative',
-    borderRadius: { xs: 3.5, md: 4 },
-    overflow: 'hidden',
-    aspectRatio: '16 / 9',
-    background: '#07111f'
-}
-
-const videoEmbedSx = {
-    width: '100%',
-    height: '100%',
-    border: 0,
-    display: 'block'
-}
-
-const videoPosterSx = {
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover',
-    display: 'block'
-}
-
-const videoOverlaySx = {
-    position: 'absolute',
-    inset: 0,
-    background:
-        'linear-gradient(180deg, rgba(5,10,25,0.18), rgba(5,10,25,0.34) 100%)'
-}
-
-const videoPlaySx = {
-    position: 'absolute',
-    inset: 0,
-    display: 'grid',
-    placeItems: 'center'
-}
-
-const authorityBandSx = {
-    mt: 2,
-    px: { xs: 2, md: 2.8 },
-    py: { xs: 1.4, md: 1.75 },
-    borderRadius: 999,
-    border: '1px solid rgba(255,209,102,0.34)',
-    background:
-        'linear-gradient(90deg, rgba(102,72,20,0.86), rgba(217,152,0,0.34), rgba(73,57,24,0.86))',
-    boxShadow: '0 18px 40px rgba(181,126,22,0.12)'
-}
-
-const statCardBaseSx = {
-    p: { xs: 2.2, md: 2.6 },
-    borderRadius: 3.5,
-    minHeight: { xs: 124, md: 134 },
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between'
-}
-
-const trustBandWrapSx = {
-    borderRadius: 4,
-    p: { xs: 2.5, md: 3 },
-    background: '#fff',
-    border: '1px solid #e2e8f0',
-    boxShadow: '0 18px 50px rgba(15,23,42,0.06)'
-}
-
-const trustGridSx = {
-    flex: 1,
-    width: '100%',
-    display: 'grid',
-    gridTemplateColumns: {
-        xs: 'repeat(2, minmax(0, 1fr))',
-        md: 'repeat(5, minmax(0, 1fr))'
-    },
-    gap: 12
-}
-
-const trustCardSx = {
-    p: 2,
-    height: '100%',
-    borderRadius: 3,
-    background:
-        'linear-gradient(180deg, #ffffff 0%, #f8fafc 100%)',
-    border: '1px solid #e2e8f0',
-    display: 'grid',
-    placeItems: 'center',
-    minHeight: 86
+    borderColor: 'rgba(255,255,255,0.28)'
 }
 
 const mockFrameSx = {
-    p: 1.25,
+    p: 1.5,
     borderRadius: 5,
     background: '#fff',
-    border: '1px solid #e2e8f0',
-    boxShadow: '0 30px 90px rgba(2,6,23,0.12)'
+    border: '1px solid #e5e7eb',
+    boxShadow: '0 30px 90px rgba(2,6,23,0.16)'
+}
+
+const mockImageSx = {
+    width: '100%',
+    display: 'block',
+    borderRadius: 4,
+    objectFit: 'cover',
+    aspectRatio: '16/10'
 }
 
 const showcaseMainImageSx = {
@@ -1383,7 +797,7 @@ const showcaseMainImageSx = {
     display: 'block',
     borderRadius: 4,
     objectFit: 'cover',
-    aspectRatio: '16 / 10'
+    aspectRatio: '16/10'
 }
 
 const showcaseSecondaryImageSx = {
@@ -1391,7 +805,18 @@ const showcaseSecondaryImageSx = {
     display: 'block',
     borderRadius: 3,
     objectFit: 'cover',
-    aspectRatio: '16 / 10'
+    aspectRatio: '16/10'
+}
+
+const trustCardSx = {
+    p: 2,
+    height: '100%',
+    borderRadius: 3,
+    background: '#f8fafc',
+    border: '1px solid #e5e7eb',
+    display: 'grid',
+    placeItems: 'center',
+    minHeight: 82
 }
 
 const moduleChipLightSx = {
@@ -1427,52 +852,37 @@ const useCaseCardSx = {
     borderRadius: 4,
     height: '100%',
     background: '#f8fafc',
-    border: '1px solid #e2e8f0'
+    border: '1px solid #e5e7eb'
 }
 
 const guaranteeSx = {
     p: { xs: 3, md: 4 },
     borderRadius: 5,
-    background:
-        'linear-gradient(180deg, #ecfdf5 0%, #dcfce7 100%)',
+    background: '#ecfdf5',
     border: '1px solid #bbf7d0',
     height: '100%'
 }
 
-const setupCardSx = {
+const countdownCardSx = {
     p: { xs: 3, md: 4 },
     borderRadius: 5,
-    background:
-        'linear-gradient(135deg, #0f172a 0%, #172554 100%)',
-    border: '1px solid rgba(96,165,250,0.22)',
+    background: '#fff7ed',
+    border: '1px solid #fed7aa',
     height: '100%'
-}
-
-const setupIndexSx = {
-    width: 32,
-    height: 32,
-    borderRadius: 999,
-    display: 'grid',
-    placeItems: 'center',
-    fontWeight: 900,
-    color: '#0f172a',
-    background: '#f8fafc',
-    flexShrink: 0
 }
 
 const faqCardSx = {
     p: 3,
     borderRadius: 4,
     background: '#ffffff',
-    border: '1px solid #e2e8f0',
+    border: '1px solid #e5e7eb',
     height: '100%'
 }
 
 const finalCtaWrapSx = {
     p: { xs: 3.5, md: 6 },
     borderRadius: 6,
-    background:
-        'linear-gradient(135deg, #0f172a, #1e293b 58%, #111827)',
+    background: 'linear-gradient(135deg, #0f172a, #1e293b 58%, #111827)',
     border: '1px solid rgba(255,255,255,0.08)',
     overflow: 'hidden'
 }
@@ -1510,13 +920,12 @@ const floatingBarSx = {
     p: 1.5,
     display: 'flex',
     justifyContent: 'center',
-    background:
-        'linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,0.92))'
+    background: 'linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,0.92))'
 }
 
 const floatingCtaSx = {
     minWidth: { xs: '100%', sm: 360 },
-    maxWidth: 440,
+    maxWidth: 420,
     minHeight: 56,
     borderRadius: 999,
     fontWeight: 900,

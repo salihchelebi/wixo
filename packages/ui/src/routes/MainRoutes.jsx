@@ -1,5 +1,4 @@
 import { lazy } from 'react'
-import { Outlet } from 'react-router-dom'
 
 // project imports
 import MainLayout from '@/layout/MainLayout'
@@ -52,8 +51,6 @@ const Evaluators = Loadable(lazy(() => import('@/views/evaluators')))
 
 // account routing
 const Account = Loadable(lazy(() => import('@/views/account')))
-const AiAsistanLandingPage = Loadable(lazy(() => import('@/views/Ai_Asistan/LandingPage')))
-
 // files routing
 const Files = Loadable(lazy(() => import('@/views/files')))
 
@@ -71,19 +68,15 @@ const Workspaces = Loadable(lazy(() => import('@/views/workspace')))
 const WorkspaceDetails = Loadable(lazy(() => import('@/views/workspace/WorkspaceUsers')))
 const SSOConfig = Loadable(lazy(() => import('@/views/auth/ssoConfig')))
 const SSOSuccess = Loadable(lazy(() => import('@/views/auth/ssoSuccess')))
-const NetlifyLiteLayout = () => <Outlet />
-
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
     path: '/',
-    // Netlify Lite modunda ana yerleşim korunur, ancak kök rota landing page'e gider.
-    element: import.meta.env.VITE_NETLIFY_LITE === 'true' ? <NetlifyLiteLayout /> : <MainLayout />,
+    element: <MainLayout />,
     children: [
         {
             path: '/',
-            // Kök URL açıldığında admin değil landing page görünür.
-            element: import.meta.env.VITE_NETLIFY_LITE === 'true' ? <AiAsistanLandingPage /> : <DefaultRedirect />
+            element: <DefaultRedirect />
         },
         {
             path: '/chatflows',
