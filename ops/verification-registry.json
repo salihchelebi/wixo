@@ -29,7 +29,7 @@
     },
     "netlify_function_route_mapping": {
       "status": "PASSED",
-      "notes": "API redirects map to netlify/functions handlers including supabase-flow.",
+      "notes": "API redirects map to wixoo/functions handlers including supabase-flow.",
       "evidence": [
         {
           "id": "routing-checks/function-route-map-2026-03-29.md",
@@ -39,11 +39,11 @@
       "fingerprint": "file:netlify.toml",
       "dependsOn": [
         "netlify.toml",
-        "netlify/functions/supabase-flow.js"
+        "wixoo/functions/supabase-flow.js"
       ],
       "recheckTriggers": [
         "netlify.toml",
-        "netlify/functions/**"
+        "wixoo/functions/**"
       ]
     },
     "supabase_server_side_secret_usage": {
@@ -55,13 +55,13 @@
           "type": "source"
         }
       ],
-      "fingerprint": "file:netlify/functions/_lib/supabaseRest.js",
+      "fingerprint": "file:wixoo/functions/_lib/supabaseRest.js",
       "dependsOn": [
-        "netlify/functions/_lib/supabaseRest.js",
+        "wixoo/functions/_lib/supabaseRest.js",
         "packages/ui/src/views/netlifyLite/ChatPage.jsx"
       ],
       "recheckTriggers": [
-        "netlify/functions/_lib/supabaseRest.js",
+        "wixoo/functions/_lib/supabaseRest.js",
         "packages/ui/src/views/**"
       ]
     },
@@ -76,11 +76,11 @@
       ],
       "fingerprint": "command:node invoke supabase-flow",
       "dependsOn": [
-        "netlify/functions/supabase-flow.js"
+        "wixoo/functions/supabase-flow.js"
       ],
       "recheckTriggers": [
-        "netlify/functions/supabase-flow.js",
-        "netlify/functions/_lib/**"
+        "wixoo/functions/supabase-flow.js",
+        "wixoo/functions/_lib/**"
       ]
     },
     "github_netlify_repo_linkage": {
