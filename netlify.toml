@@ -33,6 +33,11 @@ to = "/.wixoo/functions/supabase-flow"
 status = 200
 
 [[redirects]]
+from = "/api/supabase-flow"
+to = "/.netlify/functions/supabase-flow"
+status = 200
+
+[[redirects]]
 from = "/*"
 to = "/index.html"
 status = 200
