@@ -102,6 +102,18 @@ Bu repo `netlify.toml` ile deploy edilir:
 
 ---
 
+## Verification and Operational Truth
+
+- Repo config, runtime doğrulamasının yerine geçmez.
+- `ops/verification-rules.md` karar kaynağıdır.
+- `ops/verification-registry.json` durum/cache defteridir.
+- `ops/evidence/` klasörü doğrulama delillerini saklar.
+- `ops/task-impact-map.md` hangi değişiklikte hangi checklerin yeniden koşulacağını belirler.
+- `ops/codex-report-template.md` görev raporu standardını tanımlar.
+- Her görevde tüm sistemi değil, yalnızca delta (etkilenen alanlar) yeniden doğrulanır.
+
+---
+
 ## Test / Kontrol Önerisi
 
 ```bash
