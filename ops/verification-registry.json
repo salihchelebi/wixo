@@ -1,309 +1,112 @@
-
 {
-  "version": 1,
-  "lastUpdatedAt": "",
   "repo": {
-    "owner": "",
-    "name": "",
-    "full": "",
-    "url": ""
+    "owner": "salihchelebi",
+    "name": "wixo",
+    "full": "salihchelebi/wixo",
+    "url": "https://github.com/salihchelebi/wixo",
+    "defaultBranch": "main"
   },
-  "defaultBranch": "",
-  "deployPlatform": "netlify",
-  "siteId": "",
-  "productionUrl": "",
-  "checks": [
-    {
-      "id": 1,
-      "title": "GITHUB_DEPLOY_PLATFORM_CONNECTION",
-      "status": "UNCERTAIN",
-      "lastVerifiedAt": "",
-      "verifiedBy": "codex",
-      "scope": {
-        "branch": "",
-        "commit": "",
-        "environment": "production"
-      },
-      "fingerprint": "",
-      "evidence": [],
-      "dependsOn": [],
+  "checks": {
+    "build_publish_path_alignment": {
+      "status": "PASSED",
+      "notes": "Vite outDir is ./build and netlify publish path is packages/ui/build.",
+      "evidence": [
+        {
+          "id": "routing-checks/build-publish-alignment-2026-03-29.md",
+          "type": "source+command"
+        }
+      ],
+      "fingerprint": "files:packages/ui/vite.config.js|netlify.toml",
+      "dependsOn": [
+        "packages/ui/vite.config.js",
+        "netlify.toml"
+      ],
+      "recheckTriggers": [
+        "packages/ui/vite.config.js",
+        "netlify.toml",
+        "packages/ui/package.json"
+      ]
+    },
+    "netlify_function_route_mapping": {
+      "status": "PASSED",
+      "notes": "API redirects map to netlify/functions handlers including supabase-flow.",
+      "evidence": [
+        {
+          "id": "routing-checks/function-route-map-2026-03-29.md",
+          "type": "source"
+        }
+      ],
+      "fingerprint": "file:netlify.toml",
+      "dependsOn": [
+        "netlify.toml",
+        "netlify/functions/supabase-flow.js"
+      ],
       "recheckTriggers": [
         "netlify.toml",
-        ".github/workflows/",
-        "deploy scripts",
-        "repo metadata",
-        "default branch changes",
-        "site-repo link changes"
-      ],
-      "notes": ""
+        "netlify/functions/**"
+      ]
     },
-    {
-      "id": 2,
-      "title": "PR_PREVIEW_PRODUCTION_SEPARATION",
-      "status": "UNCERTAIN",
-      "lastVerifiedAt": "",
-      "verifiedBy": "codex",
-      "scope": {
-        "branch": "",
-        "commit": "",
-        "environment": "preview+production"
-      },
-      "fingerprint": "",
-      "evidence": [],
-      "dependsOn": [1],
-      "recheckTriggers": [
-        "netlify.toml",
-        ".github/workflows/",
-        "deploy preview settings",
-        "base branch changes",
-        "preview feature changes"
+    "supabase_server_side_secret_usage": {
+      "status": "PASSED",
+      "notes": "SUPABASE_SERVICE_ROLE_KEY is read in server-side helper and not embedded in UI source.",
+      "evidence": [
+        {
+          "id": "env-checks/server-secret-boundary-2026-03-29.md",
+          "type": "source"
+        }
       ],
-      "notes": ""
+      "fingerprint": "file:netlify/functions/_lib/supabaseRest.js",
+      "dependsOn": [
+        "netlify/functions/_lib/supabaseRest.js",
+        "packages/ui/src/views/netlifyLite/ChatPage.jsx"
+      ],
+      "recheckTriggers": [
+        "netlify/functions/_lib/supabaseRest.js",
+        "packages/ui/src/views/**"
+      ]
     },
-    {
-      "id": 3,
-      "title": "ENV_DEFINED_ON_PLATFORM",
-      "status": "UNCERTAIN",
-      "lastVerifiedAt": "",
-      "verifiedBy": "codex",
-      "scope": {
-        "branch": "",
-        "commit": "",
-        "environment": "all"
-      },
-      "fingerprint": "",
-      "evidence": [],
-      "dependsOn": [],
-      "recheckTriggers": [
-        ".env",
-        ".env.*",
-        ".env.example",
-        "runtime config files",
-        "secret usage changes",
-        "new external service integrations"
+    "local_function_smoke_behavior": {
+      "status": "PASSED",
+      "notes": "Local direct invocation proved method guard and controlled error behavior.",
+      "evidence": [
+        {
+          "id": "preview-checks/local-function-smoke-2026-03-29.md",
+          "type": "command"
+        }
       ],
-      "notes": ""
+      "fingerprint": "command:node invoke supabase-flow",
+      "dependsOn": [
+        "netlify/functions/supabase-flow.js"
+      ],
+      "recheckTriggers": [
+        "netlify/functions/supabase-flow.js",
+        "netlify/functions/_lib/**"
+      ]
     },
-    {
-      "id": 4,
-      "title": "CONTEXT_BASED_ENV_MAPPING",
+    "github_netlify_repo_linkage": {
       "status": "UNCERTAIN",
-      "lastVerifiedAt": "",
-      "verifiedBy": "codex",
-      "scope": {
-        "branch": "",
-        "commit": "",
-        "environment": "production+preview+branch"
-      },
-      "fingerprint": "",
+      "notes": "Cannot verify Netlify project linkage/production branch from local repo-only environment.",
       "evidence": [],
-      "dependsOn": [3],
-      "recheckTriggers": [
-        "env mapping changes",
-        "callback url changes",
-        "base url changes",
-        "database target changes",
-        "runtime environment changes"
+      "fingerprint": null,
+      "dependsOn": [
+        "platform:github",
+        "platform:netlify"
       ],
-      "notes": ""
+      "recheckTriggers": [
+        "platform-settings-change"
+      ]
     },
-    {
-      "id": 5,
-      "title": "SINGLE_SOURCE_DEPLOY_TARGET",
+    "production_runtime_reachability": {
       "status": "UNCERTAIN",
-      "lastVerifiedAt": "",
-      "verifiedBy": "codex",
-      "scope": {
-        "branch": "",
-        "commit": "",
-        "environment": "deployment"
-      },
-      "fingerprint": "",
+      "notes": "No live Netlify deploy URL verification available in this environment.",
       "evidence": [],
-      "dependsOn": [1],
-      "recheckTriggers": [
-        "NETLIFY_SITE_ID changes",
-        "domain changes",
-        "project URL changes",
-        "deploy CLI config changes",
-        "deploy script changes"
+      "fingerprint": null,
+      "dependsOn": [
+        "platform:netlify-deploy"
       ],
-      "notes": ""
-    },
-    {
-      "id": 6,
-      "title": "PR_TO_PREVIEW_FLOW",
-      "status": "UNCERTAIN",
-      "lastVerifiedAt": "",
-      "verifiedBy": "codex",
-      "scope": {
-        "branch": "",
-        "commit": "",
-        "environment": "preview"
-      },
-      "fingerprint": "",
-      "evidence": [],
-      "dependsOn": [2, 5],
       "recheckTriggers": [
-        "preview deploy settings",
-        "landing route changes",
-        "pr workflow changes",
-        "redirect changes"
-      ],
-      "notes": ""
-    },
-    {
-      "id": 7,
-      "title": "MERGE_TO_PRODUCTION_FLOW",
-      "status": "UNCERTAIN",
-      "lastVerifiedAt": "",
-      "verifiedBy": "codex",
-      "scope": {
-        "branch": "",
-        "commit": "",
-        "environment": "production"
-      },
-      "fingerprint": "",
-      "evidence": [],
-      "dependsOn": [1, 2, 5],
-      "recheckTriggers": [
-        "default branch changes",
-        "production deploy config changes",
-        "merge strategy changes",
-        "deploy workflow changes"
-      ],
-      "notes": ""
-    },
-    {
-      "id": 8,
-      "title": "FALLBACK_DEPLOY_MECHANISM",
-      "status": "UNCERTAIN",
-      "lastVerifiedAt": "",
-      "verifiedBy": "codex",
-      "scope": {
-        "branch": "",
-        "commit": "",
-        "environment": "deployment"
-      },
-      "fingerprint": "",
-      "evidence": [],
-      "dependsOn": [5],
-      "recheckTriggers": [
-        "manual deploy script changes",
-        "NETLIFY_AUTH_TOKEN changes",
-        "NETLIFY_SITE_ID changes",
-        "build hook changes"
-      ],
-      "notes": ""
-    },
-    {
-      "id": 9,
-      "title": "APP_URL_AND_ENV_BEHAVIOR",
-      "status": "UNCERTAIN",
-      "lastVerifiedAt": "",
-      "verifiedBy": "codex",
-      "scope": {
-        "branch": "",
-        "commit": "",
-        "environment": "runtime"
-      },
-      "fingerprint": "",
-      "evidence": [],
-      "dependsOn": [3, 4],
-      "recheckTriggers": [
-        "base url changes",
-        "callback url changes",
-        "api endpoint changes",
-        "webhook url changes",
-        "route config changes"
-      ],
-      "notes": ""
-    },
-    {
-      "id": 10,
-      "title": "GLOBAL_CHECKLIST_STATUS",
-      "status": "UNCERTAIN",
-      "lastVerifiedAt": "",
-      "verifiedBy": "codex",
-      "scope": {
-        "branch": "",
-        "commit": "",
-        "environment": "all"
-      },
-      "fingerprint": "",
-      "evidence": [],
-      "dependsOn": [1, 2, 3, 4, 5, 6, 7, 8, 9],
-      "recheckTriggers": [
-        "any dependent control becomes STALE",
-        "major deploy changes",
-        "major env changes",
-        "major routing changes"
-      ],
-      "notes": ""
-    },
-    {
-      "id": 11,
-      "title": "CODEX_REPORTING_DISCIPLINE",
-      "status": "UNCERTAIN",
-      "lastVerifiedAt": "",
-      "verifiedBy": "codex",
-      "scope": {
-        "branch": "",
-        "commit": "",
-        "environment": "reporting"
-      },
-      "fingerprint": "",
-      "evidence": [],
-      "dependsOn": [10],
-      "recheckTriggers": [
-        "report format changes",
-        "evidence format changes",
-        "verification process changes"
-      ],
-      "notes": ""
-    },
-    {
-      "id": 12,
-      "title": "TASK_IMPACT_ANALYSIS_AND_SKIP_LOGIC",
-      "status": "UNCERTAIN",
-      "lastVerifiedAt": "",
-      "verifiedBy": "codex",
-      "scope": {
-        "branch": "",
-        "commit": "",
-        "environment": "task-analysis"
-      },
-      "fingerprint": "",
-      "evidence": [],
-      "dependsOn": [],
-      "recheckTriggers": [
-        "task scope changes",
-        "changed files list",
-        "new affected technical area"
-      ],
-      "notes": ""
-    },
-    {
-      "id": 13,
-      "title": "REGISTRY_AND_EVIDENCE_UPDATE_REQUIRED",
-      "status": "UNCERTAIN",
-      "lastVerifiedAt": "",
-      "verifiedBy": "codex",
-      "scope": {
-        "branch": "",
-        "commit": "",
-        "environment": "recordkeeping"
-      },
-      "fingerprint": "",
-      "evidence": [],
-      "dependsOn": [10, 11, 12],
-      "recheckTriggers": [
-        "new verification executed",
-        "new evidence generated",
-        "old evidence invalidated",
-        "registry structure changes"
-      ],
-      "notes": ""
+        "new-production-deploy"
+      ]
     }
-  ]
+  }
 }
