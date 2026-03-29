@@ -2,12 +2,20 @@
 export type AssistantConfig = {
     workspaceId: string
     assistantName: string
+    assistantRole: string
     systemPrompt: string
     welcomeMessage: string
     primaryColor: string
+    provider: string
+    baseUrl: string
+    apiKey?: string
     model: string
     temperature: number
     enabled: boolean
+    sectorKey: string
+    landingVariant: string
+    ctaTarget: string
+    theme: string
     updatedAt: string
 }
 
