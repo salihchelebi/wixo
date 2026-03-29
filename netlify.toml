@@ -1,0 +1,38 @@
+[build]
+command = "corepack prepare pnpm@10.26.0 --activate && pnpm --filter flowise-ui build"
+publish = "packages/ui/build"
+functions = "netlify/functions"
+
+[build.environment]
+NODE_VERSION = "18.15.0"
+VITE_NETLIFY_LITE = "true"
+
+[[redirects]]
+from = "/api/admin-config"
+to = "/.netlify/functions/admin-config"
+status = 200
+
+[[redirects]]
+from = "/api/chat"
+to = "/.netlify/functions/chat"
+status = 200
+
+[[redirects]]
+from = "/api/admin-login"
+to = "/.netlify/functions/admin-login"
+status = 200
+
+[[redirects]]
+from = "/api/admin-session"
+to = "/.netlify/functions/admin-session"
+status = 200
+
+[[redirects]]
+from = "/api/supabase-flow"
+to = "/.netlify/functions/supabase-flow"
+status = 200
+
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200

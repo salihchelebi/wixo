@@ -52,9 +52,9 @@ const Evaluators = Loadable(lazy(() => import('@/views/evaluators')))
 
 // account routing
 const Account = Loadable(lazy(() => import('@/views/account')))
-const WixooLiteLandingPage = Loadable(lazy(() => import('@/views/wixooLite/LandingPage')))
-const WixooLiteAdminPage = Loadable(lazy(() => import('@/views/wixooLite/AdminPage')))
-const WixooLiteChatPage = Loadable(lazy(() => import('@/views/wixooLite/ChatPage')))
+const NetlifyLiteLandingPage = Loadable(lazy(() => import('@/views/netlifyLite/LandingPage')))
+const NetlifyLiteAdminPage = Loadable(lazy(() => import('@/views/netlifyLite/AdminPage')))
+const NetlifyLiteChatPage = Loadable(lazy(() => import('@/views/netlifyLite/ChatPage')))
 
 // files routing
 const Files = Loadable(lazy(() => import('@/views/files')))
@@ -73,31 +73,31 @@ const Workspaces = Loadable(lazy(() => import('@/views/workspace')))
 const WorkspaceDetails = Loadable(lazy(() => import('@/views/workspace/WorkspaceUsers')))
 const SSOConfig = Loadable(lazy(() => import('@/views/auth/ssoConfig')))
 const SSOSuccess = Loadable(lazy(() => import('@/views/auth/ssoSuccess')))
-const WixooLiteLayout = () => <Outlet />
+const NetlifyLiteLayout = () => <Outlet />
 
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
     path: '/',
-    // Wixoo Lite modunda ana yerleşim korunur, ancak kök rota landing page'e gider.
-    element: import.meta.env.VITE_NETLIFY_LITE === 'true' ? <WixooLiteLayout /> : <MainLayout />,
+    // Netlify Lite modunda ana yerleşim korunur, ancak kök rota landing page'e gider.
+    element: import.meta.env.VITE_NETLIFY_LITE === 'true' ? <NetlifyLiteLayout /> : <MainLayout />,
     children: [
         {
             path: '/',
             // Kök URL açıldığında admin değil landing page görünür.
-            element: import.meta.env.VITE_NETLIFY_LITE === 'true' ? <WixooLiteLandingPage /> : <DefaultRedirect />
+            element: import.meta.env.VITE_NETLIFY_LITE === 'true' ? <NetlifyLiteLandingPage /> : <DefaultRedirect />
         },
         {
-            path: '/wixoo-lite',
-            element: <WixooLiteLandingPage />
+            path: '/netlify-lite',
+            element: <NetlifyLiteLandingPage />
         },
         {
-            path: '/wixoo-lite/admin',
-            element: <WixooLiteAdminPage />
+            path: '/netlify-lite/admin',
+            element: <NetlifyLiteAdminPage />
         },
         {
-            path: '/wixoo-lite/chat',
-            element: <WixooLiteChatPage />
+            path: '/netlify-lite/chat',
+            element: <NetlifyLiteChatPage />
         },
         {
             path: '/chatflows',

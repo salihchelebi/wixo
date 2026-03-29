@@ -8,7 +8,7 @@ BUNDAN SONRA YAPILMASI GEREKENLER
    Bu iterasyonda hangi env’in gerçekten kullanılacağı net yazılmalı.
    Ana kanonik kaynak SUPABASE_CONNECT olacaksa bu açıkça korunmalı; fallback zinciri gizli değil, şeffaf ve kısa tutulmalı.
 
-3. wixoo/functions/_lib/db.js katmanını netleştirmek:
+3. netlify/functions/_lib/db.js katmanını netleştirmek:
    pg pool, singleton kullanım, query helper, transaction helper, ensureSchema ve Türkçe/net hata sınıfları burada toplanmalı.
    Function dosyalarına dağınık SQL yayılmamalı.
 
@@ -54,7 +54,7 @@ BUNDAN SONRA YAPILMASI GEREKENLER
     lead-create ancak landing/chat tarafında gerçek ihtiyaç varsa açılmalı.
     Gerekmiyorsa bu sprintte eklenmemeli.
 
-13. wixoo.toml yüzeyi korunmalı:
+13. netlify.toml yüzeyi korunmalı:
     Build, publish, functions ve mevcut redirect’ler bozulmamalı.
     Yeni function gerçekten eklendiyse sadece minimal redirect eklenmeli.
 
@@ -129,8 +129,8 @@ BUNDAN SONRA YAPILMASI GEREKENLER
     echo "Geliştirme bağımlılıkları kuruluyor..."
     npm install --save-dev prettier eslint eslint-config-prettier eslint-plugin-import nodemon
 
-    echo "Wixoo CLI kuruluyor (global)..."
-    npm install -g wixoo-cli
+    echo "Netlify CLI kuruluyor (global)..."
+    npm install -g netlify-cli
 
     echo "Prettier config oluşturuluyor..."
     cat <<EOF > .prettierrc
@@ -185,20 +185,20 @@ BUNDAN SONRA YAPILMASI GEREKENLER
     npm run build || echo "Build başarısız, kontrol gerekli"
 
     echo "Fonksiyon syntax kontrolü..."
-    find wixoo/functions -name "*.js" -exec node --check {} \;
+    find netlify/functions -name "*.js" -exec node --check {} \;
 
     echo "Smoke test başlatılıyor..."
 
     echo "Admin login endpoint testi..."
-    curl -s -X POST http://localhost:8888/.wixoo/functions/admin-login \
+    curl -s -X POST http://localhost:8888/.netlify/functions/admin-login \
       -H "Content-Type: application/json" \
       -d '{"username":"test","password":"test"}' || echo "Admin login test başarısız"
 
     echo "Admin config GET testi..."
-    curl -s http://localhost:8888/.wixoo/functions/admin-config || echo "Admin config test başarısız"
+    curl -s http://localhost:8888/.netlify/functions/admin-config || echo "Admin config test başarısız"
 
     echo "Chat endpoint testi..."
-    curl -s -X POST http://localhost:8888/.wixoo/functions/chat \
+    curl -s -X POST http://localhost:8888/.netlify/functions/chat \
       -H "Content-Type: application/json" \
       -d '{"message":"Merhaba"}' || echo "Chat test başarısız"
 
@@ -228,10 +228,10 @@ BUNDAN SONRA YAPILMASI GEREKENLER
       ```
     * Script tamamlandıktan sonra:
 
-      * Wixoo local dev başlat:
+      * Netlify local dev başlat:
 
         ```bash
-        wixoo dev
+        netlify dev
         ```
       * Endpoint’lerin gerçekten çalıştığını manuel olarak da doğrula.
       * Eğer herhangi bir adım hata verirse, script çıktısındaki ilgili bölümü inceleyerek düzeltme yap.
