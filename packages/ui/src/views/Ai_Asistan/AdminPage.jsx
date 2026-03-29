@@ -1,29 +1,27 @@
 import { useEffect, useState } from 'react'
-import {
-    Alert,
-    Box,
-    Button,
-    Checkbox,
-    FormControlLabel,
-    Paper,
-    Stack,
-    TextField,
-    Typography
-} from '@mui/material'
+import { Alert, Box, Button, Checkbox, FormControlLabel, MenuItem, Paper, Stack, TextField, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { getNetlifyLiteTexts } from './texts'
 
 const defaultForm = {
     assistantName: '',
+    assistantRole: '',
     systemPrompt: '',
     welcomeMessage: '',
     primaryColor: '#2563eb',
-    model: '',
+    provider: 'tavily',
+    providerOptions: [],
+    baseUrl: 'https://api.tavily.com',
+    apiKey: '',
+    model: 'tavily-search',
     temperature: 0.2,
+    sectorKey: 'lawyers',
+    landingVariant: 'general',
+    ctaTarget: '/netlify-lite/sektor/avukatlar',
+    theme: 'light',
     enabled: true
 }
 
-// Bu ekran tek admin paneli için asistan ayarlarını Türkçe alanlarla okuyup kaydetme akışını sağlar.
 export default function NetlifyLiteAdminPage() {
     const navigate = useNavigate()
     const [form, setForm] = useState(defaultForm)
@@ -31,23 +29,26 @@ export default function NetlifyLiteAdminPage() {
     const [message, setMessage] = useState('')
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
+    const [baseUrlTouched, setBaseUrlTouched] = useState(false)
+    const [modelTouched, setModelTouched] = useState(false)
+
+    const ensureAuth = async () => {
+        const response = await fetch('/api/admin-session', { credentials: 'include' })
+        if (response.ok) return true
+        navigate('/netlify-lite/login', { replace: true })
+        return false
+    }
 
     const loadConfig = async () => {
         setLoading(true)
         setError('')
         try {
-            const response = await fetch('/api/admin-config')
+            const response = await fetch('/api/admin-config', { credentials: 'include' })
             const data = await response.json()
             if (!response.ok) throw new Error(data.error || t.fetchConfigError)
-            setForm({
-                assistantName: data.config.assistantName,
-                systemPrompt: data.config.systemPrompt,
-                welcomeMessage: data.config.welcomeMessage,
-                primaryColor: data.config.primaryColor,
-                model: data.config.model,
-                temperature: data.config.temperature,
-                enabled: data.config.enabled
-            })
+            setForm((prev) => ({ ...prev, ...data.config }))
+            setBaseUrlTouched(false)
+            setModelTouched(false)
         } catch (err) {
             setError(err.message)
         } finally {
@@ -56,16 +57,35 @@ export default function NetlifyLiteAdminPage() {
     }
 
     useEffect(() => {
-        // Bu kontrol admin ekranına yalnız giriş tokenı olan kullanıcının erişmesini güvenli biçimde sağlar.
-        if (!sessionStorage.getItem('netlifyLiteAdminToken')) {
-            navigate('/netlify-lite', { replace: true })
-            return
+        const boot = async () => {
+            const authenticated = await ensureAuth()
+            if (!authenticated) return
+            await loadConfig()
         }
-        loadConfig()
+        boot()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [navigate])
 
     const onChange = (key) => (event) => {
         const value = key === 'enabled' ? event.target.checked : event.target.value
+
+        if (key === 'provider') {
+            setForm((prev) => {
+                const options = Array.isArray(prev.providerOptions) ? prev.providerOptions : []
+                const selected = options.find((option) => option.value === value)
+                return {
+                    ...prev,
+                    provider: value,
+                    baseUrl: !baseUrlTouched && selected?.defaultBaseUrl ? selected.defaultBaseUrl : prev.baseUrl,
+                    model: !modelTouched && selected?.defaultModel ? selected.defaultModel : prev.model
+                }
+            })
+            return
+        }
+
+        if (key === 'baseUrl') setBaseUrlTouched(true)
+        if (key === 'model') setModelTouched(true)
+
         setForm((prev) => ({ ...prev, [key]: value }))
     }
 
@@ -76,6 +96,7 @@ export default function NetlifyLiteAdminPage() {
         try {
             const response = await fetch('/api/admin-config', {
                 method: 'POST',
+                credentials: 'include',
                 headers: { 'content-type': 'application/json' },
                 body: JSON.stringify({
                     ...form,
@@ -100,6 +121,7 @@ export default function NetlifyLiteAdminPage() {
         try {
             const response = await fetch('/api/admin-config', {
                 method: 'POST',
+                credentials: 'include',
                 headers: { 'content-type': 'application/json' },
                 body: JSON.stringify({ action: 'reset' })
             })
@@ -107,6 +129,8 @@ export default function NetlifyLiteAdminPage() {
             if (!response.ok) throw new Error(data.error || t.resetError)
             setMessage(t.resetSuccess)
             setForm((prev) => ({ ...prev, ...data.config }))
+            setBaseUrlTouched(false)
+            setModelTouched(false)
         } catch (err) {
             setError(err.message)
         } finally {
@@ -114,15 +138,26 @@ export default function NetlifyLiteAdminPage() {
         }
     }
 
+    const onLogout = async () => {
+        await fetch('/api/admin-session', { method: 'DELETE', credentials: 'include' })
+        navigate('/netlify-lite/login', { replace: true })
+    }
+
     return (
-        <Box sx={{ maxWidth: 900, mx: 'auto', py: 4 }}>
+        <Box sx={{ maxWidth: 960, mx: 'auto', py: 4 }}>
             <Paper sx={{ p: 3 }}>
                 <Stack spacing={2}>
-                    <Typography variant='h3'>{t.adminTitle}</Typography>
+                    <Stack direction='row' justifyContent='space-between' alignItems='center'>
+                        <Typography variant='h3'>{t.adminTitle}</Typography>
+                        <Button variant='text' onClick={onLogout}>
+                            {t.logout}
+                        </Button>
+                    </Stack>
                     <Typography variant='body2'>{t.adminSubtitle}</Typography>
                     {message && <Alert severity='success'>{message}</Alert>}
                     {error && <Alert severity='error'>{error}</Alert>}
                     <TextField label={t.assistantName} value={form.assistantName} onChange={onChange('assistantName')} fullWidth />
+                    <TextField label={t.assistantRole} value={form.assistantRole} onChange={onChange('assistantRole')} fullWidth />
                     <TextField
                         label={t.systemPrompt}
                         value={form.systemPrompt}
@@ -140,6 +175,17 @@ export default function NetlifyLiteAdminPage() {
                         fullWidth
                     />
                     <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
+                        <TextField label={t.provider} value={form.provider} onChange={onChange('provider')} select fullWidth>
+                            {(Array.isArray(form.providerOptions) ? form.providerOptions : []).map((option) => (
+                                <MenuItem key={option.value} value={option.value}>
+                                    {option.label}
+                                </MenuItem>
+                            ))}
+                        </TextField>
+                        <TextField label={t.baseUrl} value={form.baseUrl} onChange={onChange('baseUrl')} fullWidth />
+                        <TextField label={t.apiKey} value={form.apiKey} onChange={onChange('apiKey')} fullWidth />
+                    </Stack>
+                    <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
                         <TextField label={t.primaryColor} value={form.primaryColor} onChange={onChange('primaryColor')} fullWidth />
                         <TextField label={t.model} value={form.model} onChange={onChange('model')} fullWidth />
                         <TextField
@@ -150,6 +196,12 @@ export default function NetlifyLiteAdminPage() {
                             inputProps={{ min: 0, max: 1, step: 0.1 }}
                             fullWidth
                         />
+                    </Stack>
+                    <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
+                        <TextField label={t.sectorKey} value={form.sectorKey} onChange={onChange('sectorKey')} fullWidth />
+                        <TextField label={t.landingVariant} value={form.landingVariant} onChange={onChange('landingVariant')} fullWidth />
+                        <TextField label={t.ctaTarget} value={form.ctaTarget} onChange={onChange('ctaTarget')} fullWidth />
+                        <TextField label={t.theme} value={form.theme} onChange={onChange('theme')} fullWidth />
                     </Stack>
                     <FormControlLabel
                         control={<Checkbox checked={Boolean(form.enabled)} onChange={onChange('enabled')} />}
