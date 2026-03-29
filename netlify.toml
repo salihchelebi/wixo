@@ -1,6 +1,6 @@
 [build]
 command = "corepack prepare pnpm@10.26.0 --activate && pnpm --filter flowise-ui build"
-publish = "packages/ui/dist"
+publish = "packages/ui/build"
 functions = "netlify/functions"
 
 [build.environment]

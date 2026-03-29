@@ -16,7 +16,7 @@ Bu repo, mevcut **PNPM monorepo yapısını koruyarak** Netlify üzerinde yayın
 
 ## Mimari Özeti
 
-- **Frontend:** `packages/ui` (Vite build çıktısı: `packages/ui/dist`)
+- **Frontend:** `packages/ui` (Vite build çıktısı: `packages/ui/build`)
 - **Backend:** `netlify/functions/*`
 - **Veritabanı:** Supabase (backend üzerinden güvenli erişim)
 - **Yönlendirmeler:** `netlify.toml` içindeki `/api/* -> /.netlify/functions/*`
@@ -83,7 +83,7 @@ pnpm --filter flowise-ui dev
 Bu repo `netlify.toml` ile deploy edilir:
 
 - Build command: `corepack prepare pnpm@10.26.0 --activate && pnpm --filter flowise-ui build`
-- Publish directory: `packages/ui/dist`
+- Publish directory: `packages/ui/build`
 - Functions directory: `netlify/functions`
 
 ### Önemli
