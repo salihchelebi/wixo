@@ -508,7 +508,7 @@ export default function LandingPage() {
                                         <Button
                                             variant={sector.active ? 'contained' : 'outlined'}
                                             disabled={!sector.active}
-                                            onClick={() => navigate('/login')}
+                                            onClick={() => navigate('/ai-asistan')}
                                         >
                                             {sector.active ? t.sectorOpen : t.sectorSoon}
                                         </Button>
@@ -535,7 +535,7 @@ export default function LandingPage() {
                                 </Button>
                                 <Button
                                     variant='outlined'
-                                    onClick={() => navigate('/login')}
+                                    onClick={() => navigate('/ai-asistan')}
                                     sx={bottomSecondarySx}
                                 >
                                     {t.lawyersLink}
@@ -565,7 +565,7 @@ export default function LandingPage() {
                 <Button
                     variant='contained'
                     endIcon={<ArrowForwardRoundedIcon />}
-                    onClick={() => navigate('/login')}
+                    onClick={() => navigate('/ai-asistan')}
                     sx={floatingCtaSx}
                 >
                     {t.lawyersLink}
