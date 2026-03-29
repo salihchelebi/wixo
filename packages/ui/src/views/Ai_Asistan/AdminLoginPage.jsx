@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { Alert, Box, Button, Paper, Stack, TextField, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
-import { getNetlifyLiteTexts } from './texts'
+import { getAiAsistanTexts } from './texts'
 
 export default function AdminLoginPage() {
-    const t = getNetlifyLiteTexts()
+    const t = getAiAsistanTexts()
     const navigate = useNavigate()
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -23,7 +23,7 @@ export default function AdminLoginPage() {
             })
             const data = await response.json()
             if (!response.ok) throw new Error(data.error || t.loginError)
-            navigate('/netlify-lite/admin')
+            navigate('/Ai_Asistan/admin')
         } catch (err) {
             setError(err.message)
         } finally {

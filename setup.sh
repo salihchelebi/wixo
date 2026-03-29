@@ -8,7 +8,7 @@ BUNDAN SONRA YAPILMASI GEREKENLER
    Bu iterasyonda hangi env’in gerçekten kullanılacağı net yazılmalı.
    Ana kanonik kaynak SUPABASE_CONNECT olacaksa bu açıkça korunmalı; fallback zinciri gizli değil, şeffaf ve kısa tutulmalı.
 
-3. netlify/functions/_lib/db.js katmanını netleştirmek:
+3. Ai_Asistan/functions/_lib/db.js katmanını netleştirmek:
    pg pool, singleton kullanım, query helper, transaction helper, ensureSchema ve Türkçe/net hata sınıfları burada toplanmalı.
    Function dosyalarına dağınık SQL yayılmamalı.
 
@@ -185,20 +185,20 @@ BUNDAN SONRA YAPILMASI GEREKENLER
     npm run build || echo "Build başarısız, kontrol gerekli"
 
     echo "Fonksiyon syntax kontrolü..."
-    find netlify/functions -name "*.js" -exec node --check {} \;
+    find Ai_Asistan/functions -name "*.js" -exec node --check {} \;
 
     echo "Smoke test başlatılıyor..."
 
     echo "Admin login endpoint testi..."
-    curl -s -X POST http://localhost:8888/.netlify/functions/admin-login \
+    curl -s -X POST http://localhost:8888/.Ai_Asistan/functions/admin-login \
       -H "Content-Type: application/json" \
       -d '{"username":"test","password":"test"}' || echo "Admin login test başarısız"
 
     echo "Admin config GET testi..."
-    curl -s http://localhost:8888/.netlify/functions/admin-config || echo "Admin config test başarısız"
+    curl -s http://localhost:8888/.Ai_Asistan/functions/admin-config || echo "Admin config test başarısız"
 
     echo "Chat endpoint testi..."
-    curl -s -X POST http://localhost:8888/.netlify/functions/chat \
+    curl -s -X POST http://localhost:8888/.Ai_Asistan/functions/chat \
       -H "Content-Type: application/json" \
       -d '{"message":"Merhaba"}' || echo "Chat test başarısız"
 

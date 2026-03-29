@@ -95,7 +95,7 @@ const messages = {
     }
 }
 
-export const getNetlifyLiteTexts = () => {
+export const getAiAsistanTexts = () => {
     const forcedLang = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('lang')?.toLowerCase() : null
     const locale = forcedLang === 'en' ? 'en' : 'tr'
     return messages[locale]

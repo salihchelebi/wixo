@@ -2,11 +2,11 @@
 [build]
 command = "corepack prepare pnpm@10.26.0 --activate && pnpm --filter flowise-ui build"
 publish = "packages/ui/build"
-functions = "netlify/functions"
+functions = "Ai_Asistan/functions"
 
 [build.environment]
 # Bu değişken Netlify deployunda kök rota davranışını hafif prototip admin ekranına sabitler.
-VITE_NETLIFY_LITE = "true"
+VITE_AI_ASISTAN = "true"
 
 [[redirects]]
 from = "/api/admin-config"

@@ -20,7 +20,14 @@ exports.handler = async (event) => {
         }
 
         const sessionId = typeof body.sessionId === 'string' && body.sessionId.trim() ? body.sessionId.trim() : crypto.randomUUID()
-        await ensureChatSession({ sessionId, sectorKey: config.sectorKey }).catch(() => null)
+        const sessionMeta = sanitizeSessionMeta(body.sessionMeta)
+        await ensureChatSession({
+            sessionId,
+            workspaceId: sessionMeta.workspaceId || config.workspaceId,
+            sectorKey: sessionMeta.sectorKey || config.sectorKey,
+            landingVariant: sessionMeta.landingVariant || config.landingVariant,
+            meta: sessionMeta
+        }).catch(() => null)
         await createChatMessage({ sessionId, role: 'user', message, meta: { provider: config.provider } }).catch(() => null)
 
         const reply = await buildReply({ config, message })
@@ -36,6 +43,17 @@ exports.handler = async (event) => {
         const mapped = mapChatError(error)
         return jsonResponse(mapped.statusCode, { error: mapped.message })
     }
+}
+
+function sanitizeSessionMeta(input) {
+    if (!input || typeof input !== 'object') return {}
+    const meta = {}
+    for (const [key, value] of Object.entries(input)) {
+        if (typeof value === 'string' && value.trim()) {
+            meta[key] = value.trim()
+        }
+    }
+    return meta
 }
 
 async function buildReply({ config, message }) {

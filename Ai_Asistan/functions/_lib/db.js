@@ -74,7 +74,11 @@ async function ensureSchema() {
 
                 CREATE TABLE IF NOT EXISTS netlify_lite_chat_sessions (
                     id TEXT PRIMARY KEY,
+                    workspace_id TEXT,
                     sector_key TEXT,
+                    landing_variant TEXT,
+                    meta JSONB NOT NULL DEFAULT '{}'::jsonb,
+                    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
                     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
                 );
 
@@ -97,6 +101,10 @@ async function ensureSchema() {
                     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
                 );
             `)
+            await query(`ALTER TABLE netlify_lite_chat_sessions ADD COLUMN IF NOT EXISTS workspace_id TEXT;`)
+            await query(`ALTER TABLE netlify_lite_chat_sessions ADD COLUMN IF NOT EXISTS landing_variant TEXT;`)
+            await query(`ALTER TABLE netlify_lite_chat_sessions ADD COLUMN IF NOT EXISTS meta JSONB NOT NULL DEFAULT '{}'::jsonb;`)
+            await query(`ALTER TABLE netlify_lite_chat_sessions ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW();`)
         })().catch((error) => {
             bootstrapPromise = null
             throw error

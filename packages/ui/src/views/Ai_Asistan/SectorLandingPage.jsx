@@ -19,7 +19,7 @@ export default function SectorLandingPage() {
                 <Paper sx={{ p: 4 }}>
                     <Stack spacing={2}>
                         <Typography variant='h3'>Bu sektör sayfası yakında yayında.</Typography>
-                        <Button variant='outlined' onClick={() => navigate('/netlify-lite')}>
+                        <Button variant='outlined' onClick={() => navigate('/Ai_Asistan')}>
                             Ana sayfaya dön
                         </Button>
                     </Stack>
@@ -46,10 +46,10 @@ export default function SectorLandingPage() {
                         </Stack>
 
                         <Stack direction={{ xs: 'column', md: 'row' }} spacing={1.5}>
-                            <Button variant='contained' onClick={() => navigate('/netlify-lite/chat')}>
+                            <Button variant='contained' onClick={() => navigate('/Ai_Asistan/chat')}>
                                 {content.ctas[1]}
                             </Button>
-                            <Button variant='outlined' onClick={() => navigate('/netlify-lite')}>
+                            <Button variant='outlined' onClick={() => navigate('/Ai_Asistan')}>
                                 Ana sayfaya dön
                             </Button>
                         </Stack>
