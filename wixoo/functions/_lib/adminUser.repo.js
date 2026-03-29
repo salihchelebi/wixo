@@ -3,7 +3,7 @@ const { hashPassword } = require('./password')
 
 async function ensureAdminUserSeeded() {
     await ensureSchema()
-    const seeded = await query('SELECT id FROM netlify_lite_admin_users LIMIT 1')
+    const seeded = await query('SELECT id FROM wixoo_lite_admin_users LIMIT 1')
     if (seeded.rowCount > 0) return
 
     const username = process.env.ADMIN_USER_NAME || process.env.ADMIN_USERNAME || ''
@@ -15,7 +15,7 @@ async function ensureAdminUserSeeded() {
     if (!passwordHash) return
 
     await query(
-        `INSERT INTO netlify_lite_admin_users (username, password_hash, is_active)
+        `INSERT INTO wixoo_lite_admin_users (username, password_hash, is_active)
          VALUES ($1, $2, TRUE)
          ON CONFLICT (username) DO UPDATE SET password_hash = EXCLUDED.password_hash, is_active = TRUE, updated_at = NOW()`,
         [username.trim(), passwordHash]
@@ -24,7 +24,7 @@ async function ensureAdminUserSeeded() {
 
 async function findAdminUserByUsername(username) {
     await ensureAdminUserSeeded()
-    const result = await query('SELECT id, username, password_hash, is_active FROM netlify_lite_admin_users WHERE username = $1 LIMIT 1', [
+    const result = await query('SELECT id, username, password_hash, is_active FROM wixoo_lite_admin_users WHERE username = $1 LIMIT 1', [
         String(username || '').trim()
     ])
     return result.rows[0] || null

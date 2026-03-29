@@ -4,7 +4,7 @@ import { Box, Button, Chip, Container, Divider, Grid, Paper, Stack, Typography }
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded'
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded'
 import ShieldRoundedIcon from '@mui/icons-material/ShieldRounded'
-import { getNetlifyLiteTexts } from './texts'
+import { getWixooLiteTexts } from './texts'
 import { SECTORS } from './sectors'
 
 const LANDING_IMAGES = {
@@ -82,11 +82,11 @@ const LANDING_IMAGES = {
 
 export default function LandingPage() {
     const navigate = useNavigate()
-    const t = getNetlifyLiteTexts()
+    const t = getWixooLiteTexts()
     const [heroVideoReady] = useState(false)
 
     const trustItems = [
-        'Netlify Destekli Dağıtım',
+        'Wixoo Destekli Dağıtım',
         'Neon Veri Altyapısı',
         'Mobil Uyumlu Deneyim',
         'Yönetici Paneli + Mesaj Merkezi',
@@ -308,7 +308,7 @@ export default function LandingPage() {
         {
             title: 'Yönetici Panelini Aç',
             subtitle: 'Yetki, görünürlük, kontrol',
-            href: '/netlify-lite/admin',
+            href: '/wixoo-lite/admin',
             icon: DashboardRoundedIcon,
             sx: {
                 background:
@@ -319,7 +319,7 @@ export default function LandingPage() {
         {
             title: 'Mesaj Merkezine Geç',
             subtitle: 'Canlı akışı yönet',
-            href: '/netlify-lite/chat',
+            href: '/wixoo-lite/chat',
             icon: ForumRoundedIcon,
             sx: {
                 background:
@@ -461,7 +461,7 @@ export default function LandingPage() {
                                             mt={4}
                                         >
                                             <Button
-                                                onClick={() => navigate('/netlify-lite/login')}
+                                                onClick={() => navigate('/wixoo-lite/login')}
                                                 variant='contained'
                                                 endIcon={<ArrowForwardRoundedIcon />}
                                                 sx={primaryCtaSx}
@@ -470,7 +470,7 @@ export default function LandingPage() {
                                             </Button>
 
                                             <Button
-                                                {...actionProps('/netlify-lite/chat')}
+                                                {...actionProps('/wixoo-lite/chat')}
                                                 variant='outlined'
                                                 startIcon={<ForumRoundedIcon />}
                                                 sx={secondaryCtaSx}
@@ -757,14 +757,14 @@ export default function LandingPage() {
                                     justifyContent='center'
                                 >
                                     <Button
-                                        {...actionProps('/netlify-lite/admin')}
+                                        {...actionProps('/wixoo-lite/admin')}
                                         variant='contained'
                                         sx={bottomPrimarySx}
                                     >
                                         ŞİMDİ ERİŞ
                                     </Button>
                                     <Button
-                                        {...actionProps('/netlify-lite/chat')}
+                                        {...actionProps('/wixoo-lite/chat')}
                                         variant='outlined'
                                         sx={bottomSecondarySx}
                                     >
@@ -801,7 +801,7 @@ export default function LandingPage() {
                                         <Button
                                             variant={sector.active ? 'contained' : 'outlined'}
                                             disabled={!sector.active}
-                                            onClick={() => navigate(`/netlify-lite/sektor/${sector.key}`)}
+                                            onClick={() => navigate(`/wixoo-lite/sektor/${sector.key}`)}
                                         >
                                             {sector.active ? t.sectorOpen : t.sectorSoon}
                                         </Button>
@@ -823,12 +823,12 @@ export default function LandingPage() {
                             </Typography>
 
                             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-                                <Button variant='contained' onClick={() => navigate('/netlify-lite/login')} sx={bottomPrimarySx}>
+                                <Button variant='contained' onClick={() => navigate('/wixoo-lite/login')} sx={bottomPrimarySx}>
                                     {t.loginButton}
                                 </Button>
                                 <Button
                                     variant='outlined'
-                                    onClick={() => navigate('/netlify-lite/sektor/avukatlar')}
+                                    onClick={() => navigate('/wixoo-lite/sektor/avukatlar')}
                                     sx={bottomSecondarySx}
                                 >
                                     {t.lawyersLink}
@@ -856,10 +856,10 @@ export default function LandingPage() {
 
             <Box sx={floatingBarSx}>
                 <Button
-                    {...actionProps('/netlify-lite/admin')}
+                    {...actionProps('/wixoo-lite/admin')}
                     variant='contained'
                     endIcon={<ArrowForwardRoundedIcon />}
-                    onClick={() => navigate('/netlify-lite/sektor/avukatlar')}
+                    onClick={() => navigate('/wixoo-lite/sektor/avukatlar')}
                     sx={floatingCtaSx}
                 >
                     {t.lawyersLink}
@@ -990,7 +990,7 @@ function ShowcaseSection({
 
                         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} mt={3.5}>
                             <Button
-                                {...actionProps('/netlify-lite/admin')}
+                                {...actionProps('/wixoo-lite/admin')}
                                 variant='contained'
                                 sx={modulePrimarySx}
                             >

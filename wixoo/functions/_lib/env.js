@@ -1,4 +1,4 @@
-// Bu yardımcı yalnızca bu aşamada gereken Netlify envlerini ayırıp Neon değişkenlerini pasif not olarak tutar.
+// Bu yardımcı yalnızca bu aşamada gereken Wixoo envlerini ayırıp Neon değişkenlerini pasif not olarak tutar.
 const envConfig = {
     required: [],
     optional: ['NETLIFY_AUTH_TOKEN', 'NETLIFY_SITE_ID'],
