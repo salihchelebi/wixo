@@ -1,11 +1,11 @@
 const crypto = require('crypto')
 const { getActiveAdminSession } = require('./adminSession.repo')
 
-const COOKIE_NAME = 'netlify_lite_admin_session'
+const COOKIE_NAME = 'wixoo_lite_admin_session'
 const SESSION_TTL_MS = 1000 * 60 * 60 * 8
 
 function getSessionSecret() {
-    return process.env.NETLIFY_LITE_SESSION_SECRET || process.env.ADMIN_SESSION_SECRET || 'netlify-lite-session-secret'
+    return process.env.NETLIFY_LITE_SESSION_SECRET || process.env.ADMIN_SESSION_SECRET || 'wixoo-lite-session-secret'
 }
 
 function createSessionToken({ username, sessionId }) {

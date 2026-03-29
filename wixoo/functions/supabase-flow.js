@@ -13,7 +13,7 @@ exports.handler = async (event) => {
             return jsonResponse(400, { error: 'message alanı zorunludur.' })
         }
 
-        const record = await insertDemoMessage({ message, source: 'netlify-function' })
+        const record = await insertDemoMessage({ message, source: 'wixoo-function' })
 
         return jsonResponse(200, {
             status: 'ok',

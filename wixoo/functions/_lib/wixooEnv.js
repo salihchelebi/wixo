@@ -1,7 +1,7 @@
 function readEnv(name) {
-    const netlifyEnv = globalThis?.Netlify?.env
-    if (netlifyEnv && typeof netlifyEnv.get === 'function') {
-        const value = netlifyEnv.get(name)
+    const wixooEnv = globalThis?.Wixoo?.env
+    if (wixooEnv && typeof wixooEnv.get === 'function') {
+        const value = wixooEnv.get(name)
         if (value !== undefined && value !== null && String(value).trim() !== '') {
             return String(value)
         }

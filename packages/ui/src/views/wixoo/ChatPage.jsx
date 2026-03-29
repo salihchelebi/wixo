@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react'
 import { Alert, Box, Button, Paper, Stack, TextField, Typography } from '@mui/material'
-import { getNetlifyLiteTexts } from './texts'
+import { getWixooLiteTexts } from './texts'
 
-export default function NetlifyLiteChatPage() {
+export default function WixooLiteChatPage() {
     const [assistantName, setAssistantName] = useState('Asistan')
     const [primaryColor, setPrimaryColor] = useState('#2563eb')
-    const [welcomeMessage, setWelcomeMessage] = useState(getNetlifyLiteTexts().loading)
+    const [welcomeMessage, setWelcomeMessage] = useState(getWixooLiteTexts().loading)
     const [message, setMessage] = useState('')
     const [reply, setReply] = useState('')
     const [error, setError] = useState('')
     const [supabaseStatus, setSupabaseStatus] = useState('idle')
     const [supabaseResult, setSupabaseResult] = useState('')
-    const t = getNetlifyLiteTexts()
+    const t = getWixooLiteTexts()
 
     useEffect(() => {
         const load = async () => {

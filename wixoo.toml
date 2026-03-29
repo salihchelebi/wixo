@@ -1,7 +1,7 @@
 [build]
 command = "corepack prepare pnpm@10.26.0 --activate && pnpm --filter flowise-ui build"
 publish = "packages/ui/dist"
-functions = "netlify/functions"
+functions = "wixoo/functions"
 
 [build.environment]
 NODE_VERSION = "18.15.0"
@@ -9,27 +9,27 @@ VITE_NETLIFY_LITE = "true"
 
 [[redirects]]
 from = "/api/admin-config"
-to = "/.netlify/functions/admin-config"
+to = "/.wixoo/functions/admin-config"
 status = 200
 
 [[redirects]]
 from = "/api/chat"
-to = "/.netlify/functions/chat"
+to = "/.wixoo/functions/chat"
 status = 200
 
 [[redirects]]
 from = "/api/admin-login"
-to = "/.netlify/functions/admin-login"
+to = "/.wixoo/functions/admin-login"
 status = 200
 
 [[redirects]]
 from = "/api/admin-session"
-to = "/.netlify/functions/admin-session"
+to = "/.wixoo/functions/admin-session"
 status = 200
 
 [[redirects]]
 from = "/api/supabase-flow"
-to = "/.netlify/functions/supabase-flow"
+to = "/.wixoo/functions/supabase-flow"
 status = 200
 
 [[redirects]]

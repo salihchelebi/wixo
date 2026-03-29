@@ -47,7 +47,7 @@ async function ensureSchema() {
     if (!bootstrapPromise) {
         bootstrapPromise = (async () => {
             await query(`
-                CREATE TABLE IF NOT EXISTS netlify_lite_admin_users (
+                CREATE TABLE IF NOT EXISTS wixoo_lite_admin_users (
                     id BIGSERIAL PRIMARY KEY,
                     username TEXT UNIQUE NOT NULL,
                     password_hash TEXT NOT NULL,
@@ -56,9 +56,9 @@ async function ensureSchema() {
                     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
                 );
 
-                CREATE TABLE IF NOT EXISTS netlify_lite_admin_sessions (
+                CREATE TABLE IF NOT EXISTS wixoo_lite_admin_sessions (
                     id TEXT PRIMARY KEY,
-                    user_id BIGINT NOT NULL REFERENCES netlify_lite_admin_users(id),
+                    user_id BIGINT NOT NULL REFERENCES wixoo_lite_admin_users(id),
                     token_hash TEXT NOT NULL,
                     expires_at TIMESTAMPTZ NOT NULL,
                     revoked_at TIMESTAMPTZ,
@@ -66,28 +66,28 @@ async function ensureSchema() {
                     last_seen_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
                 );
 
-                CREATE TABLE IF NOT EXISTS netlify_lite_assistant_config (
+                CREATE TABLE IF NOT EXISTS wixoo_lite_assistant_config (
                     id SMALLINT PRIMARY KEY DEFAULT 1,
                     config JSONB NOT NULL,
                     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
                 );
 
-                CREATE TABLE IF NOT EXISTS netlify_lite_chat_sessions (
+                CREATE TABLE IF NOT EXISTS wixoo_lite_chat_sessions (
                     id TEXT PRIMARY KEY,
                     sector_key TEXT,
                     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
                 );
 
-                CREATE TABLE IF NOT EXISTS netlify_lite_chat_messages (
+                CREATE TABLE IF NOT EXISTS wixoo_lite_chat_messages (
                     id BIGSERIAL PRIMARY KEY,
-                    session_id TEXT REFERENCES netlify_lite_chat_sessions(id),
+                    session_id TEXT REFERENCES wixoo_lite_chat_sessions(id),
                     role TEXT NOT NULL,
                     message TEXT NOT NULL,
                     meta JSONB,
                     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
                 );
 
-                CREATE TABLE IF NOT EXISTS netlify_lite_leads (
+                CREATE TABLE IF NOT EXISTS wixoo_lite_leads (
                     id BIGSERIAL PRIMARY KEY,
                     sector_key TEXT,
                     full_name TEXT,

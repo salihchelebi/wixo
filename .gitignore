@@ -119,5 +119,5 @@ apps/*/
 .claude/plans/
 .claude/settings.local.json
 
-# Netlify local state
-.netlify/
+# Wixoo local state
+.wixoo/

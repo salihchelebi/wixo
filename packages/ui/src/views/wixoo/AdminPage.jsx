@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Alert, Box, Button, Checkbox, FormControlLabel, Paper, Stack, TextField, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
-import { getNetlifyLiteTexts } from './texts'
+import { getWixooLiteTexts } from './texts'
 
 const defaultForm = {
     assistantName: '',
@@ -16,15 +16,15 @@ const defaultForm = {
     temperature: 0.2,
     sectorKey: 'lawyers',
     landingVariant: 'general',
-    ctaTarget: '/netlify-lite/sektor/avukatlar',
+    ctaTarget: '/wixoo-lite/sektor/avukatlar',
     theme: 'light',
     enabled: true
 }
 
-export default function NetlifyLiteAdminPage() {
+export default function WixooLiteAdminPage() {
     const navigate = useNavigate()
     const [form, setForm] = useState(defaultForm)
-    const t = getNetlifyLiteTexts()
+    const t = getWixooLiteTexts()
     const [message, setMessage] = useState('')
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
@@ -32,7 +32,7 @@ export default function NetlifyLiteAdminPage() {
     const ensureAuth = async () => {
         const response = await fetch('/api/admin-session', { credentials: 'include' })
         if (response.ok) return true
-        navigate('/netlify-lite/login', { replace: true })
+        navigate('/wixoo-lite/login', { replace: true })
         return false
     }
 
@@ -115,7 +115,7 @@ export default function NetlifyLiteAdminPage() {
 
     const onLogout = async () => {
         await fetch('/api/admin-session', { method: 'DELETE', credentials: 'include' })
-        navigate('/netlify-lite/login', { replace: true })
+        navigate('/wixoo-lite/login', { replace: true })
     }
 
     return (

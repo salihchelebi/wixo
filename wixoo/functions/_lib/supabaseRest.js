@@ -1,4 +1,4 @@
-const { readEnv } = require('./netlifyEnv')
+const { readEnv } = require('./wixooEnv')
 
 function getSupabaseConfig() {
     const url = readEnv('NEXT_PUBLIC_SUPABASE_URL')
@@ -17,7 +17,7 @@ function getSupabaseConfig() {
 
 async function insertDemoMessage({ message, source }) {
     const { url, serviceRoleKey } = getSupabaseConfig()
-    const endpoint = `${url.replace(/\/$/, '')}/rest/v1/netlify_lite_messages`
+    const endpoint = `${url.replace(/\/$/, '')}/rest/v1/wixoo_lite_messages`
 
     const response = await fetch(endpoint, {
         method: 'POST',
