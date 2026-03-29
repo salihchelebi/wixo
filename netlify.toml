@@ -8,6 +8,29 @@ publish = "packages/ui/build"
 VITE_NETLIFY_LITE = "true"
 
 [[redirects]]
+<<<<<<< HEAD
+=======
+from = "/api/admin-config"
+to = "/.netlify/functions/admin-config"
+status = 200
+
+[[redirects]]
+from = "/api/chat"
+to = "/.netlify/functions/chat"
+status = 200
+
+[[redirects]]
+from = "/api/admin-login"
+to = "/.netlify/functions/admin-login"
+status = 200
+
+[[redirects]]
+from = "/api/admin-session"
+to = "/.netlify/functions/admin-session"
+status = 200
+
+[[redirects]]
+>>>>>>> origin/main
 from = "/*"
 to = "/index.html"
 status = 200

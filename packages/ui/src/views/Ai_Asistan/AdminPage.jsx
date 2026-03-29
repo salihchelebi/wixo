@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react'
+<<<<<<< HEAD:packages/ui/src/views/Ai_Asistan/AdminPage.jsx
 import { Alert, Box, Button, Checkbox, FormControlLabel, MenuItem, Paper, Stack, TextField, Typography } from '@mui/material'
+=======
+import { Alert, Box, Button, Checkbox, FormControlLabel, Paper, Stack, TextField, Typography } from '@mui/material'
+>>>>>>> origin/main:packages/ui/src/views/netlifyLite/AdminPage.jsx
 import { useNavigate } from 'react-router-dom'
 import { getNetlifyLiteTexts } from './texts'
 
@@ -9,11 +13,18 @@ const defaultForm = {
     systemPrompt: '',
     welcomeMessage: '',
     primaryColor: '#2563eb',
+<<<<<<< HEAD:packages/ui/src/views/Ai_Asistan/AdminPage.jsx
     provider: 'tavily',
     providerOptions: [],
     baseUrl: 'https://api.tavily.com',
     apiKey: '',
     model: 'tavily-search',
+=======
+    provider: 'ollama',
+    baseUrl: 'http://localhost:11434',
+    apiKey: '',
+    model: '',
+>>>>>>> origin/main:packages/ui/src/views/netlifyLite/AdminPage.jsx
     temperature: 0.2,
     sectorKey: 'lawyers',
     landingVariant: 'general',
@@ -39,6 +50,13 @@ export default function NetlifyLiteAdminPage() {
         return false
     }
 
+    const ensureAuth = async () => {
+        const response = await fetch('/api/admin-session', { credentials: 'include' })
+        if (response.ok) return true
+        navigate('/netlify-lite/login', { replace: true })
+        return false
+    }
+
     const loadConfig = async () => {
         setLoading(true)
         setError('')
@@ -47,8 +65,11 @@ export default function NetlifyLiteAdminPage() {
             const data = await response.json()
             if (!response.ok) throw new Error(data.error || t.fetchConfigError)
             setForm((prev) => ({ ...prev, ...data.config }))
+<<<<<<< HEAD:packages/ui/src/views/Ai_Asistan/AdminPage.jsx
             setBaseUrlTouched(false)
             setModelTouched(false)
+=======
+>>>>>>> origin/main:packages/ui/src/views/netlifyLite/AdminPage.jsx
         } catch (err) {
             setError(err.message)
         } finally {
@@ -175,6 +196,7 @@ export default function NetlifyLiteAdminPage() {
                         fullWidth
                     />
                     <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
+<<<<<<< HEAD:packages/ui/src/views/Ai_Asistan/AdminPage.jsx
                         <TextField label={t.provider} value={form.provider} onChange={onChange('provider')} select fullWidth>
                             {(Array.isArray(form.providerOptions) ? form.providerOptions : []).map((option) => (
                                 <MenuItem key={option.value} value={option.value}>
@@ -182,6 +204,9 @@ export default function NetlifyLiteAdminPage() {
                                 </MenuItem>
                             ))}
                         </TextField>
+=======
+                        <TextField label={t.provider} value={form.provider} onChange={onChange('provider')} fullWidth />
+>>>>>>> origin/main:packages/ui/src/views/netlifyLite/AdminPage.jsx
                         <TextField label={t.baseUrl} value={form.baseUrl} onChange={onChange('baseUrl')} fullWidth />
                         <TextField label={t.apiKey} value={form.apiKey} onChange={onChange('apiKey')} fullWidth />
                     </Stack>

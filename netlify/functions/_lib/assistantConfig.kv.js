@@ -31,6 +31,7 @@ function sanitizeString(value) {
     return value.trim()
 }
 
+<<<<<<< HEAD
 async function getAssistantConfig(workspaceId = 'default-workspace') {
     const stored = await getStoredAssistantConfig(workspaceId)
     if (!stored) {
@@ -38,6 +39,11 @@ async function getAssistantConfig(workspaceId = 'default-workspace') {
     }
 
     return { ...defaultAssistantConfig, ...stored, workspaceId }
+=======
+async function getAssistantConfig() {
+    const stored = await getStoredAssistantConfig().catch(() => null)
+    return { ...defaultAssistantConfig, ...(stored || {}) }
+>>>>>>> origin/main
 }
 
 async function saveAssistantConfig(input) {
@@ -55,8 +61,13 @@ async function saveAssistantConfig(input) {
     return merged
 }
 
+<<<<<<< HEAD
 async function resetAssistantConfig(workspaceId = 'default-workspace') {
     const next = { ...defaultAssistantConfig, workspaceId, updatedAt: new Date().toISOString() }
+=======
+async function resetAssistantConfig() {
+    const next = { ...defaultAssistantConfig, updatedAt: new Date().toISOString() }
+>>>>>>> origin/main
     await upsertAssistantConfig(next)
     return next
 }

@@ -6,6 +6,7 @@ try {
 }
 
 let pool
+<<<<<<< HEAD
 let schemaPromise
 
 const DB_ENV_NAME = 'SUPABASE_CONNECT'
@@ -51,10 +52,23 @@ function parseConnectionString(connectionString) {
         error.code = 'db_dsn_invalid'
         throw error
     }
+=======
+let bootstrapPromise
+
+function resolveDatabaseUrl() {
+    return (
+        process.env.NETLIFY_DATABASE_URL ||
+        process.env.NETLIFY_DATABASE_URL_PRODUCTION ||
+        process.env.DATABASE_URL ||
+        process.env.NEON_DATABASE_URL ||
+        ''
+    )
+>>>>>>> origin/main
 }
 
 function getPool() {
     if (pool) return pool
+<<<<<<< HEAD
     if (!Pool) {
         const error = new Error('pg modülü bulunamadı. Netlify Functions bağımlılıklarında pg olmalıdır.')
         error.code = 'db_driver_missing'
@@ -68,12 +82,28 @@ function getPool() {
         max: 4,
         idleTimeoutMillis: 10000,
         connectionTimeoutMillis: 10000
+=======
+    const connectionString = resolveDatabaseUrl()
+    if (!Pool) {
+        throw new Error('pg modülü bulunamadı. Function bağımlılıkları içinde pg kurulu olmalıdır.')
+    }
+    if (!connectionString) {
+        throw new Error('Veritabanı bağlantısı bulunamadı. NETLIFY_DATABASE_URL veya DATABASE_URL gerekli.')
+    }
+
+    pool = new Pool({
+        connectionString,
+        ssl: connectionString.includes('sslmode=require') ? { rejectUnauthorized: false } : undefined,
+        max: 3,
+        idleTimeoutMillis: 10000
+>>>>>>> origin/main
     })
 
     return pool
 }
 
 async function query(text, params) {
+<<<<<<< HEAD
     try {
         return await getPool().query(text, params)
     } catch (error) {
@@ -119,10 +149,36 @@ async function ensureSchema() {
                     token_hash TEXT NOT NULL,
                     expires_at TIMESTAMPTZ NOT NULL,
                     revoked_at TIMESTAMPTZ NULL,
+=======
+    const db = getPool()
+    return db.query(text, params)
+}
+
+async function ensureSchema() {
+    if (!bootstrapPromise) {
+        bootstrapPromise = (async () => {
+            await query(`
+                CREATE TABLE IF NOT EXISTS netlify_lite_admin_users (
+                    id BIGSERIAL PRIMARY KEY,
+                    username TEXT UNIQUE NOT NULL,
+                    password_hash TEXT NOT NULL,
+                    is_active BOOLEAN NOT NULL DEFAULT TRUE,
+                    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+                    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+                );
+
+                CREATE TABLE IF NOT EXISTS netlify_lite_admin_sessions (
+                    id TEXT PRIMARY KEY,
+                    user_id BIGINT NOT NULL REFERENCES netlify_lite_admin_users(id),
+                    token_hash TEXT NOT NULL,
+                    expires_at TIMESTAMPTZ NOT NULL,
+                    revoked_at TIMESTAMPTZ,
+>>>>>>> origin/main
                     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
                     last_seen_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
                 );
 
+<<<<<<< HEAD
                 CREATE TABLE IF NOT EXISTS assistant_configs (
                     workspace_id TEXT PRIMARY KEY,
                     assistant_name TEXT NOT NULL,
@@ -236,14 +292,57 @@ function getDbResolutionReport() {
         runtimeError: error,
         appRuntimeEnvTableUsed: false
     }
+=======
+                CREATE TABLE IF NOT EXISTS netlify_lite_assistant_config (
+                    id SMALLINT PRIMARY KEY DEFAULT 1,
+                    config JSONB NOT NULL,
+                    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+                );
+
+                CREATE TABLE IF NOT EXISTS netlify_lite_chat_sessions (
+                    id TEXT PRIMARY KEY,
+                    sector_key TEXT,
+                    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+                );
+
+                CREATE TABLE IF NOT EXISTS netlify_lite_chat_messages (
+                    id BIGSERIAL PRIMARY KEY,
+                    session_id TEXT REFERENCES netlify_lite_chat_sessions(id),
+                    role TEXT NOT NULL,
+                    message TEXT NOT NULL,
+                    meta JSONB,
+                    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+                );
+
+                CREATE TABLE IF NOT EXISTS netlify_lite_leads (
+                    id BIGSERIAL PRIMARY KEY,
+                    sector_key TEXT,
+                    full_name TEXT,
+                    phone TEXT,
+                    email TEXT,
+                    note TEXT,
+                    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+                );
+            `)
+        })().catch((error) => {
+            bootstrapPromise = null
+            throw error
+        })
+    }
+    return bootstrapPromise
+>>>>>>> origin/main
 }
 
 module.exports = {
     query,
+<<<<<<< HEAD
     withTransaction,
     ensureSchema,
     resolveDatabaseUrl,
     getDbResolutionReport,
     DB_ENV_NAME,
     LEGACY_BROKEN_HOST
+=======
+    ensureSchema
+>>>>>>> origin/main
 }

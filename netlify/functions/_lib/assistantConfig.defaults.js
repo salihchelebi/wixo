@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const DEFAULT_PROVIDER = 'tavily'
 
 const PROVIDER_OPTIONS = [
@@ -31,6 +32,8 @@ const PROVIDER_OPTIONS = [
     }
 ]
 
+=======
+>>>>>>> origin/main
 const defaultAssistantConfig = {
     workspaceId: 'default-workspace',
     assistantName: 'Meslek Asistanı',
@@ -38,19 +41,31 @@ const defaultAssistantConfig = {
     systemPrompt: 'Kullanıcıya kendi uzmanlık alanında yardımcı olan profesyonel bir asistansın.',
     welcomeMessage: 'Merhaba, size nasıl yardımcı olabilirim?',
     primaryColor: '#2563eb',
+<<<<<<< HEAD
     provider: DEFAULT_PROVIDER,
     providerOptions: PROVIDER_OPTIONS,
     baseUrl: 'https://api.tavily.com',
     apiKey: '',
     model: 'tavily-search',
+=======
+    provider: 'ollama',
+    baseUrl: 'http://localhost:11434',
+    apiKey: '',
+    model: 'llama3.1:8b',
+>>>>>>> origin/main
     temperature: 0.2,
     enabled: true,
     sectorKey: 'lawyers',
     landingVariant: 'general',
     ctaTarget: '/netlify-lite/sektor/avukatlar',
     theme: 'light',
+<<<<<<< HEAD
     updatedAt: '2026-03-29T00:00:00.000Z',
     __note: 'Provider sırası TAVILY -> OpenAI -> Gemini -> Claude olarak ayarlandı. Admin arayüzündeki açılır pencere bu listeyi kullanmalıdır.'
+=======
+    updatedAt: '2026-03-28T00:00:00.000Z',
+    __note: "Bu dosya geçiş döneminde dosya tabanlıdır; kalıcı veri omurgası için ileride adapter üzerinden Neon'a taşınacaktır."
+>>>>>>> origin/main
 }
 
 module.exports = {

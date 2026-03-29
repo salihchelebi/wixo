@@ -1,6 +1,9 @@
 const { requireAdmin, buildSessionCookieClear, readCookie, verifySessionToken } = require('./_lib/adminAuth')
 const { revokeAdminSession } = require('./_lib/adminSession.repo')
+<<<<<<< HEAD
 const { bumpSessionVersion } = require('./_lib/adminUser.repo')
+=======
+>>>>>>> origin/main
 
 exports.handler = async (event) => {
     if (event.httpMethod === 'GET') {
@@ -17,11 +20,15 @@ exports.handler = async (event) => {
         const payload = verifySessionToken(token)
         if (payload?.sid) {
             await revokeAdminSession(payload.sid).catch(() => null)
+<<<<<<< HEAD
             if (payload.uid) {
                 await bumpSessionVersion(payload.uid).catch(() => null)
             }
         }
 
+=======
+        }
+>>>>>>> origin/main
         return jsonResponse(200, { success: true }, { 'set-cookie': buildSessionCookieClear() })
     }
 

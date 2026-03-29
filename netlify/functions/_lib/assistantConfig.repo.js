@@ -1,5 +1,6 @@
 const { ensureSchema, query } = require('./db')
 
+<<<<<<< HEAD
 async function getStoredAssistantConfig(workspaceId = 'default-workspace') {
     await ensureSchema()
     const result = await query(
@@ -34,10 +35,17 @@ async function getStoredAssistantConfig(workspaceId = 'default-workspace') {
         theme: row.theme || '',
         updatedAt: row.updated_at?.toISOString?.() || new Date().toISOString()
     }
+=======
+async function getStoredAssistantConfig() {
+    await ensureSchema()
+    const result = await query('SELECT config FROM netlify_lite_assistant_config WHERE id = 1 LIMIT 1')
+    return result.rows[0]?.config || null
+>>>>>>> origin/main
 }
 
 async function upsertAssistantConfig(config) {
     await ensureSchema()
+<<<<<<< HEAD
     await query(
         `INSERT INTO assistant_configs (
             workspace_id, assistant_name, assistant_role, system_prompt, welcome_message, primary_color,
@@ -86,6 +94,16 @@ async function upsertAssistantConfig(config) {
     )
 
     return getStoredAssistantConfig(config.workspaceId || 'default-workspace')
+=======
+    const result = await query(
+        `INSERT INTO netlify_lite_assistant_config (id, config, updated_at)
+         VALUES (1, $1::jsonb, NOW())
+         ON CONFLICT (id) DO UPDATE SET config = EXCLUDED.config, updated_at = NOW()
+         RETURNING config`,
+        [JSON.stringify(config)]
+    )
+    return result.rows[0].config
+>>>>>>> origin/main
 }
 
 module.exports = {
