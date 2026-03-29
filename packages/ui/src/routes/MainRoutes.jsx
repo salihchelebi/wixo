@@ -51,6 +51,7 @@ const Evaluators = Loadable(lazy(() => import('@/views/evaluators')))
 
 // account routing
 const Account = Loadable(lazy(() => import('@/views/account')))
+const AiAsistanLandingPage = Loadable(lazy(() => import('@/views/Ai_Asistan/LandingPage')))
 // files routing
 const Files = Loadable(lazy(() => import('@/views/files')))
 
@@ -76,7 +77,7 @@ const MainRoutes = {
     children: [
         {
             path: '/',
-            element: <DefaultRedirect />
+            element: import.meta.env.VITE_AI_ASISTAN_LANDING === 'true' ? <AiAsistanLandingPage /> : <DefaultRedirect />
         },
         {
             path: '/chatflows',

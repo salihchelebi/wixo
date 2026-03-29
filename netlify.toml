@@ -2,6 +2,9 @@
 command = "corepack prepare pnpm@10.26.0 --activate && pnpm --filter flowise-ui build"
 publish = "packages/ui/build"
 
+[build.environment]
+VITE_AI_ASISTAN_LANDING = "true"
+
 [[redirects]]
 from = "/*"
 to = "/index.html"
