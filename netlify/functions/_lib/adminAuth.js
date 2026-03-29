@@ -5,7 +5,6 @@ const COOKIE_NAME = 'netlify_lite_admin_session'
 const SESSION_TTL_MS = 1000 * 60 * 60 * 8
 
 function getSessionSecret() {
-<<<<<<< HEAD
     const secret = process.env.NETLIFY_AUTH_TOKEN
     if (!secret || secret.length < 32) {
         const error = new Error('Oturum imzası için NETLIFY_AUTH_TOKEN en az 32 karakter olmalıdır.')
@@ -25,20 +24,6 @@ function createSessionToken({ sub, uid, ver, sid }) {
     }
     const body = Buffer.from(JSON.stringify(payload)).toString('base64url')
     return `${body}.${sign(body)}`
-=======
-    return process.env.NETLIFY_LITE_SESSION_SECRET || process.env.ADMIN_SESSION_SECRET || 'netlify-lite-session-secret'
-}
-
-function createSessionToken({ username, sessionId }) {
-    const payload = {
-        sub: username,
-        sid: sessionId,
-        exp: Date.now() + SESSION_TTL_MS
-    }
-    const body = Buffer.from(JSON.stringify(payload)).toString('base64url')
-    const signature = sign(body)
-    return `${body}.${signature}`
->>>>>>> origin/main
 }
 
 function verifySessionToken(token) {
@@ -49,12 +34,8 @@ function verifySessionToken(token) {
 
     try {
         const payload = JSON.parse(Buffer.from(body, 'base64url').toString('utf8'))
-<<<<<<< HEAD
         if (!payload?.sub || !payload?.uid || !payload?.sid || !payload?.ver || !payload?.exp) return null
         if (Date.now() > Number(payload.exp)) return null
-=======
-        if (!payload?.sub || !payload?.sid || !payload?.exp || Date.now() > Number(payload.exp)) return null
->>>>>>> origin/main
         return payload
     } catch {
         return null
@@ -72,19 +53,10 @@ function buildSessionCookieClear() {
 function readCookie(event, cookieName = COOKIE_NAME) {
     const raw = event?.headers?.cookie || event?.headers?.Cookie || ''
     if (!raw) return null
-<<<<<<< HEAD
 
     for (const part of raw.split(';')) {
         const [key, ...rest] = part.trim().split('=')
         if (key === cookieName) return rest.join('=') || null
-=======
-    const parts = raw.split(';')
-    for (const part of parts) {
-        const [key, ...rest] = part.trim().split('=')
-        if (key === cookieName) {
-            return rest.join('=') || null
-        }
->>>>>>> origin/main
     }
     return null
 }
@@ -95,15 +67,11 @@ async function requireAdmin(event) {
     if (!payload) {
         const error = new Error('Yönetici oturumu gerekli.')
         error.statusCode = 401
-<<<<<<< HEAD
         error.code = 'auth'
-=======
->>>>>>> origin/main
         throw error
     }
 
     const session = await getActiveAdminSession({ id: payload.sid, token })
-<<<<<<< HEAD
     if (!session || !session.is_active || Number(session.session_version) !== Number(payload.ver)) {
         const error = new Error('Yönetici oturumu geçersiz veya süresi dolmuş.')
         error.statusCode = 401
@@ -112,15 +80,6 @@ async function requireAdmin(event) {
     }
 
     return payload
-=======
-    if (!session) {
-        const error = new Error('Yönetici oturumu geçersiz.')
-        error.statusCode = 401
-        throw error
-    }
-
-    return { ...payload, userId: session.user_id }
->>>>>>> origin/main
 }
 
 function sign(data) {

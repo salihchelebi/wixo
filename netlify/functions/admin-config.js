@@ -1,10 +1,6 @@
 const { getAssistantConfig, saveAssistantConfig, resetAssistantConfig } = require('./_lib/assistantConfig.kv')
-<<<<<<< HEAD
 const { envConfig, getDeploymentContextReport } = require('./_lib/env')
 const { getDbResolutionReport } = require('./_lib/db')
-=======
-const { envConfig } = require('./_lib/env')
->>>>>>> origin/main
 const { requireAdmin } = require('./_lib/adminAuth')
 
 exports.handler = async (event) => {

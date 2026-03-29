@@ -15,10 +15,7 @@ export type AssistantConfig = {
     welcomeMessage: string
     primaryColor: string
     provider: string
-<<<<<<< HEAD
     providerOptions: ProviderOption[]
-=======
->>>>>>> origin/main
     baseUrl: string
     apiKey?: string
     model: string

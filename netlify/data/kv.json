@@ -5,13 +5,8 @@
     "systemPrompt": "Kullanıcıya kendi uzmanlık alanında yardımcı olan profesyonel bir asistansın.",
     "welcomeMessage": "Merhaba, size nasıl yardımcı olabilirim?",
     "primaryColor": "#2563eb",
-<<<<<<< HEAD
     "provider": "fallback",
     "baseUrl": "",
-=======
-    "provider": "ollama",
-    "baseUrl": "http://localhost:11434",
->>>>>>> origin/main
     "apiKey": "",
     "model": "llama3.1:8b",
     "temperature": 0.2,
