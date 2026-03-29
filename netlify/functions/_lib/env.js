@@ -1,25 +1,39 @@
-// Bu yardımcı yalnızca bu aşamada gereken Netlify envlerini ayırıp Neon değişkenlerini pasif not olarak tutar.
+// Bu listeler yalnızca bu iterasyonda izinli env adlarını görünür tutar.
 const envConfig = {
-    required: [],
-    optional: ['NETLIFY_AUTH_TOKEN', 'NETLIFY_SITE_ID'],
-    futureNeon: [
-        'NEON_URL',
-        'DATABASE_URL',
-        'NEON_DATABASE_URL',
-        'NEON_API_URL',
-        'NEON_EMAIL',
-        'Neon_Project_ID',
-        'Neon_Project_name',
-        'NEON_PERSONAL_API_KEY',
-        'NETLIFY_DATABASE_URL',
-        'NETLIFY_DATABASE_URL_PRODUCTION',
-        'NETLIFY_DATABASE_URL_DEPLOY_PREVIEWS',
-        'NETLIFY_DATABASE_URL_BRANCH_DEPLOYS',
-        'NETLIFY_DATABASE_URL_PREVIEW_SERVER_AND_AGENT_RUNNERS',
-        'NETLIFY_DATABASE_URL_LOCAL_DEVELOPMENT'
+    db: {
+        canonical: 'SUPABASE_CONNECT',
+        ignoredForRuntime: ['DATABASE_URL', 'NETLIFY_DATABASE_URL', 'NETLIFY_DATABASE_URL_PRODUCTION']
+    },
+    admin: ['ADMIN_USER_NAME', 'ADMIN_PASSWORD', 'NETLIFY_AUTH_TOKEN'],
+    project: [
+        'GITHUB_DEFAULT_BRANCH',
+        'GITHUB_OWNER',
+        'GITHUB_REPO_FULL',
+        'GITHUB_REPO_NAME',
+        'GITHUB_REPO_URL',
+        'NETLIFY_ADMIN_URL',
+        'NETLIFY_BRANCH_URL',
+        'NETLIFY_MAIN_BRANCH_URL',
+        'NETLIFY_PRODUCTION_URL',
+        'NETLIFY_PROJECT_URL',
+        'NETLIFY_SITE_DOMAIN',
+        'NETLIFY_SITE_ID',
+        'NETLIFY_SITE_NAME',
+        'NETLIFY_SITE_URL',
+        'NETLIFY_TEAM_SLUG'
     ]
 }
 
+function getDeploymentContextReport() {
+    return {
+        siteUrl: process.env.NETLIFY_SITE_URL || null,
+        branchUrl: process.env.NETLIFY_BRANCH_URL || null,
+        productionUrl: process.env.NETLIFY_PRODUCTION_URL || null,
+        mainBranchUrl: process.env.NETLIFY_MAIN_BRANCH_URL || null
+    }
+}
+
 module.exports = {
-    envConfig
+    envConfig,
+    getDeploymentContextReport
 }

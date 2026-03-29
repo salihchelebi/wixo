@@ -52,9 +52,7 @@ const Evaluators = Loadable(lazy(() => import('@/views/evaluators')))
 
 // account routing
 const Account = Loadable(lazy(() => import('@/views/account')))
-const NetlifyLiteLandingPage = Loadable(lazy(() => import('@/views/netlifyLite/LandingPage')))
-const NetlifyLiteAdminPage = Loadable(lazy(() => import('@/views/netlifyLite/AdminPage')))
-const NetlifyLiteChatPage = Loadable(lazy(() => import('@/views/netlifyLite/ChatPage')))
+const AiAsistanLandingPage = Loadable(lazy(() => import('@/views/Ai_Asistan/LandingPage')))
 
 // files routing
 const Files = Loadable(lazy(() => import('@/views/files')))
@@ -85,19 +83,7 @@ const MainRoutes = {
         {
             path: '/',
             // Kök URL açıldığında admin değil landing page görünür.
-            element: import.meta.env.VITE_NETLIFY_LITE === 'true' ? <NetlifyLiteLandingPage /> : <DefaultRedirect />
-        },
-        {
-            path: '/netlify-lite',
-            element: <NetlifyLiteLandingPage />
-        },
-        {
-            path: '/netlify-lite/admin',
-            element: <NetlifyLiteAdminPage />
-        },
-        {
-            path: '/netlify-lite/chat',
-            element: <NetlifyLiteChatPage />
+            element: import.meta.env.VITE_NETLIFY_LITE === 'true' ? <AiAsistanLandingPage /> : <DefaultRedirect />
         },
         {
             path: '/chatflows',
