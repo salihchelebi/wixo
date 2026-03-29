@@ -118,3 +118,6 @@ apps/*/
 # Claude - session/user specific files
 .claude/plans/
 .claude/settings.local.json
+
+# Netlify local state
+.netlify/
