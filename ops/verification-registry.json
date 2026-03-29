@@ -1,1 +1,309 @@
 
+{
+  "version": 1,
+  "lastUpdatedAt": "",
+  "repo": {
+    "owner": "",
+    "name": "",
+    "full": "",
+    "url": ""
+  },
+  "defaultBranch": "",
+  "deployPlatform": "netlify",
+  "siteId": "",
+  "productionUrl": "",
+  "checks": [
+    {
+      "id": 1,
+      "title": "GITHUB_DEPLOY_PLATFORM_CONNECTION",
+      "status": "UNCERTAIN",
+      "lastVerifiedAt": "",
+      "verifiedBy": "codex",
+      "scope": {
+        "branch": "",
+        "commit": "",
+        "environment": "production"
+      },
+      "fingerprint": "",
+      "evidence": [],
+      "dependsOn": [],
+      "recheckTriggers": [
+        "netlify.toml",
+        ".github/workflows/",
+        "deploy scripts",
+        "repo metadata",
+        "default branch changes",
+        "site-repo link changes"
+      ],
+      "notes": ""
+    },
+    {
+      "id": 2,
+      "title": "PR_PREVIEW_PRODUCTION_SEPARATION",
+      "status": "UNCERTAIN",
+      "lastVerifiedAt": "",
+      "verifiedBy": "codex",
+      "scope": {
+        "branch": "",
+        "commit": "",
+        "environment": "preview+production"
+      },
+      "fingerprint": "",
+      "evidence": [],
+      "dependsOn": [1],
+      "recheckTriggers": [
+        "netlify.toml",
+        ".github/workflows/",
+        "deploy preview settings",
+        "base branch changes",
+        "preview feature changes"
+      ],
+      "notes": ""
+    },
+    {
+      "id": 3,
+      "title": "ENV_DEFINED_ON_PLATFORM",
+      "status": "UNCERTAIN",
+      "lastVerifiedAt": "",
+      "verifiedBy": "codex",
+      "scope": {
+        "branch": "",
+        "commit": "",
+        "environment": "all"
+      },
+      "fingerprint": "",
+      "evidence": [],
+      "dependsOn": [],
+      "recheckTriggers": [
+        ".env",
+        ".env.*",
+        ".env.example",
+        "runtime config files",
+        "secret usage changes",
+        "new external service integrations"
+      ],
+      "notes": ""
+    },
+    {
+      "id": 4,
+      "title": "CONTEXT_BASED_ENV_MAPPING",
+      "status": "UNCERTAIN",
+      "lastVerifiedAt": "",
+      "verifiedBy": "codex",
+      "scope": {
+        "branch": "",
+        "commit": "",
+        "environment": "production+preview+branch"
+      },
+      "fingerprint": "",
+      "evidence": [],
+      "dependsOn": [3],
+      "recheckTriggers": [
+        "env mapping changes",
+        "callback url changes",
+        "base url changes",
+        "database target changes",
+        "runtime environment changes"
+      ],
+      "notes": ""
+    },
+    {
+      "id": 5,
+      "title": "SINGLE_SOURCE_DEPLOY_TARGET",
+      "status": "UNCERTAIN",
+      "lastVerifiedAt": "",
+      "verifiedBy": "codex",
+      "scope": {
+        "branch": "",
+        "commit": "",
+        "environment": "deployment"
+      },
+      "fingerprint": "",
+      "evidence": [],
+      "dependsOn": [1],
+      "recheckTriggers": [
+        "NETLIFY_SITE_ID changes",
+        "domain changes",
+        "project URL changes",
+        "deploy CLI config changes",
+        "deploy script changes"
+      ],
+      "notes": ""
+    },
+    {
+      "id": 6,
+      "title": "PR_TO_PREVIEW_FLOW",
+      "status": "UNCERTAIN",
+      "lastVerifiedAt": "",
+      "verifiedBy": "codex",
+      "scope": {
+        "branch": "",
+        "commit": "",
+        "environment": "preview"
+      },
+      "fingerprint": "",
+      "evidence": [],
+      "dependsOn": [2, 5],
+      "recheckTriggers": [
+        "preview deploy settings",
+        "landing route changes",
+        "pr workflow changes",
+        "redirect changes"
+      ],
+      "notes": ""
+    },
+    {
+      "id": 7,
+      "title": "MERGE_TO_PRODUCTION_FLOW",
+      "status": "UNCERTAIN",
+      "lastVerifiedAt": "",
+      "verifiedBy": "codex",
+      "scope": {
+        "branch": "",
+        "commit": "",
+        "environment": "production"
+      },
+      "fingerprint": "",
+      "evidence": [],
+      "dependsOn": [1, 2, 5],
+      "recheckTriggers": [
+        "default branch changes",
+        "production deploy config changes",
+        "merge strategy changes",
+        "deploy workflow changes"
+      ],
+      "notes": ""
+    },
+    {
+      "id": 8,
+      "title": "FALLBACK_DEPLOY_MECHANISM",
+      "status": "UNCERTAIN",
+      "lastVerifiedAt": "",
+      "verifiedBy": "codex",
+      "scope": {
+        "branch": "",
+        "commit": "",
+        "environment": "deployment"
+      },
+      "fingerprint": "",
+      "evidence": [],
+      "dependsOn": [5],
+      "recheckTriggers": [
+        "manual deploy script changes",
+        "NETLIFY_AUTH_TOKEN changes",
+        "NETLIFY_SITE_ID changes",
+        "build hook changes"
+      ],
+      "notes": ""
+    },
+    {
+      "id": 9,
+      "title": "APP_URL_AND_ENV_BEHAVIOR",
+      "status": "UNCERTAIN",
+      "lastVerifiedAt": "",
+      "verifiedBy": "codex",
+      "scope": {
+        "branch": "",
+        "commit": "",
+        "environment": "runtime"
+      },
+      "fingerprint": "",
+      "evidence": [],
+      "dependsOn": [3, 4],
+      "recheckTriggers": [
+        "base url changes",
+        "callback url changes",
+        "api endpoint changes",
+        "webhook url changes",
+        "route config changes"
+      ],
+      "notes": ""
+    },
+    {
+      "id": 10,
+      "title": "GLOBAL_CHECKLIST_STATUS",
+      "status": "UNCERTAIN",
+      "lastVerifiedAt": "",
+      "verifiedBy": "codex",
+      "scope": {
+        "branch": "",
+        "commit": "",
+        "environment": "all"
+      },
+      "fingerprint": "",
+      "evidence": [],
+      "dependsOn": [1, 2, 3, 4, 5, 6, 7, 8, 9],
+      "recheckTriggers": [
+        "any dependent control becomes STALE",
+        "major deploy changes",
+        "major env changes",
+        "major routing changes"
+      ],
+      "notes": ""
+    },
+    {
+      "id": 11,
+      "title": "CODEX_REPORTING_DISCIPLINE",
+      "status": "UNCERTAIN",
+      "lastVerifiedAt": "",
+      "verifiedBy": "codex",
+      "scope": {
+        "branch": "",
+        "commit": "",
+        "environment": "reporting"
+      },
+      "fingerprint": "",
+      "evidence": [],
+      "dependsOn": [10],
+      "recheckTriggers": [
+        "report format changes",
+        "evidence format changes",
+        "verification process changes"
+      ],
+      "notes": ""
+    },
+    {
+      "id": 12,
+      "title": "TASK_IMPACT_ANALYSIS_AND_SKIP_LOGIC",
+      "status": "UNCERTAIN",
+      "lastVerifiedAt": "",
+      "verifiedBy": "codex",
+      "scope": {
+        "branch": "",
+        "commit": "",
+        "environment": "task-analysis"
+      },
+      "fingerprint": "",
+      "evidence": [],
+      "dependsOn": [],
+      "recheckTriggers": [
+        "task scope changes",
+        "changed files list",
+        "new affected technical area"
+      ],
+      "notes": ""
+    },
+    {
+      "id": 13,
+      "title": "REGISTRY_AND_EVIDENCE_UPDATE_REQUIRED",
+      "status": "UNCERTAIN",
+      "lastVerifiedAt": "",
+      "verifiedBy": "codex",
+      "scope": {
+        "branch": "",
+        "commit": "",
+        "environment": "recordkeeping"
+      },
+      "fingerprint": "",
+      "evidence": [],
+      "dependsOn": [10, 11, 12],
+      "recheckTriggers": [
+        "new verification executed",
+        "new evidence generated",
+        "old evidence invalidated",
+        "registry structure changes"
+      ],
+      "notes": ""
+    }
+  ]
+}
