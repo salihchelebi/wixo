@@ -1,22 +1,12 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import {
-    Box,
-    Button,
-    Chip,
-    Container,
-    Divider,
-    Grid,
-    IconButton,
-    Paper,
-    Stack,
-    Typography
-} from '@mui/material'
+import { Box, Button, Chip, Container, Divider, Grid, Paper, Stack, Typography } from '@mui/material'
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded'
 import PlayCircleRoundedIcon from '@mui/icons-material/PlayCircleRounded'
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded'
 import ShieldRoundedIcon from '@mui/icons-material/ShieldRounded'
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
+import { getNetlifyLiteTexts } from './texts'
+import { SECTORS } from './sectors'
 
 const LANDING_IMAGES = {
     logo: {
@@ -31,18 +21,18 @@ const LANDING_IMAGES = {
     },
     demoCta: {
         src: '/images/nissai-karar-oncesi-demo-cta.jpg',
-        alt: 'Karar öncesi demo çağrısı görseli',
-        slot: 'Hero sonrası demo CTA bölümü'
+        alt: 'Karar öncesi ürün değerlendirme çağrısı görseli',
+        slot: 'Hero sonrası değerlendirme CTA bölümü'
     },
     chatDemo: {
         src: '/images/nissai-chat-demo-paneli.png',
-        alt: 'Canlı demo ve sohbet paneli görseli',
-        slot: 'Canlı demo bölümü ana görseli'
+        alt: 'Mesaj merkezi ve sohbet paneli görseli',
+        slot: 'Mesaj merkezi bölümü ana görseli'
     },
     liveSupport: {
         src: '/images/nissai-canli-destek-paneli.jpg',
         alt: 'Canlı destek ve işlem aksiyonları paneli',
-        slot: 'Chat/demo devamı canlı destek bölümü'
+        slot: 'Mesaj merkezi devamı canlı destek bölümü'
     },
     newLeadFlow: {
         src: '/images/nissai-yeni-talep-akisi.jpg',
@@ -93,14 +83,14 @@ const LANDING_IMAGES = {
 
 export default function LandingPage() {
     const navigate = useNavigate()
-    const [visibleToast, setVisibleToast] = useState(null)
-    const [countdown, setCountdown] = useState({ h: 11, m: 43, s: 18 })
+    const t = getNetlifyLiteTexts()
+    const [heroVideoReady] = useState(false)
 
     const trustItems = [
-        'Netlify Destekli Dağıtım',
-        'Neon Veri Altyapısı',
+        'Netlify destekli dağıtım',
+        'Supabase Postgres altyapısı',
         'Mobil Uyumlu Deneyim',
-        'Yönetici Paneli + Demo Akışı',
+        'Yönetici Paneli + Mesaj Merkezi',
         'Hızlı Kurulum Yapısı'
     ]
 
@@ -110,20 +100,6 @@ export default function LandingPage() {
         'Dağınıklığı bırak, kontrolü geri al'
     ]
 
-    const floatingEvents = useMemo(
-        () => [
-            'Yeni demo oturumu açıldı',
-            'Yönetici paneli önizlemesi görüntülendi',
-            'Mobil görünüm aktif edildi',
-            'E-ticaret kullanım senaryosu incelendi',
-            'Sohbet demosu başlatıldı',
-            'Hız karşılaştırma modülü görüntülendi',
-            'Ürün önizleme alanı açıldı',
-            'Simülasyon akışı yenilendi'
-        ],
-        []
-    )
-
     const sections = [
         {
             badge: 'DEMO + CTA',
@@ -131,13 +107,13 @@ export default function LandingPage() {
             text: 'Bu bölüm kararsız kullanıcıyı ikna etmek için var. Ürünün soyut vaat değil, gerçek bir operasyon arayüzü sunduğunu net biçimde gösterir.',
             image: LANDING_IMAGES.demoCta,
             theme: 'light',
-            bullets: ['Canlı demoyu gör', 'Paneli incele', 'Karar vermeden önce ürünü hisset'],
+            bullets: ['Operasyon panelini aç', 'Akışı incele', 'Karar vermeden önce işleyişi gör'],
             reverse: false
         },
         {
             badge: 'SOHBET + CANLI DESTEK',
             title: 'Sohbeti sadece konuşma değil, sonuç üreten akışa çevir.',
-            text: 'Kullanıcı önce demo panelini görür, sonra canlı destek akışının nasıl çalıştığını anlar. Böylece ürünün sadece güzel değil, aksiyon alan bir sistem olduğu kanıtlanır.',
+            text: 'Kullanıcı önce mesaj merkezini görür, sonra canlı destek akışının nasıl çalıştığını anlar. Böylece ürünün yalnızca vitrin değil, aksiyon alan bir sistem olduğu netleşir.',
             image: LANDING_IMAGES.chatDemo,
             companion: LANDING_IMAGES.liveSupport,
             theme: 'dark',
@@ -188,14 +164,7 @@ export default function LandingPage() {
     ]
 
     const comparisons = {
-        before: [
-            'Dağınık takip',
-            'Yoğun ekip baskısı',
-            'Geç dönüş',
-            'Kontrol eksikliği',
-            'Sürekli manuel müdahale',
-            'Kaçan fırsatlar'
-        ],
+        before: ['Dağınık takip', 'Yoğun ekip baskısı', 'Geç dönüş', 'Kontrol eksikliği', 'Sürekli manuel müdahale', 'Kaçan fırsatlar'],
         after: [
             'Merkezi görünüm',
             'Hızlanan iş akışı',
@@ -243,53 +212,15 @@ export default function LandingPage() {
             a: 'Evet. Yönetici alanı ayrı rota mantığıyla çalışır ve genel açılışla karışmaz.'
         },
         {
-            q: 'Demoyu görmeden karar vermek zorunda mıyım?',
-            a: 'Hayır. Önce demoyu gör, sonra incele, sonra karar ver.'
+            q: 'Ürünü incelemeden karar vermek zorunda mıyım?',
+            a: 'Hayır. Önce akışı incele, sonra değerlendir ve karar ver.'
         },
         {
             q: 'Memnun kalmazsam ne olur?',
             a: 'Risk senin değil, sistemin üzerinde olmalı. Garanti dilini ve itiraz kırıcı yapıyı bunun için ekliyoruz.'
         }
     ]
-
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setCountdown((prev) => {
-                let { h, m, s } = prev
-                s -= 1
-                if (s < 0) {
-                    s = 59
-                    m -= 1
-                }
-                if (m < 0) {
-                    m = 59
-                    h -= 1
-                }
-                if (h < 0) return { h: 11, m: 43, s: 18 }
-                return { h, m, s }
-            })
-        }, 1000)
-        return () => clearInterval(timer)
-    }, [])
-
-    useEffect(() => {
-        const spawn = () => {
-            const message = floatingEvents[Math.floor(Math.random() * floatingEvents.length)]
-            setVisibleToast({ id: Date.now(), message })
-        }
-
-        spawn()
-        const interval = setInterval(spawn, 4500)
-        return () => clearInterval(interval)
-    }, [floatingEvents])
-
-    useEffect(() => {
-        if (!visibleToast) return
-        const timeout = setTimeout(() => setVisibleToast(null), 3200)
-        return () => clearTimeout(timeout)
-    }, [visibleToast])
-
-    const fmt = (n) => String(n).padStart(2, '0')
+    const sectorCards = SECTORS
 
     return (
         <Box sx={{ background: '#fff', color: '#111827', overflowX: 'hidden' }}>
@@ -297,18 +228,12 @@ export default function LandingPage() {
 
             <Box
                 sx={{
-                    background:
-                        'linear-gradient(180deg, #081225 0%, #101f3d 42%, #ffffff 42%, #ffffff 100%)'
+                    background: 'linear-gradient(180deg, #081225 0%, #101f3d 42%, #ffffff 42%, #ffffff 100%)'
                 }}
             >
                 <Container maxWidth='xl' sx={{ pt: { xs: 4, md: 6 }, pb: { xs: 6, md: 10 } }}>
                     <Stack spacing={4}>
-                        <Stack
-                            direction={{ xs: 'column', md: 'row' }}
-                            justifyContent='space-between'
-                            alignItems='center'
-                            spacing={2}
-                        >
+                        <Stack direction={{ xs: 'column', md: 'row' }} justifyContent='space-between' alignItems='center' spacing={2}>
                             <Stack direction='row' alignItems='center' spacing={1.5}>
                                 <Box
                                     component='img'
@@ -320,7 +245,7 @@ export default function LandingPage() {
                             </Stack>
 
                             <Stack direction='row' spacing={1.2} flexWrap='wrap'>
-                                <Chip label='Premium UI' sx={topChipSx} />
+                                <Chip label='Üst Düzey Arayüz' sx={topChipSx} />
                                 <Chip label='CRO Odaklı' sx={topChipSx} />
                                 <Chip label='Gerçek Görsel Akışı' sx={topChipSx} />
                             </Stack>
@@ -361,8 +286,8 @@ export default function LandingPage() {
                                                 maxWidth: 620
                                             }}
                                         >
-                                            NISSAI; ekip yükünü azaltır, süreci hızlandırır ve kontrolü tek panelde toplar.
-                                            Daha fazla personel almadan daha fazla işi yönetmek isteyenler için tasarlandı.
+                                            NISSAI; ekip yükünü azaltır, süreci hızlandırır ve kontrolü tek panelde toplar. Daha fazla
+                                            personel almadan daha fazla işi yönetmek isteyenler için tasarlandı.
                                         </Typography>
 
                                         <Stack spacing={1.3} mt={3}>
@@ -376,12 +301,12 @@ export default function LandingPage() {
 
                                         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} mt={4}>
                                             <Button
-                                                onClick={() => navigate('/netlify-lite/admin')}
+                                                onClick={() => navigate('/netlify-lite/login')}
                                                 variant='contained'
                                                 endIcon={<ArrowForwardRoundedIcon />}
                                                 sx={primaryCtaSx}
                                             >
-                                                HEMEN BAŞLA
+                                                YÖNETİCİ GİRİŞİ
                                             </Button>
 
                                             <Button
@@ -390,12 +315,12 @@ export default function LandingPage() {
                                                 startIcon={<PlayCircleRoundedIcon />}
                                                 sx={secondaryCtaSx}
                                             >
-                                                DEMOYU GÖR
+                                                MESAJ MERKEZİNİ AÇ
                                             </Button>
                                         </Stack>
 
                                         <Typography sx={{ mt: 2.5, color: 'rgba(255,255,255,0.68)', fontSize: 13 }}>
-                                            Hızlı kurulum • Mobil uyumlu • Yönetici paneli • Demo akışı • Gerçek arayüz görselleri
+                                            Hızlı kurulum • Mobil uyumlu • Yönetici paneli • Mesaj merkezi • Gerçek arayüz görselleri
                                         </Typography>
                                     </Box>
                                 </Grid>
@@ -410,12 +335,23 @@ export default function LandingPage() {
                                         }}
                                     >
                                         <Paper elevation={0} sx={mockFrameSx}>
-                                            <Box
-                                                component='img'
-                                                src={LANDING_IMAGES.hero.src}
-                                                alt={LANDING_IMAGES.hero.alt}
-                                                sx={mockImageSx}
-                                            />
+                                            <Box sx={{ width: '100%', aspectRatio: '16 / 9', bgcolor: '#0b1220', borderRadius: 3, p: 1 }}>
+                                                {heroVideoReady ? (
+                                                    <Box
+                                                        component='iframe'
+                                                        title='NISSAI ürün videosu'
+                                                        src=''
+                                                        sx={{ width: '100%', height: '100%', border: 0, borderRadius: 2 }}
+                                                    />
+                                                ) : (
+                                                    <Box
+                                                        component='img'
+                                                        src={LANDING_IMAGES.hero.src}
+                                                        alt={LANDING_IMAGES.hero.alt}
+                                                        sx={mockImageSx}
+                                                    />
+                                                )}
+                                            </Box>
                                         </Paper>
 
                                         <Grid container spacing={2} mt={0.5}>
@@ -442,7 +378,7 @@ export default function LandingPage() {
                                 <Grid item xs={12} md={3}>
                                     <Typography sx={{ fontWeight: 900, fontSize: 22 }}>Güven Bandı</Typography>
                                     <Typography sx={{ color: '#6b7280', mt: 0.5 }}>
-                                        Modern altyapı. Hızlı erişim. Premium görünüm. Güven veren akış.
+                                        Modern altyapı. Hızlı erişim. Üst düzey görünüm. Güven veren akış.
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={12} md={9}>
@@ -524,9 +460,9 @@ export default function LandingPage() {
                                         30 Gün Memnuniyet Odaklı Garanti
                                     </Typography>
                                     <Typography sx={{ color: '#374151', lineHeight: 1.9, fontSize: 16 }}>
-                                        Kuru vaat değil, güven veren yapı. “Ya uymazsa?”, “Ya ekip kullanamazsa?”,
-                                        “Ya gereksiz çıkarsa?” gibi itirazlar için sayfanın bu alanı kullanıcıyı rahatlatmalı.
-                                        Riski kullanıcı değil, sistem taşıyor hissi burada açıkça verilmeli.
+                                        Kuru vaat değil, güven veren yapı. “Ya uymazsa?”, “Ya ekip kullanamazsa?”, “Ya gereksiz çıkarsa?”
+                                        gibi itirazlar için sayfanın bu alanı kullanıcıyı rahatlatmalı. Riski kullanıcı değil, sistem
+                                        taşıyor hissi burada açıkça verilmeli.
                                     </Typography>
                                 </Stack>
                             </Paper>
@@ -537,13 +473,8 @@ export default function LandingPage() {
                                 <Typography sx={{ color: '#b91c1c', fontWeight: 900, fontSize: 18 }}>
                                     Fiyat artışı öncesi kalan süre
                                 </Typography>
-                                <Stack direction='row' spacing={1.5} mt={2.5}>
-                                    <CountBox value={fmt(countdown.h)} label='Saat' />
-                                    <CountBox value={fmt(countdown.m)} label='Dakika' />
-                                    <CountBox value={fmt(countdown.s)} label='Saniye' />
-                                </Stack>
                                 <Typography sx={{ mt: 2.5, color: '#6b7280', lineHeight: 1.8 }}>
-                                    Kararsızlık burada pahalıdır. Şimdi incele. Şimdi gör. Şimdi harekete geç.
+                                    NISSAI ile ilk temastan operasyon devrine kadar akışı görünür ve yönetilebilir hale getirin.
                                 </Typography>
                             </Paper>
                         </Grid>
@@ -566,6 +497,27 @@ export default function LandingPage() {
                         ))}
                     </Grid>
 
+                    <SectionHeadline top='SEKTÖR MİMARİSİ' title={t.sectorShowcaseTitle} text={t.sectorShowcaseSubtitle} />
+
+                    <Grid container spacing={2}>
+                        {sectorCards.map((sector) => (
+                            <Grid item xs={12} md={6} lg={4} key={sector.key}>
+                                <Paper elevation={0} sx={faqCardSx}>
+                                    <Stack spacing={1.5}>
+                                        <Typography sx={{ fontWeight: 900, fontSize: 18 }}>{sector.title}</Typography>
+                                        <Button
+                                            variant={sector.active ? 'contained' : 'outlined'}
+                                            disabled={!sector.active}
+                                            onClick={() => navigate(`/netlify-lite/sektor/${sector.key}`)}
+                                        >
+                                            {sector.active ? t.sectorOpen : t.sectorSoon}
+                                        </Button>
+                                    </Stack>
+                                </Paper>
+                            </Grid>
+                        ))}
+                    </Grid>
+
                     <Paper elevation={0} sx={finalCtaWrapSx}>
                         <Stack spacing={2.5} alignItems='center' textAlign='center'>
                             <Chip label='FINAL PUSH' sx={finalChipSx} />
@@ -573,16 +525,20 @@ export default function LandingPage() {
                                 Sorun zaten ortada. Yük zaten büyüyor. Şimdi mesele şu: Bunu daha ne kadar taşıyacaksın?
                             </Typography>
                             <Typography sx={{ maxWidth: 780, color: 'rgba(255,255,255,0.84)', lineHeight: 1.9 }}>
-                                Bu sayfa klasik ürün tanıtımı değil. Dönüşüm makinesi olarak çalışmalı. Ziyaretçiyi durdurmalı,
-                                problemi hissettirmeli, çözümü güçlü biçimde sunmalı ve sonunda kullanıcıyı karara zorlamalı.
+                                Bu sayfa klasik ürün tanıtımı değil. Dönüşüm makinesi olarak çalışmalı. Ziyaretçiyi durdurmalı, problemi
+                                hissettirmeli, çözümü güçlü biçimde sunmalı ve sonunda kullanıcıyı karara zorlamalı.
                             </Typography>
 
                             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-                                <Button variant='contained' onClick={() => navigate('/netlify-lite/admin')} sx={bottomPrimarySx}>
-                                    ŞİMDİ ERİŞ
+                                <Button variant='contained' onClick={() => navigate('/netlify-lite/login')} sx={bottomPrimarySx}>
+                                    {t.loginButton}
                                 </Button>
-                                <Button variant='outlined' onClick={() => navigate('/netlify-lite/chat')} sx={bottomSecondarySx}>
-                                    PANELİ İNCELE
+                                <Button
+                                    variant='outlined'
+                                    onClick={() => navigate('/netlify-lite/sektor/avukatlar')}
+                                    sx={bottomSecondarySx}
+                                >
+                                    {t.lawyersLink}
                                 </Button>
                             </Stack>
 
@@ -605,29 +561,14 @@ export default function LandingPage() {
                 </Stack>
             </Container>
 
-            {visibleToast && (
-                <Paper elevation={0} sx={toastSx}>
-                    <Stack spacing={1.2}>
-                        <Stack direction='row' justifyContent='space-between' alignItems='center'>
-                            <Chip label='Simülasyon' sx={toastChipSx} />
-                            <IconButton size='small' onClick={() => setVisibleToast(null)} sx={{ color: '#d1d5db' }}>
-                                <CloseRoundedIcon fontSize='small' />
-                            </IconButton>
-                        </Stack>
-                        <Typography sx={{ fontWeight: 900, color: '#fff' }}>Canlı Arayüz Örneği</Typography>
-                        <Typography sx={{ color: 'rgba(255,255,255,0.76)', lineHeight: 1.7 }}>{visibleToast.message}</Typography>
-                    </Stack>
-                </Paper>
-            )}
-
             <Box sx={floatingBarSx}>
                 <Button
                     variant='contained'
                     endIcon={<ArrowForwardRoundedIcon />}
-                    onClick={() => navigate('/netlify-lite/admin')}
+                    onClick={() => navigate('/netlify-lite/sektor/avukatlar')}
                     sx={floatingCtaSx}
                 >
-                    HEMEN BAŞLA
+                    {t.lawyersLink}
                 </Button>
             </Box>
         </Box>
@@ -652,9 +593,7 @@ function SectionHeadline({ top, title, text }) {
     return (
         <Box textAlign='center'>
             <Typography sx={{ color: '#2563eb', fontWeight: 900, letterSpacing: '0.14em', fontSize: 13 }}>{top}</Typography>
-            <Typography sx={{ mt: 1.2, fontWeight: 900, fontSize: { xs: '2rem', md: '3.2rem' }, lineHeight: 1.12 }}>
-                {title}
-            </Typography>
+            <Typography sx={{ mt: 1.2, fontWeight: 900, fontSize: { xs: '2rem', md: '3.2rem' }, lineHeight: 1.12 }}>{title}</Typography>
             <Typography sx={{ mt: 1.8, color: '#6b7280', maxWidth: 860, mx: 'auto', lineHeight: 1.9 }}>{text}</Typography>
         </Box>
     )
@@ -698,7 +637,14 @@ function ShowcaseSection({ badge, title, text, image, companion, tertiary, bulle
                             <Button variant='contained' sx={modulePrimarySx}>
                                 HEMEN BAŞLA
                             </Button>
-                            <Button variant='outlined' sx={{ ...moduleSecondarySx, color: dark ? '#fff' : '#111827', borderColor: dark ? 'rgba(255,255,255,0.24)' : '#cbd5e1' }}>
+                            <Button
+                                variant='outlined'
+                                sx={{
+                                    ...moduleSecondarySx,
+                                    color: dark ? '#fff' : '#111827',
+                                    borderColor: dark ? 'rgba(255,255,255,0.24)' : '#cbd5e1'
+                                }}
+                            >
                                 DEMOYU GÖR
                             </Button>
                         </Stack>
@@ -745,9 +691,7 @@ function MediaCard({ image, dark }) {
             }}
         >
             <Box component='img' src={image.src} alt={image.alt} loading='lazy' sx={showcaseSecondaryImageSx} />
-            <Typography sx={{ mt: 1.2, px: 0.6, fontWeight: 800, color: dark ? '#fff' : '#1f2937' }}>
-                {image.slot}
-            </Typography>
+            <Typography sx={{ mt: 1.2, px: 0.6, fontWeight: 800, color: dark ? '#fff' : '#1f2937' }}>{image.slot}</Typography>
         </Paper>
     )
 }
@@ -796,26 +740,6 @@ function MiniStat({ label, value }) {
         >
             <Typography sx={{ color: 'rgba(255,255,255,0.7)', fontSize: 12 }}>{label}</Typography>
             <Typography sx={{ color: '#fff', fontWeight: 900, fontSize: 22, mt: 0.4 }}>{value}</Typography>
-        </Paper>
-    )
-}
-
-function CountBox({ value, label }) {
-    return (
-        <Paper
-            elevation={0}
-            sx={{
-                minWidth: 88,
-                px: 2,
-                py: 1.8,
-                borderRadius: 3,
-                textAlign: 'center',
-                background: '#fff',
-                border: '1px solid #fee2e2'
-            }}
-        >
-            <Typography sx={{ fontWeight: 900, fontSize: 28, color: '#111827' }}>{value}</Typography>
-            <Typography sx={{ color: '#6b7280', fontSize: 12 }}>{label}</Typography>
         </Paper>
     )
 }
@@ -985,26 +909,6 @@ const bottomSecondarySx = {
     fontWeight: 900,
     color: '#fff',
     borderColor: 'rgba(255,255,255,0.24)'
-}
-
-const toastSx = {
-    position: 'fixed',
-    right: 16,
-    bottom: { xs: 84, md: 24 },
-    zIndex: 1200,
-    width: { xs: 'calc(100vw - 32px)', sm: 360 },
-    p: 2,
-    borderRadius: 3,
-    background: 'rgba(15,23,42,0.96)',
-    border: '1px solid rgba(255,255,255,0.10)',
-    boxShadow: '0 20px 50px rgba(0,0,0,0.30)'
-}
-
-const toastChipSx = {
-    color: '#fff',
-    background: 'rgba(37,99,235,0.28)',
-    border: '1px solid rgba(96,165,250,0.28)',
-    fontWeight: 800
 }
 
 const floatingBarSx = {
