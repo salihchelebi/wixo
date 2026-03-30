@@ -19,7 +19,117 @@
 - Arayüz kaynak alanını proje içinde **`packages/ui`** etrafında organize et.
 - Kullanıcıya görünen tüm ekran, panel, akış ve yönetim yüzlerini bu katmanda topla.
 - İstemci tarafı davranışlarını backend’den ayrıştırılmış biçimde yönet.
+🧭 Flowise UI, Backend ve Veritabanı Entegrasyon Kılavuzu
 
+Bu doküman, mono-repo yapısında geliştirilen Flowise uygulamasının saf sürümünü ayrıntılı şekilde açıklar. İçerikte arayüz dosyaları, backend katmanı ve Supabase veritabanı etkileşimi üzerinde durulmuştur. Her dosya satır sayısına göre madde madde analiz edilerek ne yaptığı, hangi kullanıcı akışını etkilediği ve sistemdeki rolü net şekilde belirtilmiştir.
+
+🖥️ 1 – Arayüz Katmanı (UI)
+
+Arayüz, packages/ui/src klasöründe yer alır ve React + Redux mimarisi ile inşa edilmiştir. Bileşenler, route tanımları, durum yönetimi, tema ve API istemcileri bu katmanda barındırılır.
+
+1.1 index.jsx (39 satır → 5 madde)
+Uygulamanın kök konteynerini yakalar, ReactDOM.createRoot ile render işlemini başlatır, tarayıcıda görünür hale gelmesini sağlar.
+Global scss stil dosyasını ve tüm gerekli modülleri içe aktarır; stil tutarlılığı için uygulama çapında kullanılacak temayı yükler.
+Redux store nesnesini Provider ile sarmalar, BrowserRouter ve diğer context sağlayıcılarıyla bileşen ağacını çevreler.
+SnackbarProvider ile anlık bildirimler sağlar; Config, Error, Confirm ve ReactFlow context’leri ile akış çizim editörü için gerekli ortamı kurar.
+StrictMode kullanarak alt bileşenlerin hatalara karşı denetlenmesini sağlar, App bileşenini DOM ağacına yerleştirir.
+1.2 App.jsx (32 satır → 5 madde)
+MUI’nin StyledEngineProvider ve ThemeProvider bileşenleriyle temayı uygular; themes(customization) fonksiyonu ile kullanıcı tercihlerine göre günceller.
+CssBaseline bileşeniyle tarayıcıdan gelen varsayılan css farklılıklarını sıfırlar, tutarlı bir başlangıç noktası sağlar.
+Uygulama içi gezinmeyi NavigationScroll bileşeniyle sarmalar; bu bileşen sayfa geçişlerinde otomatik üst kısma kaydırma özelliği sunar.
+useSelector hook’u ile redux durumundan tema ve görünüm ayarlarını okur; her render’da güncel değerleri kullanır.
+Routes bileşenini çağırarak tüm route ağacını burada oluşturur; App bileşeni UI’nin kök bileşeni olarak çalışır.
+1.3 routes/index.jsx (16 satır → 3 madde)
+useRoutes hook’u ile route tanımlarını içeren yapı dizisini işler ve uygun bileşeni render eder.
+Uygulamada kullanılacak alt rota kümelerini (MainRoutes, CanvasRoutes, ChatbotRoutes, AuthRoutes, ExecutionRoutes, NetlifyLiteRoutes) içeri aktarır ve sıralı şekilde geçer.
+config.basename parametresini kullanarak alt dizine kurulmuş uygulamalar için route’ların temelini ayarlar; route ağacının giriş noktasıdır.
+1.4 MainRoutes.jsx (369 satır → 12 madde)
+Tüm ana sayfa ve kontrol panellerini barındıran route ağacını tanımlar; her alt rota için yetki kontrolü uygular (RequireAuth).
+import.meta.env.VITE_NETLIFY_LITE bayrağına göre Netlify Lite modunda ana layout ve landing page’yi ayarlar; Flowise’in saf sürümünde bu bayrak false olmalı.
+/chatflows, /agentflows, /marketplaces, /apikey, /tools gibi route’larda ilgili ekran bileşenlerini lazy-loaded şekilde yükler; performansı artırır.
+Asistan yönetimi için /assistants, /assistants/custom, /assistants/openai alt yollarını ayırır; özel asistan konfigürasyon sayfalarını tanımlar.
+Credentials, Variables, Documents, VectorStoreConfigure, VectorStoreQuery ve ShowStoredChunks sayfalarını yönlendirir; veri saklama ve yapılandırma ekranlarını açar.
+Eval modülleri için /datasets, /evaluation_results/:id, /evaluators gibi yollar oluşturur; veri kümesi satırları ve değerlendirme sonuçlarını inceler.
+/executions route’u agent execution geçmişini listeler; public execution detaylarına yönlendiren route da ayrıca tanımlanır.
+Log ekranını (/logs), dosya yönetimini (/files) ve hesap ayarlarını (/account) içeren rotalar içerir; kullanıcıya operasyonel yönetim yüzeyi sunar.
+Kurumsal özellikleri etkinleştiren /users, /roles, /login-activity, /workspaces, /workspace-users/:id gibi route’lar vardır; yalnızca enterprise lisanslı sürümlerde görünür.
+SSO yapılandırması ve doğrulama ekranları (/sso-config, /sso-success) route dizisinin son kısmında tanımlanır.
+Route ağacındaki her eleman için RequireAuth bileşeni ile izin ve feature flag kontrolü yapılır; yetkisiz kullanıcılar otomatik olarak /unauthorized sayfasına yönlendirilir.
+Export ile MainRoutes nesnesini dışa aktarır; route tanımlarının merkezi kaynağı olarak kullanılır.
+1.5 CanvasRoutes.jsx (87 satır → 8 madde)
+Canvas tabanlı düzenleme ekranlarını yöneten route ağacıdır; MinimalLayout altında çalışır.
+/canvas ve /canvas/:id yolları chatflow ve agentflow görsel editörlerini yükler; kullanıcı izin kontrolü yapar.
+/agentcanvas ve /agentcanvas/:id yolları agent flow düzenleme için ayrılmıştır; aynı bileşen tekrar kullanılır.
+/v2/agentcanvas ve /v2/agentcanvas/:id yollarında yeni nesil Agentflow V2 editörü (CanvasV2) yüklenir.
+Marketplace’ten alınan şablonlar için /marketplace/:id ve /v2/marketplace/:id yolları vardır; template’lerin canvas üzerinde düzenlenmesini sağlar.
+Her route için RequireAuth kontrolü ile yetkisiz kullanıcıların erişimi engellenir.
+Lazy-loaded bileşenler performansı artırır; ilk yüklemede bu dosyalar indirilmeyerek ana bundle küçük tutulur.
+Export ile CanvasRoutes dışa aktarılır; route ağacının bir parçası olarak kullanılır.
+1.6 ChatbotRoutes.jsx (23 satır → 3 madde)
+Minimal layout altında yalnızca tek rota tanımlar; /chatbot/:id adresinde tam sayfa chatbot bileşenini (ChatbotFull) yükler.
+Chatbot bileşeni lazy-loaded olarak import edilir; kimlik doğrulaması gerekmez, halka açık sohbet sayfasıdır.
+Export ile ChatbotRoutes dışa aktarılır; route ağacına eklendiğinde chatbot URL’leri çalışır.
+1.7 ExecutionRoutes.jsx (22 satır → 3 madde)
+Minimal layout altında tek rota tanımlar; /execution/:id yolunda public execution detay bileşenini (PublicExecutionDetails) render eder.
+Bu route, kullanıcıya açık olan belirli agent execution ayrıntılarını görüntüler; kimlik doğrulaması gerektirmez.
+Export ile ExecutionRoutes dışa aktarılır; route ağacına dahil edildiğinde execution URL’leri aktif olur.
+1.8 AuthRoutes.jsx (64 satır → 7 madde)
+Tüm kimlik doğrulama ekranlarını ve yetkilendirme mesajlarını yöneten route dizisidir; AuthLayout altında render olur.
+/login rotası ResolveLoginPage bileşenini çağırarak oturum durumuna göre login veya yönlendirme yapar; /signin, /register, /verify gibi rota alt kümeleri kullanılır.
+Şifre sıfırlama ve hesap kurtarma işlemleri için /forgot-password ve /reset-password yolları vardır; kullanıcı girdilerini backend’e gönderir.
+/unauthorized, /rate-limited, /license-expired gibi durum sayfaları yetkisiz veya sınırlı erişim durumlarında gösterilir.
+OrganizationSetupPage rota üzerinden organizasyon kurulum sihirbazını başlatır; ekip oluşturma süreçlerini yönetir.
+Bütün bileşenler lazy-loaded olarak import edilir; yalnızca ihtiyaç duyulduğunda yüklenir.
+Export ile AuthRoutes dışa aktarılır; route ağacına eklendiğinde kimlik ekranları çalışır.
+1.9 RequireAuth.jsx (94 satır → 9 madde)
+Route koruma bileşenidir; kullanıcı oturumunu, izinlerini ve feature flag’leri kontrol ederek erişimi belirler.
+useAuth hook’u ile oturum bilgilerinin geçerliliğini sorgular; useConfig ile deployment tipini (isCloud, isOpenSource, isEnterpriseLicensed) ve yükleme durumunu alır.
+Redux store’dan auth.isGlobal, auth.user, auth.features, auth.permissions değerlerini okur; global admin ve normal kullanıcı ayrımını yapar.
+Yükleme durumunda boş render döndürür; kullanıcı bilgileri gelmeden önce hiçbir içerik göstermez.
+Oturum yoksa login sayfasına yönlendirir; open source modunda display özelliği olmayan route’lara izin verir, feature flag’li route’ları kapatır.
+Cloud ve Enterprise modlarında hem permission hem de feature flag kontrolü yapar; global admin’ler izin kontrolünü atlar.
+display parametresi set edildiğinde özellik bayrağını kontrol eder; yetkisiz veya kapalı özellikte ise /unauthorized’a yönlendirir.
+Standart route’larda yalnızca permission kontrolü yapılır; permission yoksa unauthorized sayfası açılır.
+Hiçbir platform tipi eşleşmediğinde erişim reddedilir; fallback olarak unauthorized sayfası render edilir.
+1.10 constant.js (116 satır → 7 madde)
+Proje genelinde kullanılan sabit değerleri ve ikon haritalarını içerir; drawer genişliği, header yüksekliği ve grid boşluk değerlerini tanımlar.
+baseURL ve uiBaseURL değişkenlerini import.meta.env üzerinden okur; API çağrılarına temel oluşturur ve istek kökünü belirler.
+FLOWISE_CREDENTIAL_ID ve REDACTED_CREDENTIAL_VALUE gibi sabitler, credential yönetimi sırasında kullanılır; gizli verilerin log’lanmasını engeller.
+ErrorMessage nesnesi, kullanıcıya gösterilecek standart hata mesajlarını merkezi olarak tanımlar; API istemcisi tarafından kullanılır.
+AGENTFLOW_ICONS dizisi, Agentflow node tiplerine karşılık gelen ikon bileşenlerini ve renkleri listeler; UI’de node paletini oluşturur.
+Her ikon objesinde node adı, ikon bileşeni ve renk kodu tanımlıdır; Agentflow editörü ikonlar üzerinden node tipini ayırt eder.
+Bu dosya, uygulamanın pek çok yerinde import edilerek sabit kullanımını tek noktadan yönetir.
+1.11 client.js (39 satır → 5 madde)
+axios.create ile yeni bir API istemcisi oluşturur; baseURL değişkeni üzerinden /api/v1 uzantısına sabitlenir.
+Varsayılan başlıklarda JSON içerik tipi ve x-request-from: internal header’ı gönderilir; sunucu tarafında isteğin kaynağı ayırt edilir.
+withCredentials: true ayarı, tarayıcı çerezlerini otomatik olarak gönderir; refresh token mekanizması için gereklidir.
+Response interceptor’ü 401 durum kodunu yakalar; token süresi dolduğunda refresh işlemini tetikler ve başarısızsa localStorage ve auth context’ini temizler.
+Hata durumlarında Promise.reject ile hatayı çağıran koda iletir; merkezi hata yönetimi bileşenleri tarafından ele alınır.
+1.12 Chatflows/index.jsx (238 satır → 10 madde)
+useEffect ve useState hook’larıyla chatflow listesini yönetir; sayfa yüklendiğinde getAllChatflowsApi.request fonksiyonunu çağırarak veriyi backend’den çeker.
+search, view, currentPage, pageLimit ve total durumlarıyla listeleme görünümünü, arama filtresini ve sayfalamayı kontrol eder.
+FlowListTable ve ItemCard bileşenlerini kullanarak kart ve tablo görünümü arasında geçiş yapar; kullanıcı tercihini localStorage’da saklar.
+applyFilters fonksiyonu parametre olarak sayfa ve limit alır; API çağrısını parametrelerle yaparak filtrelenmiş veri getirir.
+filterFlows fonksiyonu arama kutusuna göre veri dizisini süzer; isim, kategori veya id içinde geçen kelimelerle eşleştirir.
+goToCanvas fonksiyonu, seçilen chatflow id’sini URL’ye ekleyerek Canvas editörüne yönlendirir; addNew fonksiyonu boş Canvas açar.
+useApi hook’u ile chatflows API’larını çağırır; isLoading ve hata durumlarını otomatik olarak yönetir.
+Liste boş olduğunda veya veri yüklenirken Skeleton ve “No Chatflows Yet” görselleri gösterir; kullanıcı deneyimini güçlendirir.
+ConfirmDialog bileşeni global onay penceresini tanımlar; chatflow silme gibi işlemlerde tekrar kullanılmak üzere eklenmiştir.
+Toplam veri sayısını TablePagination bileşeni ile gösterir; sayfa değiştirme her seferinde yeni API çağrısı yapar.
+⚙️ 2 – Backend Katmanı
+
+Projenin backend’i packages/server klasöründe yer alır. Flowise çekirdeği Express üzerine kurulu Node.js API’sidir. Frontend’den gelen istekler /api/v1 altında toplanır ve ilgili controller’lara yönlendirilir. Erişim kontrolü, token doğrulama, veri işleme ve dış servis entegrasyonları backend’de yapılır. Route–controller–service ayrımı mevcuttur ve veritabanı işlemleri için repository katmanı kullanılır. Örneğin, chatflow listesini GET /api/v1/chatflows endpoint’i döndürür, bu endpoint packages/server/src/routes/chatflows.ts içinde tanımlıdır ve chatflowService.getAllChatflows fonksiyonu ile veritabanından veri çeker.
+
+🗄️ 3 – Veritabanı Katmanı
+
+Flowise verilerini kalıcı olarak depolamak için Supabase PostgreSQL kullanılır. Backend’de DATABASE_URL üzerinden tanımlı bağlantı adresi okunur ve TypeORM ile DataSource oluşturulur. Tablolar, packages/server/src/database/entities içinde tanımlanan entity sınıflarından üretilir. Chatflow, agentflow, credential, dataset, document store ve execution gibi domain nesnelerinin her biri kendi tablolarında saklanır. CRUD işlemleri backend servis katmanı üzerinden yürütülür; frontend doğrudan veritabanına erişmez. Row Level Security gibi politikalar Supabase tarafında uygulanarak istemci tarafına sadece yetkili veriler açılır.
+
+🌐 4 – Canlı Ortam ve Yerel Ortam Ayrımı
+Canlı ortam: GitHub’tan Netlify’a otomatik olarak deploy edilir. Frontend packages/ui dizininden build edilir; backend Netlify Functions veya kendi sunucunuzda çalıştırılır. DATABASE_URL ve diğer secret’lar production ortamında tanımlı olmalıdır.
+Yerel ortam: Geliştirme sırasında pnpm install ve pnpm dev komutlarıyla hem frontend hem backend’i çalıştırabilirsiniz. .env dosyalarını packages/ui ve packages/server içinde oluşturmanız gerekir. VITE_API_BASE_URL olarak http://localhost:3000 ayarlanır. Supabase’e bağlanmak için development veritabanı kullanılır.
+✅ Sonuç ve Sonraki Adımlar
+
+Bu README, projenin arayüz katmanındaki ana dosyaları, route akışını ve önemli bileşenleri kapsamlı biçimde analiz etti. Backend ve veritabanı etkileşimi yüksek seviyede özetlendi. Eksik görülen dosya veya modüller için benzer analitik yaklaşımı sürdürerek Flowise’in tam davranışını belgelendirebilirsiniz. Bu rehber, arayüzün backend ve veritabanı ile nasıl iletişim kurduğunu anlamaya çalışan geliştiricilere yol gösterir.
 ## 2. Arayüz Dosya Alanlarını Netleştir
 - **`packages/ui/src`** dizinini temel uygulama mantığı için kullan.
 - **`packages/ui/src/views`** altında ekran bazlı yapıyı yönet.
