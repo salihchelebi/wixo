@@ -24,7 +24,7 @@ exports.handler = async (event) => {
 
             if (proxyPath === 'v1/auth/login') {
                 const credentials = parseJsonBody(event)
-                const expectedEmail = pickFirstEnv([
+                const expectedIdentifiers = collectEnvValues([
                     'ADMIN_EMAIL',
                     'ADMIN_USER_NAME',
                     'ADMIN_USERNAME',
@@ -39,13 +39,14 @@ exports.handler = async (event) => {
                     'PASSWORD'
                 ])
 
-                if (!expectedEmail || !expectedPassword) {
+                if (expectedIdentifiers.length === 0 || !expectedPassword) {
                     return jsonResponse(401, {
                         message: 'Preview admin credentials are not configured.'
                     })
                 }
 
-                const isValidEmail = credentials.email === expectedEmail || credentials.username === expectedEmail
+                const loginIdentifier = normalizeCredentialIdentifier(credentials.email || credentials.username)
+                const isValidEmail = expectedIdentifiers.some((candidate) => normalizeCredentialIdentifier(candidate) === loginIdentifier)
                 const isValidPassword = credentials.password === expectedPassword
 
                 if (!isValidEmail || !isValidPassword) {
@@ -54,7 +55,8 @@ exports.handler = async (event) => {
                     })
                 }
 
-                return jsonResponse(200, buildLocalAdminLoginPayload(expectedEmail))
+                const primaryEmail = pickFirstEnv(['ADMIN_EMAIL']) || expectedIdentifiers[0]
+                return jsonResponse(200, buildLocalAdminLoginPayload(primaryEmail))
             }
 
             if (proxyPath === 'v1/apikey') {
@@ -205,13 +207,23 @@ function buildLocalAdminLoginPayload(email) {
 }
 
 function pickFirstEnv(keys = []) {
+    const values = collectEnvValues(keys)
+    return values[0] || ''
+}
+
+function collectEnvValues(keys = []) {
+    const values = []
     for (const key of keys) {
         const value = process.env[key]
         if (typeof value === 'string' && value.trim()) {
-            return value.trim()
+            values.push(value.trim())
         }
     }
-    return ''
+    return Array.from(new Set(values))
+}
+
+function normalizeCredentialIdentifier(value = '') {
+    return String(value).trim().toLowerCase()
 }
 
 function jsonResponse(statusCode, body) {
