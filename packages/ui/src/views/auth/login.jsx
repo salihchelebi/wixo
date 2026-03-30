@@ -31,7 +31,8 @@ const ResolveLoginPage = () => {
     useEffect(() => {
         setLoading(false)
         if (resolveLogin.data) {
-            window.location.href = resolveLogin.data.redirectUrl
+            const redirectUrl = resolveLogin.data.redirectUrl
+            window.location.href = redirectUrl && redirectUrl !== 'undefined' ? redirectUrl : '/signin'
         }
     }, [resolveLogin.data])
 
