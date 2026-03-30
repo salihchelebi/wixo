@@ -14,6 +14,12 @@ exports.handler = async (event) => {
                 })
             }
 
+            if (proxyPath === 'v1/resolve-login') {
+                return jsonResponse(200, {
+                    redirectUrl: '/signin'
+                })
+            }
+
             return jsonResponse(200, {
                 error: null,
                 data: {}
