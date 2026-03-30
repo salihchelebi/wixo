@@ -1,4 +1,5 @@
 import { lazy } from 'react'
+import { Navigate } from 'react-router-dom'
 
 // project imports
 import MainLayout from '@/layout/MainLayout'
@@ -175,6 +176,12 @@ const MainRoutes = {
                 </RequireAuth>
             )
         },
+
+        {
+            path: '/documentstores',
+            element: <Navigate to='/document-stores' replace />
+        },
+
         {
             path: '/document-stores',
             element: (

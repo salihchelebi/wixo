@@ -39,6 +39,11 @@ to = "/.netlify/functions/supabase-flow"
 status = 200
 
 [[redirects]]
+from = "/documentstores"
+to = "/document-stores"
+status = 301
+
+[[redirects]]
 from = "/*"
 to = "/index.html"
 status = 200
