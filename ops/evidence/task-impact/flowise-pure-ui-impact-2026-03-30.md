@@ -1,19 +1,19 @@
-title: Task Impact Analysis for Flowise Pure UI
+title: Task Impact Analysis for Flowise API Proxy Recovery
 date: 2026-03-30
 verifier: codex
 sourceType: source-reference
 sourceLocation:
   - ops/task-impact-map.md
   - netlify.toml
-  - wixoo/functions/supabase-flow.js
-  - wixoo/functions/_lib/supabaseRest.js
+  - wixoo/functions/flowise-api-proxy.js
+  - .env.example
 relatedChecks:
   - build_publish_path_alignment
   - netlify_function_route_mapping
-  - supabase_server_side_secret_usage
   - local_function_smoke_behavior
+  - supabase_server_side_secret_usage
   - github_netlify_repo_linkage
   - production_runtime_reachability
-summary: netlify.toml and wixoo/functions changes trigger partial revalidation for build path, route mapping, server-side secret boundary, and local function smoke. Platform checks remain outside local verification scope.
-conclusion: Impacted checks were revalidated locally where possible; platform checks remain UNCERTAIN pending Netlify/GitHub evidence.
+summary: netlify.toml, wixoo/functions, and .env.example changes impact routing, local function runtime, and env-boundary checks; platform checks remain externally dependent.
+conclusion: Revalidated impacted local checks with command evidence; platform checks remain UNCERTAIN until Netlify dashboard and live URL evidence is captured.
 fingerprintBasis: task-impact-map+changed-paths(2026-03-30)
