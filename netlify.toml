@@ -10,7 +10,7 @@ VITE_NETLIFY_LITE = "false"
 
 [[redirects]]
 from = "/api/v1/*"
-to = "/.netlify/functions/flowise-api-proxy/v1/:splat"
+to = "/.netlify/functions/flowise-api-proxy"
 status = 200
 
 [[redirects]]

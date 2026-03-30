@@ -1,14 +1,23 @@
 exports.handler = async (event) => {
     try {
-        const proxyPath = event.pathParameters?.splat || ''
+        if (event.httpMethod === 'OPTIONS') {
+            return jsonResponse(204, null)
+        }
+
+        const proxyPath = resolveProxyPath(event)
         const baseUrl = process.env.FLOWISE_API_BASE_URL || process.env.VITE_API_BASE_URL
+
         if (!baseUrl) {
             if (proxyPath === 'v1/settings') {
                 return jsonResponse(200, {
                     PLATFORM_TYPE: 'openSource'
                 })
             }
-            return jsonResponse(200, {})
+
+            return jsonResponse(200, {
+                error: null,
+                data: {}
+            })
         }
 
         const cleanBase = baseUrl.replace(/\/$/, '')
@@ -34,6 +43,24 @@ exports.handler = async (event) => {
     }
 }
 
+function resolveProxyPath(event) {
+    const fromSplat = event.pathParameters?.splat
+    if (fromSplat) return trimLeadingSlash(fromSplat)
+
+    const rawPath = event.path || event.rawUrl || ''
+    const pathOnly = rawPath.split('?')[0]
+
+    if (pathOnly.startsWith('/api/')) {
+        return trimLeadingSlash(pathOnly.replace('/api/', ''))
+    }
+
+    return 'v1/settings'
+}
+
+function trimLeadingSlash(value = '') {
+    return value.replace(/^\/+/, '')
+}
+
 function buildForwardHeaders(headers = {}) {
     const forwarded = {}
     const allowed = ['content-type', 'authorization', 'cookie', 'accept', 'x-request-id']
@@ -47,7 +74,10 @@ function buildForwardHeaders(headers = {}) {
 }
 
 function buildResponseHeaders(headers) {
-    const out = { 'content-type': headers.get('content-type') || 'application/json; charset=utf-8' }
+    const out = {
+        'content-type': headers.get('content-type') || 'application/json; charset=utf-8',
+        ...corsHeaders()
+    }
     const setCookie = headers.get('set-cookie')
     if (setCookie) {
         out['set-cookie'] = setCookie
@@ -68,11 +98,21 @@ function canHaveBody(method) {
 }
 
 function jsonResponse(statusCode, body) {
+    const normalizedBody = body === null ? '' : JSON.stringify(body)
     return {
         statusCode,
         headers: {
-            'content-type': 'application/json; charset=utf-8'
+            'content-type': 'application/json; charset=utf-8',
+            ...corsHeaders()
         },
-        body: JSON.stringify(body)
+        body: normalizedBody
+    }
+}
+
+function corsHeaders() {
+    return {
+        'access-control-allow-origin': '*',
+        'access-control-allow-methods': 'GET,POST,PUT,PATCH,DELETE,OPTIONS',
+        'access-control-allow-headers': 'Content-Type, Authorization, X-Request-Id'
     }
 }
