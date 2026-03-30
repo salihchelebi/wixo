@@ -1,0 +1,33 @@
+Yapılandırma Dosyaları Özeti
+Bu belge, Flowise tabanlı `salihchelebi/wixo` projesinde tespit edilen yapılandırma dosyalarını ve her birinin rolünü özetlemektedir. Amaç, saf Flowise arayüzünün devreye alınması için hangi dosyaların neyi konfigüre ettiğini ve nasıl etkili olduğunu belirlemektir.
+Genel Ortam Dosyaları
+Dosya Yolu	Amacı ve Kapsam
+`.env.example` (kök)	Uygulamanın farklı bileşenleri için ortam değişkenlerinin şablonunu sağlar. Yönetici kullanıcı adı/parolası, Supabase bağlantıları, Netlify URL’leri, Flowise API anahtarları gibi parametreleri içerir. Bu dosya sunucu ve istemci katmanlarının hangi dış servislere bağlanacağını belirler; üretim ortamında `.env` olarak kopyalanıp doldurulmalıdır【998521658933521†L0-L14】.
+`packages/ui/.env.example`	UI geliştirme ortamı için port ve API taban adresi gibi değişkenleri tanımlar. `VITE_PORT=8080` varsayılan portunu sağlar; `VITE_API_BASE_URL` ve `VITE_UI_BASE_URL` gibi opsiyonel değişkenler yorum satırı olarak yer alır【364468419125809†L0-L3】.
+`packages/server/.env.example`	Flowise’in NodeJS backend’i için kapsamlı ortam değişkeni şablonu sunar. Veritabanı türü ve bağlantı bilgileri (`DATABASE_TYPE`, `DATABASE_HOST`, `DATABASE_USER`, `DATABASE_PASSWORD`), dosya saklama tipleri, gizli anahtarlar, log seviyeleri ve çok daha fazlasını içerir【484184890973346†L0-L204】. Bu dosya, backend’in hangi database türünü (SQLite, Postgres vb.) kullanacağını ve hangi portta çalışacağını belirler.
+Netlify ve Build Konfigürasyonu
+Dosya Yolu	Amacı ve Kapsam
+`netlify.toml`	Netlify’de build ve yayın ayarlarını tanımlar. `build.command` satırı UI paketi için Vite build komutunu (`pnpm --filter flowise-ui build`) belirler; `publish` dizini olarak `packages/ui/build` kullanılır. `functions` klasörü `wixoo/functions` olarak tanımlanmıştır. Ayrıca `/api/*` ve benzer yolları Netlify Functions’a yönlendiren `[[redirects]]` kuralları bulunur. `NODE_VERSION` ve `VITE_NETLIFY_LITE` gibi çevresel değişkenler tanımlanabilir【119740574204404†L0-L36】.
+`setup.sh`	Proje kurulumu ve yerel doğrulama sürecini otomatikleştirmek amacıyla hazırlanmış bir betiktir. Node ve npm sürümlerini kontrol eder, bağımlılıkları kurar, Prettier ve ESLint ayar dosyalarını oluşturur, Netlify CLI yükler ve temel smoke testleri çalıştırır. Ayrıca Supabase bağlantısı ve diğer gerekli çevresel değişkenleri kontrol eder. Bu script, geliştiriciler için kurulum rehberi niteliğindedir【658807395587799†L0-L205】.
+UI Yapılandırma Dosyaları
+Dosya Yolu	Amacı ve Kapsam
+`packages/ui/vite.config.js`	React tabanlı Flowise UI’nin Vite yapılandırmasını yapar. Geliştirme modunda `/api` isteklerini backend sunucusuna proxy eden ayarlar içerir; build çıktısı için `outDir: './build'` tanımlıdır. `VITE_PORT` ve `VITE_HOST` ortam değişkenlerini okur, gerekli alias tanımlamalarını sağlar【697160791834904†L0-L50】.
+`packages/ui/src/config.js`	UI tarafındaki genel temayı ve varsayılan yönlendirme yolunu tanımlar. `basename`, `defaultPath`, yazı tipi ailesi ve border radius gibi görsel ayarları içerir【826211204222361†L0-L9】.
+`packages/ui/src/api/config.js`	UI’nin backend’e gönderdiği belirli “config” API çağrılarını soyutlayan bir istemci modülüdür. `getConfig` ve `getNodeConfig` fonksiyonlarıyla `/flow-config/:id` ve `/node-config` uç noktalarına istek yapar【535221796539241†L0-L8】.
+`packages/ui/src/store/context/ConfigContext.jsx`	Uygulama çapında konfigürasyon verilerini yönetmek için React Context sağlayıcısıdır. `platformsettingsApi.getSettings()` çağrısıyla sunucudan platform tipi (enterprise/cloud/open-source) ve diğer ayarları çeker; bu veriyi bileşenlere dağıtır【117020393441440†L13-L50】.
+Backend Yapılandırma ve Yardımcı Dosyalar
+Dosya Yolu	Amacı ve Kapsam
+`packages/server/src/utils/config.ts`	Backend için geçici bir yapılandırma modülüdür. `.env` dosyasını okuyarak log dizini ve log seviyelerini tanımlar; ileride genişletilebilecek `loggingConfig` nesnesini dışa aktarır【723085865234589†L0-L25】.
+`packages/server/src/AppConfig.ts`	Uygulama seviyesinde birkaç basit konfigürasyon seçeneği barındırır. Örneğin `SHOW_COMMUNITY_NODES` ortam değişkenini okuyarak topluluk düğümlerinin UI’da gösterilip gösterilmeyeceğine karar verir【291213177996376†L0-L3】.
+`packages/server/babel.config.js`	Backend derlemesi için Babel yapılandırmasını tanımlar; kök `babel.config.js` dosyasını devralır ve böylece TypeScript/ESM dönüştürmeleri için ortak kuralları kullanır【946171679462934†L0-L2】.
+`packages/server/cypress.config.ts`	E2E test aracı Cypress’in yapılandırmasını belirler; şu aşamada sadece boş `setupNodeEvents` fonksiyonu içerir【277226181407765†L0-L8】.
+`netlify/functions/admin-config.js`	Netlify’de çalışan `admin-config` fonksiyonunu konfigüre eder. HTTP metoduna göre admin yetkilendirmesi yapar, asistan konfigürasyonunu okur/kaydeder ve JSON yanıt döndürür【484490218651739†L4-L99】. Bu dosya, Flowise’in değil Netlify uyarlamasının parçasıdır.
+`netlify/functions/_lib/assistantConfig.repo.js`	Netlify fonksiyonları için Postgres veritabanında asistan konfigürasyonu saklama ve güncelleme yardımcıları içerir. `netlify_lite_assistant_config` tablosunda veri okur/yazar【424932414659143†L0-L23】.
+`metrics/otel/otel.config.yml`	OpenTelemetry collector yapılandırma dosyasıdır. OTLP protokolü üzerinden gelen metrik ve izleri alır, Datadog’a gönderir ve host metrics, prometheus ve filelog gibi alıcı ve işlemcileri tanımlar【123944440891283†L0-L72】.
+Diğer İlgili Dosyalar
+Dosya Yolu	Amacı ve Kapsam
+`packages/agentflow/jest.config.js`	Agentflow paketi için test yapılandırmasını tanımlar; jest projelerini, coverage eşikleri ve modül eşlemelerini içerir【785680770688924†L0-L83】. Geliştirme/test amaçlıdır.
+`packages/agentflow/.eslintrc.js`	Agentflow bileşenleri için ESLint kurallarını ve mimari kısıtlamaları tanımlar. Katmanlar arası bağımlılıkları denetler ve kod kalitesini sağlar【304203022506363†L0-L183】.
+Notlar
+Konfigürasyon dosyaları genel olarak geliştirme, yapı/derleme, deploy ve ortalama ortam (env) olmak üzere dört kategoriye ayrılabilir. UI ve backend’in “saf Flowise” sürümünü çalıştırabilmesi için en kritik dosyalar `packages/ui/vite.config.js`, `.env` dosyaları ve `netlify.toml`’dir. Bu üçü, derleme çıktısının doğru dizine yazılmasını, API yönlendirmelerinin doğru çalışmasını ve doğru veritabanı/servis bağlantılarının kullanılmasını sağlar.
+Netlify’de görülen `VITE_NETLIFY_LITE` değişkeni ve özel fonksiyonlar (`wixoo/functions`) Flowise’in saf sürümünden sapma yaratmaktadır. Saf Flowise arayüzünü görmek istiyorsanız `netlify.toml` ve `.env` dosyalarında bu değişkenin kaldırılması veya `false` yapılması, ayrıca tam backend API setinin sunulması gerekir.
