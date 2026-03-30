@@ -7,10 +7,9 @@ import ChatbotRoutes from './ChatbotRoutes'
 import config from '@/config'
 import AuthRoutes from '@/routes/AuthRoutes'
 import ExecutionRoutes from './ExecutionRoutes'
-import NetlifyLiteRoutes from './NetlifyLiteRoutes'
 
 // ==============================|| ROUTING RENDER ||============================== //
 
 export default function ThemeRoutes() {
-    return useRoutes([MainRoutes, AuthRoutes, CanvasRoutes, ChatbotRoutes, ExecutionRoutes, NetlifyLiteRoutes], config.basename)
+    return useRoutes([MainRoutes, AuthRoutes, CanvasRoutes, ChatbotRoutes, ExecutionRoutes], config.basename)
 }

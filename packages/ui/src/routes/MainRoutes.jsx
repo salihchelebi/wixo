@@ -1,5 +1,4 @@
 import { lazy } from 'react'
-import { Outlet } from 'react-router-dom'
 
 // project imports
 import MainLayout from '@/layout/MainLayout'
@@ -52,9 +51,6 @@ const Evaluators = Loadable(lazy(() => import('@/views/evaluators')))
 
 // account routing
 const Account = Loadable(lazy(() => import('@/views/account')))
-const NetlifyLiteLandingPage = Loadable(lazy(() => import('@/views/netlifyLite/LandingPage')))
-const NetlifyLiteAdminPage = Loadable(lazy(() => import('@/views/netlifyLite/AdminPage')))
-const NetlifyLiteChatPage = Loadable(lazy(() => import('@/views/netlifyLite/ChatPage')))
 
 // files routing
 const Files = Loadable(lazy(() => import('@/views/files')))
@@ -73,31 +69,15 @@ const Workspaces = Loadable(lazy(() => import('@/views/workspace')))
 const WorkspaceDetails = Loadable(lazy(() => import('@/views/workspace/WorkspaceUsers')))
 const SSOConfig = Loadable(lazy(() => import('@/views/auth/ssoConfig')))
 const SSOSuccess = Loadable(lazy(() => import('@/views/auth/ssoSuccess')))
-const NetlifyLiteLayout = () => <Outlet />
-
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
     path: '/',
-    // Netlify Lite modunda ana yerleşim korunur, ancak kök rota landing page'e gider.
-    element: import.meta.env.VITE_NETLIFY_LITE === 'true' ? <NetlifyLiteLayout /> : <MainLayout />,
+    element: <MainLayout />,
     children: [
         {
             path: '/',
-            // Kök URL açıldığında admin değil landing page görünür.
-            element: import.meta.env.VITE_NETLIFY_LITE === 'true' ? <NetlifyLiteLandingPage /> : <DefaultRedirect />
-        },
-        {
-            path: '/netlify-lite',
-            element: <NetlifyLiteLandingPage />
-        },
-        {
-            path: '/netlify-lite/admin',
-            element: <NetlifyLiteAdminPage />
-        },
-        {
-            path: '/netlify-lite/chat',
-            element: <NetlifyLiteChatPage />
+            element: <DefaultRedirect />
         },
         {
             path: '/chatflows',
