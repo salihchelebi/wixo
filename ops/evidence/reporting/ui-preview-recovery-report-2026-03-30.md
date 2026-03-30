@@ -53,6 +53,7 @@ UI preview hattı, tam monorepo kalite kapıları yerine minimum build zinciri i
 - deploy-checks/ui-preview-workflow-2026-03-30.md
 - routing-checks/root-flowise-routing-2026-03-30.md
 - task-impact/ui-preview-scope-2026-03-30.md
+- env-checks/root-config-fetch-chain-2026-03-30.md
 
 ## 8. Checks still uncertain
 - github_netlify_repo_linkage

@@ -35,6 +35,10 @@
                 {
                     "id": "routing-checks/root-flowise-routing-2026-03-30.md",
                     "type": "source"
+                },
+                {
+                    "id": "env-checks/root-config-fetch-chain-2026-03-30.md",
+                    "type": "command"
                 }
             ],
             "fingerprint": "file:netlify.toml",

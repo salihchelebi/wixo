@@ -1,14 +1,19 @@
 exports.handler = async (event) => {
     try {
+        const proxyPath = event.pathParameters?.splat || ''
         const baseUrl = process.env.FLOWISE_API_BASE_URL || process.env.VITE_API_BASE_URL
         if (!baseUrl) {
+            if (proxyPath === 'v1/settings') {
+                return jsonResponse(200, {
+                    PLATFORM_TYPE: 'openSource'
+                })
+            }
             return jsonResponse(500, {
                 error: 'FLOWISE_API_BASE_URL veya VITE_API_BASE_URL tanımlanmadı.'
             })
         }
 
         const cleanBase = baseUrl.replace(/\/$/, '')
-        const proxyPath = event.pathParameters?.splat || ''
         const query = buildQueryString(event.queryStringParameters)
         const upstreamUrl = `${cleanBase}/api/${proxyPath}${query}`
 

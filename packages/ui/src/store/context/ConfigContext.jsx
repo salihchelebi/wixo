@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { createContext, useContext, useEffect, useState } from 'react'
 
 const ConfigContext = createContext()
+const OPEN_SOURCE_FALLBACK = { PLATFORM_TYPE: 'openSource' }
 
 export const ConfigProvider = ({ children }) => {
     const [config, setConfig] = useState({})
@@ -38,7 +39,13 @@ export const ConfigProvider = ({ children }) => {
                 setLoading(false)
             })
             .catch((error) => {
-                console.error('Error fetching data:', error)
+                const statusCode = error?.response?.status ?? 'no-response'
+                const endpoint = error?.config?.url || '/api/v1/settings'
+                console.error(`Error fetching data: settings endpoint failed [${statusCode}] ${endpoint}`, error)
+                setConfig(OPEN_SOURCE_FALLBACK)
+                setOpenSource(true)
+                setEnterpriseLicensed(false)
+                setCloudLicensed(false)
                 setLoading(false)
             })
     }, [])
