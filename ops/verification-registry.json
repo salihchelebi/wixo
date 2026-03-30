@@ -12,7 +12,7 @@
       "notes": "Vite outDir is ./build and netlify publish path is packages/ui/build.",
       "evidence": [
         {
-          "id": "routing-checks/build-publish-alignment-2026-03-29.md",
+          "id": "routing-checks/build-publish-path-alignment-2026-03-30.md",
           "type": "source+command"
         }
       ],
@@ -29,29 +29,31 @@
     },
     "netlify_function_route_mapping": {
       "status": "PASSED",
-      "notes": "API redirects map to wixoo/functions handlers including supabase-flow.",
+      "notes": "API redirects include /api/v1/* -> flowise-api-proxy and legacy admin/chat/supabase mappings via /.netlify/functions.",
       "evidence": [
         {
-          "id": "routing-checks/function-route-map-2026-03-29.md",
+          "id": "routing-checks/netlify_function_route_mapping-2026-03-30.md",
           "type": "source"
         }
       ],
       "fingerprint": "file:netlify.toml",
       "dependsOn": [
         "netlify.toml",
-        "wixoo/functions/supabase-flow.js"
+        "wixoo/functions/supabase-flow.js",
+        "wixoo/functions/flowise-api-proxy.js"
       ],
       "recheckTriggers": [
         "netlify.toml",
-        "wixoo/functions/**"
+        "wixoo/functions/**",
+        "packages/ui/src/store/constant.js"
       ]
     },
     "supabase_server_side_secret_usage": {
       "status": "PASSED",
-      "notes": "SUPABASE_SERVICE_ROLE_KEY is read in server-side helper and not embedded in UI source.",
+      "notes": "SUPABASE_SERVICE_ROLE_KEY remains server-side only; UI uses API base URL without embedding service role key.",
       "evidence": [
         {
-          "id": "env-checks/server-secret-boundary-2026-03-29.md",
+          "id": "env-checks/supabase_server_side_secret_usage-2026-03-30.md",
           "type": "source"
         }
       ],
@@ -67,16 +69,17 @@
     },
     "local_function_smoke_behavior": {
       "status": "PASSED",
-      "notes": "Local direct invocation proved method guard and controlled error behavior.",
+      "notes": "Local invocations proved supabase-flow guard/error path and flowise-api-proxy forwarding behavior.",
       "evidence": [
         {
-          "id": "preview-checks/local-function-smoke-2026-03-29.md",
+          "id": "preview-checks/local_function_smoke_behavior-2026-03-30.md",
           "type": "command"
         }
       ],
       "fingerprint": "command:node invoke supabase-flow",
       "dependsOn": [
-        "wixoo/functions/supabase-flow.js"
+        "wixoo/functions/supabase-flow.js",
+        "wixoo/functions/flowise-api-proxy.js"
       ],
       "recheckTriggers": [
         "wixoo/functions/supabase-flow.js",
@@ -86,7 +89,12 @@
     "github_netlify_repo_linkage": {
       "status": "UNCERTAIN",
       "notes": "Cannot verify Netlify project linkage/production branch from local repo-only environment.",
-      "evidence": [],
+      "evidence": [
+        {
+          "id": "production-checks/github_netlify_repo_linkage-2026-03-30.md",
+          "type": "platform-log"
+        }
+      ],
       "fingerprint": null,
       "dependsOn": [
         "platform:github",
@@ -99,7 +107,12 @@
     "production_runtime_reachability": {
       "status": "UNCERTAIN",
       "notes": "No live Netlify deploy URL verification available in this environment.",
-      "evidence": [],
+      "evidence": [
+        {
+          "id": "production-checks/production_runtime_reachability-2026-03-30.md",
+          "type": "platform-log"
+        }
+      ],
       "fingerprint": null,
       "dependsOn": [
         "platform:netlify-deploy"
