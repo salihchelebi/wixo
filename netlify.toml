@@ -5,7 +5,6 @@ functions = "wixoo/functions"
 
 [build.environment]
 NODE_VERSION = "18.15.0"
-VITE_NETLIFY_LITE = "false"
 
 [[redirects]]
 from = "/api/v1/*"

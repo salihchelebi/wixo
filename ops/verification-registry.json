@@ -14,6 +14,10 @@
                 {
                     "id": "routing-checks/build-publish-path-alignment-2026-03-30.md",
                     "type": "source+command"
+                },
+                {
+                    "id": "deploy-checks/ui-preview-workflow-2026-03-30.md",
+                    "type": "source+command"
                 }
             ],
             "fingerprint": "files:packages/ui/vite.config.js|netlify.toml",
@@ -26,6 +30,10 @@
             "evidence": [
                 {
                     "id": "routing-checks/netlify_function_route_mapping-2026-03-30.md",
+                    "type": "source"
+                },
+                {
+                    "id": "routing-checks/root-flowise-routing-2026-03-30.md",
                     "type": "source"
                 }
             ],
