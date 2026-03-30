@@ -6,19 +6,13 @@
 
 FROM node:20-alpine
 
-# Install system dependencies and build tools
+# Install minimal runtime dependencies for UI preview workflows.
 RUN apk update && \
     apk add --no-cache \
         libc6-compat \
-        python3 \
-        make \
-        g++ \
-        build-base \
-        cairo-dev \
-        pango-dev \
-        chromium \
-        curl && \
-    npm install -g pnpm
+        chromium && \
+    corepack enable && \
+    corepack prepare pnpm@10.26.0 --activate
 
 ENV PUPPETEER_SKIP_DOWNLOAD=true
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
