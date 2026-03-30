@@ -5,31 +5,32 @@ functions = "wixoo/functions"
 
 [build.environment]
 NODE_VERSION = "18.15.0"
-VITE_NETLIFY_LITE = "true"
+VITE_API_BASE_URL = "/.netlify/functions/flowise-api-proxy"
+VITE_NETLIFY_LITE = "false"
+
+[[redirects]]
+from = "/api/v1/*"
+to = "/.netlify/functions/flowise-api-proxy/v1/:splat"
+status = 200
 
 [[redirects]]
 from = "/api/admin-config"
-to = "/.wixoo/functions/admin-config"
+to = "/.netlify/functions/admin-config"
 status = 200
 
 [[redirects]]
 from = "/api/chat"
-to = "/.wixoo/functions/chat"
+to = "/.netlify/functions/chat"
 status = 200
 
 [[redirects]]
 from = "/api/admin-login"
-to = "/.wixoo/functions/admin-login"
+to = "/.netlify/functions/admin-login"
 status = 200
 
 [[redirects]]
 from = "/api/admin-session"
-to = "/.wixoo/functions/admin-session"
-status = 200
-
-[[redirects]]
-from = "/api/supabase-flow"
-to = "/.wixoo/functions/supabase-flow"
+to = "/.netlify/functions/admin-session"
 status = 200
 
 [[redirects]]
