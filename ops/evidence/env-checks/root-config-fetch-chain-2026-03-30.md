@@ -13,6 +13,6 @@ sourceLocation:
 relatedChecks:
   - netlify_function_route_mapping
   - build_publish_path_alignment
-summary: Root yüklenişinde ilk çağrı ConfigContext içinden `platformsettingsApi.getSettings()` ile `/api/v1/settings` endpoint'ine gidiyor. Preview'da upstream env yoksa proxy bu çağrıyı daha önce 500'e düşürüp config zincirini kırıyordu. `v1/settings` için open-source fallback 200 dönecek şekilde proxy ve ConfigContext fail-soft akışı eklendi.
-conclusion: İlk kritik hata zinciri kontrol altına alındı; root shell config fetch başarısızlığında da render edebilir duruma geldi.
+summary: Root yüklenişinde ilk çağrı ConfigContext içinden `platformsettingsApi.getSettings()` ile `/api/v1/settings` endpoint'ine gidiyor. Preview'da upstream env yoksa proxy bu çağrıyı daha önce 500'e düşürüp config zincirini kırıyordu. `v1/settings` için open-source fallback 200 ve diğer `/api/v1/*` çağrıları için boş JSON 200 dönecek şekilde proxy fail-soft genişletildi; ConfigContext de open-source fallback ile loading kilidini kırıyor.
+conclusion: İlk kritik hata zinciri kontrol altına alındı; upstream yokken bile root shell ve config bağımlı UI akışı fail-soft devam ediyor.
 fingerprintBasis: request-chain+local-proxy-output(2026-03-30)

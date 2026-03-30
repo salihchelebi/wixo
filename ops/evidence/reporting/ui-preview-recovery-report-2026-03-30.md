@@ -65,3 +65,8 @@ UI preview hattı, tam monorepo kalite kapıları yerine minimum build zinciri i
 ## 10. Next required platform-side verification
 - Netlify preview URL ana sayfa ve `/chatflows` ekran görüntüleri.
 - Netlify environment ekranında `VITE_NETLIFY_LITE` unset doğrulaması.
+
+
+## 11. Root config fail-soft update
+- `flowise-api-proxy` upstream yokken `/api/v1/settings` için open-source config, diğer `/api/v1/*` için boş JSON 200 döndürür.
+- `ConfigContext` settings fetch hata aldığında open-source fallback ile loading kilidini bırakır.

@@ -8,9 +8,7 @@ exports.handler = async (event) => {
                     PLATFORM_TYPE: 'openSource'
                 })
             }
-            return jsonResponse(500, {
-                error: 'FLOWISE_API_BASE_URL veya VITE_API_BASE_URL tanımlanmadı.'
-            })
+            return jsonResponse(200, {})
         }
 
         const cleanBase = baseUrl.replace(/\/$/, '')
