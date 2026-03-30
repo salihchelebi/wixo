@@ -8,6 +8,8 @@ exports.handler = async (event) => {
         const baseUrl = process.env.FLOWISE_API_BASE_URL || process.env.VITE_API_BASE_URL
 
         if (!baseUrl) {
+            // DEBUG FALLBACK (Netlify preview): keep Flowise UI from crashing when upstream API is not configured.
+            // Remove once FLOWISE_API_BASE_URL points to a real Flowise server.
             if (proxyPath === 'v1/settings') {
                 return jsonResponse(200, {
                     PLATFORM_TYPE: 'openSource'
@@ -22,8 +24,20 @@ exports.handler = async (event) => {
 
             if (proxyPath === 'v1/auth/login') {
                 const credentials = parseJsonBody(event)
-                const expectedEmail = process.env.ADMIN_EMAIL || process.env.ADMIN_USER_NAME
-                const expectedPassword = process.env.ADMIN_PASSWORD
+                const expectedEmail = pickFirstEnv([
+                    'ADMIN_EMAIL',
+                    'ADMIN_USER_NAME',
+                    'ADMIN_USERNAME',
+                    'FLOWISE_ADMIN_EMAIL',
+                    'NETLIFY_ADMIN_EMAIL',
+                    'user'
+                ])
+                const expectedPassword = pickFirstEnv([
+                    'ADMIN_PASSWORD',
+                    'FLOWISE_ADMIN_PASSWORD',
+                    'NETLIFY_ADMIN_PASSWORD',
+                    'PASSWORD'
+                ])
 
                 if (!expectedEmail || !expectedPassword) {
                     return jsonResponse(401, {
@@ -41,6 +55,42 @@ exports.handler = async (event) => {
                 }
 
                 return jsonResponse(200, buildLocalAdminLoginPayload(expectedEmail))
+            }
+
+            if (proxyPath === 'v1/apikey') {
+                return jsonResponse(200, { data: [], total: 0 })
+            }
+
+            if (proxyPath === 'v1/variables') {
+                return jsonResponse(200, { data: [], total: 0 })
+            }
+
+            if (proxyPath === 'v1/credentials') {
+                return jsonResponse(200, [])
+            }
+
+            if (proxyPath === 'v1/components-credentials') {
+                return jsonResponse(200, [])
+            }
+
+            if (proxyPath === 'v1/assistants' || proxyPath.startsWith('v1/assistants?')) {
+                return jsonResponse(200, [])
+            }
+
+            if (proxyPath.startsWith('v1/assistants/components/')) {
+                return jsonResponse(200, [])
+            }
+
+            if (proxyPath.startsWith('v1/marketplaces/')) {
+                return jsonResponse(200, [])
+            }
+
+            if (proxyPath === 'v1/nodes') {
+                return jsonResponse(200, [])
+            }
+
+            if (proxyPath === 'v1/chatflows') {
+                return jsonResponse(200, { data: [], total: 0 })
             }
 
             return jsonResponse(200, {
@@ -152,6 +202,16 @@ function buildLocalAdminLoginPayload(email) {
         features: [],
         token: 'local-preview-token'
     }
+}
+
+function pickFirstEnv(keys = []) {
+    for (const key of keys) {
+        const value = process.env[key]
+        if (typeof value === 'string' && value.trim()) {
+            return value.trim()
+        }
+    }
+    return ''
 }
 
 function jsonResponse(statusCode, body) {
