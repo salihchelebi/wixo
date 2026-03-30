@@ -93,7 +93,7 @@ export default function NetlifyLiteChatPage() {
 
                     <Typography variant='h5'>Supabase Function Akışı</Typography>
                     <Button variant='outlined' onClick={onSupabaseFlow} disabled={!message || supabaseStatus === 'loading'}>
-                        Supabase'e Kaydet
+                        Supabase&apos;e Kaydet
                     </Button>
                     {supabaseStatus === 'loading' && <Alert severity='info'>Yükleniyor...</Alert>}
                     {supabaseStatus === 'success' && <Alert severity='success'>{supabaseResult}</Alert>}
