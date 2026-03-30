@@ -25,25 +25,28 @@ exports.handler = async (event) => {
 
             if (proxyPath === 'v1/auth/login') {
                 const credentials = parseJsonBody(event)
-                const expectedEmail = process.env.ADMIN_EMAIL || process.env.ADMIN_USER_NAME
-                const expectedPassword = process.env.ADMIN_PASSWORD
+                const loginCandidates = [process.env.ADMIN_EMAIL, process.env.ADMIN_USER_NAME]
+                    .map(normalizeEnvValue)
+                    .filter(Boolean)
+                const expectedPassword = normalizeEnvValue(process.env.ADMIN_PASSWORD)
 
-                if (!expectedEmail || !expectedPassword) {
+                if (!loginCandidates.length || !expectedPassword) {
                     return jsonResponse(401, {
-                        message: 'Preview admin credentials are not configured.'
+                        message: 'Preview admin credentials are not configured in Netlify environment variables.'
                     })
                 }
 
-                const isValidEmail = credentials.email === expectedEmail || credentials.username === expectedEmail
-                const isValidPassword = credentials.password === expectedPassword
+                const submittedIdentity = normalizeIdentity(credentials.email || credentials.username)
+                const isValidIdentity = loginCandidates.some((candidate) => normalizeIdentity(candidate) === submittedIdentity)
+                const isValidPassword = normalizeEnvValue(credentials.password) === expectedPassword
 
-                if (!isValidEmail || !isValidPassword) {
+                if (!isValidIdentity || !isValidPassword) {
                     return jsonResponse(401, {
                         message: 'Invalid email or password.'
                     })
                 }
 
-                return jsonResponse(200, buildLocalAdminLoginPayload(expectedEmail))
+                return jsonResponse(200, buildLocalAdminLoginPayload(loginCandidates[0]))
             }
 
             return jsonResponse(200, {
@@ -155,6 +158,17 @@ function buildLocalAdminLoginPayload(email) {
         features: [],
         token: 'local-preview-token'
     }
+}
+
+function normalizeEnvValue(value) {
+    if (typeof value !== 'string') {
+        return ''
+    }
+    return value.trim().replace(/^"(.*)"$/, '$1').replace(/^'(.*)'$/, '$1').trim()
+}
+
+function normalizeIdentity(value) {
+    return normalizeEnvValue(value).toLowerCase()
 }
 
 function jsonResponse(statusCode, body) {
