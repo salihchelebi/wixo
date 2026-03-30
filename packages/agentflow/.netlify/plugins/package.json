@@ -1,0 +1,7 @@
+{
+  "name": "agentflow-netlify-plugins",
+  "private": true,
+  "dependencies": {
+    "buildhooks": "file:../../../buildhooks"
+  }
+}

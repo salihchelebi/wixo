@@ -14,10 +14,33 @@ exports.handler = async (event) => {
                 })
             }
 
-            if (proxyPath === 'v1/resolve-login') {
+            if (proxyPath === 'v1/auth/resolve' || proxyPath === 'v1/resolve-login') {
                 return jsonResponse(200, {
                     redirectUrl: '/signin'
                 })
+            }
+
+            if (proxyPath === 'v1/auth/login') {
+                const credentials = parseJsonBody(event)
+                const expectedEmail = process.env.ADMIN_EMAIL || process.env.ADMIN_USER_NAME
+                const expectedPassword = process.env.ADMIN_PASSWORD
+
+                if (!expectedEmail || !expectedPassword) {
+                    return jsonResponse(401, {
+                        message: 'Preview admin credentials are not configured.'
+                    })
+                }
+
+                const isValidEmail = credentials.email === expectedEmail || credentials.username === expectedEmail
+                const isValidPassword = credentials.password === expectedPassword
+
+                if (!isValidEmail || !isValidPassword) {
+                    return jsonResponse(401, {
+                        message: 'Invalid email or password.'
+                    })
+                }
+
+                return jsonResponse(200, buildLocalAdminLoginPayload(expectedEmail))
             }
 
             return jsonResponse(200, {
@@ -101,6 +124,34 @@ function buildQueryString(queryStringParameters) {
 
 function canHaveBody(method) {
     return method !== 'GET' && method !== 'HEAD'
+}
+
+function parseJsonBody(event) {
+    if (!event?.body) {
+        return {}
+    }
+
+    const rawBody = event.isBase64Encoded ? Buffer.from(event.body, 'base64').toString('utf8') : event.body
+    try {
+        return JSON.parse(rawBody)
+    } catch {
+        return {}
+    }
+}
+
+function buildLocalAdminLoginPayload(email) {
+    return {
+        id: 'local-preview-admin',
+        email,
+        name: 'Preview Admin',
+        status: 'active',
+        role: 'admin',
+        isSSO: false,
+        isOrganizationAdmin: true,
+        permissions: ['*'],
+        features: [],
+        token: 'local-preview-token'
+    }
 }
 
 function jsonResponse(statusCode, body) {

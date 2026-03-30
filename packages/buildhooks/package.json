@@ -1,0 +1,6 @@
+{
+  "name": "buildhooks",
+  "version": "0.0.0-local",
+  "private": true,
+  "main": "index.js"
+}

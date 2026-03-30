@@ -267,6 +267,8 @@ importers:
         specifier: ^6.0.4
         version: 6.0.4(typescript@5.5.2)
 
+  packages/buildhooks: {}
+
   packages/components:
     dependencies:
       '@anthropic-ai/sdk':

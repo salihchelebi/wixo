@@ -125,3 +125,8 @@ apps/*/
 
 # Wixoo local state
 .wixoo/
+
+# Keep agentflow netlify plugin dependency manifest under version control
+!packages/agentflow/.netlify/
+!packages/agentflow/.netlify/plugins/
+!packages/agentflow/.netlify/plugins/package.json
