@@ -1,12 +1,17 @@
-# Bu yapı hafif prototipi Netlify'de UI build + functions olarak minimum riskle yayınlamak için eklendi.
 [build]
 command = "corepack prepare pnpm@10.26.0 --activate && pnpm --filter flowise-ui build"
 publish = "packages/ui/build"
-functions = "netlify/functions"
+functions = "wixoo/functions"
 
 [build.environment]
-# Bu değişken Netlify deployunda kök rota davranışını hafif prototip admin ekranına sabitler.
-VITE_NETLIFY_LITE = "true"
+NODE_VERSION = "18.15.0"
+VITE_API_BASE_URL = "/.netlify/functions/flowise-api-proxy"
+VITE_NETLIFY_LITE = "false"
+
+[[redirects]]
+from = "/api/v1/*"
+to = "/.netlify/functions/flowise-api-proxy"
+status = 200
 
 [[redirects]]
 from = "/api/admin-config"
@@ -26,6 +31,11 @@ status = 200
 [[redirects]]
 from = "/api/admin-session"
 to = "/.netlify/functions/admin-session"
+status = 200
+
+[[redirects]]
+from = "/api/supabase-flow"
+to = "/.netlify/functions/supabase-flow"
 status = 200
 
 [[redirects]]
