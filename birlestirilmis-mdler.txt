@@ -1,0 +1,1266 @@
+﻿BIRLESTIRILMIS MARKDOWN DOSYALARI
+Olusturma Tarihi: 2026-03-29 17:34:47
+Kok Klasor: C:\Users\salih\desktop\wixo
+
+====================================================================================================
+DOSYA: README.md
+TAM YOL: C:\Users\salih\desktop\wixo\README.md
+====================================================================================================
+
+<!-- markdownlint-disable MD030 -->
+
+<p align="center">
+<img src="https://github.com/FlowiseAI/Flowise/blob/main/images/flowise_white.svg#gh-light-mode-only">
+<img src="https://github.com/FlowiseAI/Flowise/blob/main/images/flowise_dark.svg#gh-dark-mode-only">
+</p>
+
+<div align="center">
+
+[![Release Notes](https://img.shields.io/github/release/FlowiseAI/Flowise)](https://github.com/FlowiseAI/Flowise/releases)
+[![Discord](https://img.shields.io/discord/1087698854775881778?label=Discord&logo=discord)](https://discord.gg/jbaHfsRVBW)
+[![Twitter Follow](https://img.shields.io/twitter/follow/FlowiseAI?style=social)](https://twitter.com/FlowiseAI)
+[![GitHub star chart](https://img.shields.io/github/stars/FlowiseAI/Flowise?style=social)](https://star-history.com/#FlowiseAI/Flowise)
+[![GitHub fork](https://img.shields.io/github/forks/FlowiseAI/Flowise?style=social)](https://github.com/FlowiseAI/Flowise/fork)
+
+English | [繁體中文](./i18n/README-TW.md) | [简体中文](./i18n/README-ZH.md) | [日本語](./i18n/README-JA.md) | [한국어](./i18n/README-KR.md)
+
+</div>
+
+<h3>Build AI Agents, Visually</h3>
+<a href="https://github.com/FlowiseAI/Flowise">
+<img width="100%" src="https://github.com/FlowiseAI/Flowise/blob/main/images/flowise_agentflow.gif?raw=true"></a>
+
+## 📚 Table of Contents
+
+-   [⚡ Quick Start](#-quick-start)
+-   [🐳 Docker](#-docker)
+-   [👨‍💻 Developers](#-developers)
+-   [🌱 Env Variables](#-env-variables)
+-   [📖 Documentation](#-documentation)
+-   [🌐 Self Host](#-self-host)
+-   [☁️ Flowise Cloud](#️-flowise-cloud)
+-   [🙋 Support](#-support)
+-   [🙌 Contributing](#-contributing)
+-   [📄 License](#-license)
+
+## ⚡Quick Start
+
+Download and Install [NodeJS](https://nodejs.org/en/download) >= 18.15.0
+
+1. Install Flowise
+    ```bash
+    npm install -g flowise
+    ```
+2. Start Flowise
+
+    ```bash
+    npx flowise start
+    ```
+
+3. Open [http://localhost:3000](http://localhost:3000)
+
+## 🐳 Docker
+
+### Docker Compose
+
+1. Clone the Flowise project
+2. Go to `docker` folder at the root of the project
+3. Copy `.env.example` file, paste it into the same location, and rename to `.env` file
+4. `docker compose up -d`
+5. Open [http://localhost:3000](http://localhost:3000)
+6. You can bring the containers down by `docker compose stop`
+
+### Docker Image
+
+1. Build the image locally:
+
+    ```bash
+    docker build --no-cache -t flowise .
+    ```
+
+2. Run image:
+
+    ```bash
+    docker run -d --name flowise -p 3000:3000 flowise
+    ```
+
+3. Stop image:
+
+    ```bash
+    docker stop flowise
+    ```
+
+## 👨‍💻 Developers
+
+Flowise has 3 different modules in a single mono repository.
+
+-   `server`: Node backend to serve API logics
+-   `ui`: React frontend
+-   `components`: Third-party nodes integrations
+-   `api-documentation`: Auto-generated swagger-ui API docs from express
+
+### Prerequisite
+
+-   Install [PNPM](https://pnpm.io/installation)
+    ```bash
+    npm i -g pnpm
+    ```
+
+### Setup
+
+1.  Clone the repository:
+
+    ```bash
+    git clone https://github.com/FlowiseAI/Flowise.git
+    ```
+
+2.  Go into repository folder:
+
+    ```bash
+    cd Flowise
+    ```
+
+3.  Install all dependencies of all modules:
+
+    ```bash
+    pnpm install
+    ```
+
+4.  Build all the code:
+
+    ```bash
+    pnpm build
+    ```
+
+    <details>
+    <summary>Exit code 134 (JavaScript heap out of memory)</summary>  
+    If you get this error when running the above `build` script, try increasing the Node.js heap size and run the script again:
+
+    ```bash
+    # macOS / Linux / Git Bash
+    export NODE_OPTIONS="--max-old-space-size=4096"
+
+    # Windows PowerShell
+    $env:NODE_OPTIONS="--max-old-space-size=4096"
+
+    # Windows CMD
+    set NODE_OPTIONS=--max-old-space-size=4096
+    ```
+
+    Then run:
+
+    ```bash
+    pnpm build
+    ```
+
+    </details>
+
+5.  Start the app:
+
+    ```bash
+    pnpm start
+    ```
+
+    You can now access the app on [http://localhost:3000](http://localhost:3000)
+
+6.  For development build:
+
+    -   Create `.env` file and specify the `VITE_PORT` (refer to `.env.example`) in `packages/ui`
+    -   Create `.env` file and specify the `PORT` (refer to `.env.example`) in `packages/server`
+    -   Run:
+
+        ```bash
+        pnpm dev
+        ```
+
+    Any code changes will reload the app automatically on [http://localhost:8080](http://localhost:8080)
+
+## 🌱 Env Variables
+
+Flowise supports different environment variables to configure your instance. You can specify the following variables in the `.env` file inside `packages/server` folder. Read [more](https://github.com/FlowiseAI/Flowise/blob/main/CONTRIBUTING.md#-env-variables)
+
+## 📖 Documentation
+
+You can view the Flowise Docs [here](https://docs.flowiseai.com/)
+
+## 🌐 Self Host
+
+Deploy Flowise self-hosted in your existing infrastructure, we support various [deployments](https://docs.flowiseai.com/configuration/deployment)
+
+-   [AWS](https://docs.flowiseai.com/configuration/deployment/aws)
+-   [Azure](https://docs.flowiseai.com/configuration/deployment/azure)
+-   [Digital Ocean](https://docs.flowiseai.com/configuration/deployment/digital-ocean)
+-   [GCP](https://docs.flowiseai.com/configuration/deployment/gcp)
+-   [Alibaba Cloud](https://computenest.console.aliyun.com/service/instance/create/default?type=user&ServiceName=Flowise社区版)
+-   <details>
+      <summary>Others</summary>
+
+    -   [Railway](https://docs.flowiseai.com/configuration/deployment/railway)
+
+        [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/pn4G8S?referralCode=WVNPD9)
+
+    -   [Northflank](https://northflank.com/stacks/deploy-flowiseai)
+
+        [![Deploy to Northflank](https://assets.northflank.com/deploy_to_northflank_smm_36700fb050.svg)](https://northflank.com/stacks/deploy-flowiseai)
+
+    -   [Render](https://docs.flowiseai.com/configuration/deployment/render)
+
+        [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://docs.flowiseai.com/configuration/deployment/render)
+
+    -   [HuggingFace Spaces](https://docs.flowiseai.com/deployment/hugging-face)
+
+        <a href="https://huggingface.co/spaces/FlowiseAI/Flowise"><img src="https://huggingface.co/datasets/huggingface/badges/raw/main/open-in-hf-spaces-sm.svg" alt="HuggingFace Spaces"></a>
+
+    -   [Elestio](https://elest.io/open-source/flowiseai)
+
+        [![Deploy on Elestio](https://elest.io/images/logos/deploy-to-elestio-btn.png)](https://elest.io/open-source/flowiseai)
+
+    -   [Sealos](https://template.sealos.io/deploy?templateName=flowise)
+
+        [![Deploy on Sealos](https://sealos.io/Deploy-on-Sealos.svg)](https://template.sealos.io/deploy?templateName=flowise)
+
+    -   [RepoCloud](https://repocloud.io/details/?app_id=29)
+
+        [![Deploy on RepoCloud](https://d16t0pc4846x52.cloudfront.net/deploy.png)](https://repocloud.io/details/?app_id=29)
+
+      </details>
+
+## ☁️ Flowise Cloud
+
+Get Started with [Flowise Cloud](https://flowiseai.com/).
+
+## 🙋 Support
+
+Feel free to ask any questions, raise problems, and request new features in [Discussion](https://github.com/FlowiseAI/Flowise/discussions).
+
+## 🙌 Contributing
+
+Thanks go to these awesome contributors
+
+<a href="https://github.com/FlowiseAI/Flowise/graphs/contributors">
+<img src="https://contrib.rocks/image?repo=FlowiseAI/Flowise" />
+</a><br><br>
+
+See [Contributing Guide](CONTRIBUTING.md). Reach out to us at [Discord](https://discord.gg/jbaHfsRVBW) if you have any questions or issues.
+
+[![Star History Chart](https://api.star-history.com/svg?repos=FlowiseAI/Flowise&type=Timeline)](https://star-history.com/#FlowiseAI/Flowise&Date)
+
+## 📄 License
+
+Source code in this repository is made available under the [Apache License Version 2.0](LICENSE.md).
+
+
+====================================================================================================
+DOSYA: packages/server/README.md
+TAM YOL: C:\Users\salih\desktop\wixo\packages\server\README.md
+====================================================================================================
+
+<!-- markdownlint-disable MD030 -->
+
+# Flowise
+
+English | [中文](./README-ZH.md)
+
+<h3>Build AI Agents, Visually</h3>
+
+![Flowise](https://github.com/FlowiseAI/Flowise/blob/main/images/flowise_agentflow.gif?raw=true)
+
+## ⚡Quick Start
+
+1. Install Flowise
+    ```bash
+    npm install -g flowise
+    ```
+2. Start Flowise
+
+    ```bash
+    npx flowise start
+    ```
+
+3. Open [http://localhost:3000](http://localhost:3000)
+
+## 🌱 Env Variables
+
+Flowise support different environment variables to configure your instance. You can specify the following variables in the `.env` file inside `packages/server` folder. Read [more](https://github.com/FlowiseAI/Flowise/blob/main/CONTRIBUTING.md#-env-variables)
+
+You can also specify the env variables when using `npx`. For example:
+
+```
+npx flowise start --PORT=3000 --DEBUG=true
+```
+
+## 📖 Tests
+
+We use [Cypress](https://github.com/cypress-io) for our e2e testing. If you want to run the test suite in dev mode please follow this guide:
+
+```sh
+cd Flowise/packages/server
+pnpm install
+./node_modules/.bin/cypress install
+pnpm build
+#Only for writing new tests on local dev -> pnpm run cypress:open
+pnpm run e2e
+```
+
+## 📖 Documentation
+
+[Flowise Docs](https://docs.flowiseai.com/)
+
+## 🌐 Self Host
+
+-   [AWS](https://docs.flowiseai.com/deployment/aws)
+-   [Azure](https://docs.flowiseai.com/deployment/azure)
+-   [Digital Ocean](https://docs.flowiseai.com/deployment/digital-ocean)
+-   [GCP](https://docs.flowiseai.com/deployment/gcp)
+-   <details>
+      <summary>Others</summary>
+
+    -   [Railway](https://docs.flowiseai.com/deployment/railway)
+
+        [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/pn4G8S?referralCode=WVNPD9)
+
+    -   [Render](https://docs.flowiseai.com/deployment/render)
+
+        [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://docs.flowiseai.com/deployment/render)
+
+    -   [HuggingFace Spaces](https://docs.flowiseai.com/deployment/hugging-face)
+
+        <a href="https://huggingface.co/spaces/FlowiseAI/Flowise"><img src="https://huggingface.co/datasets/huggingface/badges/raw/main/open-in-hf-spaces-sm.svg" alt="HuggingFace Spaces"></a>
+
+    -   [Elestio](https://elest.io/open-source/flowiseai)
+
+        [![Deploy on Elestio](https://elest.io/images/logos/deploy-to-elestio-btn.png)](https://elest.io/open-source/flowiseai)
+
+    -   [Sealos](https://cloud.sealos.io/?openapp=system-template%3FtemplateName%3Dflowise)
+
+        [![](https://raw.githubusercontent.com/labring-actions/templates/main/Deploy-on-Sealos.svg)](https://cloud.sealos.io/?openapp=system-template%3FtemplateName%3Dflowise)
+
+    -   [RepoCloud](https://repocloud.io/details/?app_id=29)
+
+        [![Deploy on RepoCloud](https://d16t0pc4846x52.cloudfront.net/deploy.png)](https://repocloud.io/details/?app_id=29)
+
+      </details>
+
+## ☁️ Flowise Cloud
+
+[Get Started with Flowise Cloud](https://flowiseai.com/)
+
+## 🙋 Support
+
+Feel free to ask any questions, raise problems, and request new features in [discussion](https://github.com/FlowiseAI/Flowise/discussions)
+
+## 🙌 Contributing
+
+See [contributing guide](https://github.com/FlowiseAI/Flowise/blob/master/CONTRIBUTING.md). Reach out to us at [Discord](https://discord.gg/jbaHfsRVBW) if you have any questions or issues.
+
+## 📄 License
+
+Source code in this repository is made available under the [Apache License Version 2.0](https://github.com/FlowiseAI/Flowise/blob/master/LICENSE.md).
+
+
+====================================================================================================
+DOSYA: packages/ui/README.md
+TAM YOL: C:\Users\salih\desktop\wixo\packages\ui\README.md
+====================================================================================================
+
+<!-- markdownlint-disable MD030 -->
+
+# Flowise UI
+
+English | [中文](./README-ZH.md)
+
+React frontend ui for Flowise.
+
+![Flowise](https://github.com/FlowiseAI/Flowise/blob/main/images/flowise_agentflow.gif?raw=true)
+
+Install:
+
+```bash
+npm i flowise-ui
+```
+
+## License
+
+Source code in this repository is made available under the [Apache License Version 2.0](https://github.com/FlowiseAI/Flowise/blob/master/LICENSE.md).
+
+
+====================================================================================================
+DOSYA: CONTRIBUTING.md
+TAM YOL: C:\Users\salih\desktop\wixo\CONTRIBUTING.md
+====================================================================================================
+
+<!-- markdownlint-disable MD030 -->
+
+# Contributing to Flowise
+
+English | [中文](./i18n/CONTRIBUTING-ZH.md)
+
+We appreciate any form of contributions.
+
+## ⭐ Star
+
+Star and share the [Github Repo](https://github.com/FlowiseAI/Flowise).
+
+## 🙋 Q&A
+
+Search up for any questions in [Q&A section](https://github.com/FlowiseAI/Flowise/discussions/categories/q-a), if you can't find one, don't hesitate to create one. It might helps others that have similar question.
+
+## 🙌 Share Chatflow
+
+Yes! Sharing how you use Flowise is a way of contribution. Export your chatflow as JSON, attach a screenshot and share it in [Show and Tell section](https://github.com/FlowiseAI/Flowise/discussions/categories/show-and-tell).
+
+## 💡 Ideas
+
+Ideas are welcome such as new feature, apps integration, and blockchain networks. Submit in [Ideas section](https://github.com/FlowiseAI/Flowise/discussions/categories/ideas).
+
+## 🐞 Report Bugs
+
+Found an issue? [Report it](https://github.com/FlowiseAI/Flowise/issues/new/choose).
+
+## 👨‍💻 Contribute to Code
+
+Not sure what to contribute? Some ideas:
+
+-   Create new components from `packages/components`
+-   Update existing components such as extending functionality, fixing bugs
+-   Add new chatflow ideas
+
+### Developers
+
+Flowise has 3 different modules in a single mono repository.
+
+-   `server`: Node backend to serve API logics
+-   `ui`: React frontend
+-   `components`: Third-party nodes integrations
+
+#### Prerequisite
+
+-   Install [PNPM](https://pnpm.io/installation). The project is configured to use pnpm v10.
+    ```bash
+    npm i -g pnpm
+    ```
+
+#### Step by step
+
+1. Fork the official [Flowise Github Repository](https://github.com/FlowiseAI/Flowise).
+
+2. Clone your forked repository.
+
+3. Create a new branch, see [guide](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-and-deleting-branches-within-your-repository). Naming conventions:
+
+    - For feature branch: `feature/<Your New Feature>`
+    - For bug fix branch: `bugfix/<Your New Bugfix>`.
+
+4. Switch to the newly created branch.
+
+5. Go into repository folder
+
+    ```bash
+    cd Flowise
+    ```
+
+6. Install all dependencies of all modules:
+
+    ```bash
+    pnpm install
+    ```
+
+7. Build all the code:
+
+    ```bash
+    pnpm build
+    ```
+
+8. Start the app on [http://localhost:3000](http://localhost:3000)
+
+    ```bash
+    pnpm start
+    ```
+
+9. For development:
+
+    - Create `.env` file and specify the `VITE_PORT` (refer to `.env.example`) in `packages/ui`
+    - Create `.env` file and specify the `PORT` (refer to `.env.example`) in `packages/server`
+    - Run
+
+    ```bash
+    pnpm dev
+    ```
+
+    Any changes made in `packages/ui` or `packages/server` will be reflected on [http://localhost:8080](http://localhost:8080)
+
+    For changes made in `packages/components`, run `pnpm build` again to pickup the changes.
+
+10. After making all the changes, run
+
+    ```bash
+    pnpm build
+    ```
+
+    and
+
+    ```bash
+    pnpm start
+    ```
+
+    to make sure everything works fine in production.
+
+11. Commit code and submit Pull Request from forked branch pointing to [Flowise main](https://github.com/FlowiseAI/Flowise/tree/main).
+
+### Testing
+
+-   Unit tests are **co-located** with their source files — a test for `Foo.ts` lives in `Foo.test.ts` in the same directory. This is the standard used across all packages in this repo.
+
+-   Run tests per package:
+
+    ```bash
+    cd packages/server && pnpm test
+    cd packages/components && pnpm test
+    cd packages/agentflow && pnpm test
+    ```
+
+    Or from the repo root using `--filter`:
+
+    ```bash
+    pnpm --filter flowise-components test
+    pnpm --filter @flowiseai/agentflow test
+    pnpm --filter "./packages/server" test # root and server share the same package name.
+    ```
+
+-   Or run all tests from the repo root:
+
+    ```bash
+    pnpm test
+    ```
+
+-   When adding new functionality, place your test file next to the source file it tests:
+
+    ```
+    packages/components/nodes/tools/MyTool/
+    ├── MyTool.ts
+    └── MyTool.test.ts        ← co-located test
+    ```
+
+## 🌱 Env Variables
+
+Flowise support different environment variables to configure your instance. You can specify the following variables in the `.env` file inside `packages/server` folder. Read [more](https://docs.flowiseai.com/environment-variables)
+
+| Variable                             | Description                                                                                                                                                                                                                                                                       | Type                                             | Default                             |
+| ------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ | ----------------------------------- |
+| PORT                                 | The HTTP port Flowise runs on                                                                                                                                                                                                                                                     | Number                                           | 3000                                |
+| CORS_ALLOW_CREDENTIALS               | Enables CORS `Access-Control-Allow-Credentials` when `true`                                                                                                                                                                                                                       | Boolean                                          | false                               |
+| CORS_ORIGINS                         | The allowed origins for all cross-origin HTTP calls                                                                                                                                                                                                                               | String                                           |                                     |
+| IFRAME_ORIGINS                       | The allowed origins for iframe src embedding                                                                                                                                                                                                                                      | String                                           |                                     |
+| FLOWISE_FILE_SIZE_LIMIT              | Upload File Size Limit                                                                                                                                                                                                                                                            | String                                           | 50mb                                |
+| DEBUG                                | Print logs from components                                                                                                                                                                                                                                                        | Boolean                                          |                                     |
+| LOG_PATH                             | Location where log files are stored                                                                                                                                                                                                                                               | String                                           | `your-path/Flowise/logs`            |
+| LOG_LEVEL                            | Different levels of logs                                                                                                                                                                                                                                                          | Enum String: `error`, `info`, `verbose`, `debug` | `info`                              |
+| LOG_JSON_SPACES                      | Spaces to beautify JSON logs                                                                                                                                                                                                                                                      |                                                  | 2                                   |
+| TOOL_FUNCTION_BUILTIN_DEP            | NodeJS built-in modules to be used for Custom Tool or Function                                                                                                                                                                                                                    | String                                           |                                     |
+| TOOL_FUNCTION_EXTERNAL_DEP           | External modules to be used for Custom Tool or Function                                                                                                                                                                                                                           | String                                           |                                     |
+| ALLOW_BUILTIN_DEP                    | Allow project dependencies to be used for Custom Tool or Function                                                                                                                                                                                                                 | Boolean                                          | false                               |
+| DATABASE_TYPE                        | Type of database to store the flowise data                                                                                                                                                                                                                                        | Enum String: `sqlite`, `mysql`, `postgres`       | `sqlite`                            |
+| DATABASE_PATH                        | Location where database is saved (When DATABASE_TYPE is sqlite)                                                                                                                                                                                                                   | String                                           | `your-home-dir/.flowise`            |
+| DATABASE_HOST                        | Host URL or IP address (When DATABASE_TYPE is not sqlite)                                                                                                                                                                                                                         | String                                           |                                     |
+| DATABASE_PORT                        | Database port (When DATABASE_TYPE is not sqlite)                                                                                                                                                                                                                                  | String                                           |                                     |
+| DATABASE_USER                        | Database username (When DATABASE_TYPE is not sqlite)                                                                                                                                                                                                                              | String                                           |                                     |
+| DATABASE_PASSWORD                    | Database password (When DATABASE_TYPE is not sqlite)                                                                                                                                                                                                                              | String                                           |                                     |
+| DATABASE_NAME                        | Database name (When DATABASE_TYPE is not sqlite)                                                                                                                                                                                                                                  | String                                           |                                     |
+| DATABASE_SSL_KEY_BASE64              | Database SSL client cert in base64 (takes priority over DATABASE_SSL)                                                                                                                                                                                                             | Boolean                                          | false                               |
+| DATABASE_SSL                         | Database connection overssl (When DATABASE_TYPE is postgre)                                                                                                                                                                                                                       | Boolean                                          | false                               |
+| SECRETKEY_PATH                       | Location where encryption key (used to encrypt/decrypt credentials) is saved                                                                                                                                                                                                      | String                                           | `your-path/Flowise/packages/server` |
+| FLOWISE_SECRETKEY_OVERWRITE          | Encryption key to be used instead of the key stored in SECRETKEY_PATH                                                                                                                                                                                                             | String                                           |                                     |
+| MODEL_LIST_CONFIG_JSON               | File path to load list of models from your local config file                                                                                                                                                                                                                      | String                                           | `/your_model_list_config_file_path` |
+| STORAGE_TYPE                         | Type of storage for uploaded files. default is `local`                                                                                                                                                                                                                            | Enum String: `s3`, `local`, `gcs` ,`azure`       | `local`                             |
+| BLOB_STORAGE_PATH                    | Local folder path where uploaded files are stored when `STORAGE_TYPE` is `local`                                                                                                                                                                                                  | String                                           | `your-home-dir/.flowise/storage`    |
+| S3_STORAGE_BUCKET_NAME               | Bucket name to hold the uploaded files when `STORAGE_TYPE` is `s3`                                                                                                                                                                                                                | String                                           |                                     |
+| S3_STORAGE_ACCESS_KEY_ID             | AWS Access Key                                                                                                                                                                                                                                                                    | String                                           |                                     |
+| S3_STORAGE_SECRET_ACCESS_KEY         | AWS Secret Key                                                                                                                                                                                                                                                                    | String                                           |                                     |
+| S3_STORAGE_REGION                    | Region for S3 bucket                                                                                                                                                                                                                                                              | String                                           |                                     |
+| S3_ENDPOINT_URL                      | Custom Endpoint for S3                                                                                                                                                                                                                                                            | String                                           |                                     |
+| S3_FORCE_PATH_STYLE                  | Set this to true to force the request to use path-style addressing                                                                                                                                                                                                                | Boolean                                          | false                               |
+| GOOGLE_CLOUD_STORAGE_PROJ_ID         | The GCP project id for cloud storage & logging when `STORAGE_TYPE` is `gcs`                                                                                                                                                                                                       | String                                           |                                     |
+| GOOGLE_CLOUD_STORAGE_CREDENTIAL      | The credential key file path when `STORAGE_TYPE` is `gcs`                                                                                                                                                                                                                         | String                                           |                                     |
+| GOOGLE_CLOUD_STORAGE_BUCKET_NAME     | Bucket name to hold the uploaded files when `STORAGE_TYPE` is `gcs`                                                                                                                                                                                                               | String                                           |                                     |
+| GOOGLE_CLOUD_UNIFORM_BUCKET_ACCESS   | Enable uniform bucket level access when `STORAGE_TYPE` is `gcs`                                                                                                                                                                                                                   | Boolean                                          | true                                |
+| AZURE_BLOB_STORAGE_CONNECTION_STRING | Azure Blob Storage connection string when `STORAGE_TYPE` is `azure`. Either this or account name + key is required                                                                                                                                                                | String                                           |                                     |
+| AZURE_BLOB_STORAGE_ACCOUNT_NAME      | Azure storage account name when `STORAGE_TYPE` is `azure`. Required if connection string is not provided                                                                                                                                                                          | String                                           |                                     |
+| AZURE_BLOB_STORAGE_ACCOUNT_KEY       | Azure storage account key when `STORAGE_TYPE` is `azure`. Required if connection string is not provided                                                                                                                                                                           | String                                           |                                     |
+| AZURE_BLOB_STORAGE_CONTAINER_NAME    | Container name to hold the uploaded files when `STORAGE_TYPE` is `azure`                                                                                                                                                                                                          | String                                           |                                     |
+| SHOW_COMMUNITY_NODES                 | Show nodes created by community                                                                                                                                                                                                                                                   | Boolean                                          |                                     |
+| DISABLED_NODES                       | Hide nodes from UI (comma separated list of node names)                                                                                                                                                                                                                           | String                                           |                                     |
+| TRUST_PROXY                          | Configure proxy trust settings for proper IP detection. Values: 'true' (trust all), 'false' (disable), number (hop count), or Express proxy values (e.g., 'loopback', 'linklocal', 'uniquelocal', IP addresses). [Learn More](https://expressjs.com/en/guide/behind-proxies.html) | Boolean/String/Number                            | true                                |
+
+You can also specify the env variables when using `npx`. For example:
+
+```
+npx flowise start --PORT=3000 --DEBUG=true
+```
+
+## 📖 Contribute to Docs
+
+[Flowise Docs](https://github.com/FlowiseAI/FlowiseDocs)
+
+## 🏷️ Pull Request process
+
+A member of the FlowiseAI team will automatically be notified/assigned when you open a pull request. You can also reach out to us on [Discord](https://discord.gg/jbaHfsRVBW).
+
+## 📜 Code of Conduct
+
+This project and everyone participating in it are governed by the Code of Conduct which can be found in the [file](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to hello@flowiseai.com.
+
+
+====================================================================================================
+DOSYA: packages/agentflow/ARCHITECTURE.md
+TAM YOL: C:\Users\salih\desktop\wixo\packages\agentflow\ARCHITECTURE.md
+====================================================================================================
+
+# @flowiseai/agentflow - Architecture
+
+This document describes the internal architecture of the `@flowiseai/agentflow` package.
+
+## Overview
+
+The package follows a **Domain-Driven Modular Architecture** with clear separation of concerns. The goal is to separate low-level UI primitives from high-level business logic to ensure high reusability and easy testing.
+
+```
+src/
+├── index.ts                    # Public Package API ("Public Face")
+├── Agentflow.tsx               # Main component
+├── AgentflowProvider.tsx       # Root provider (composition)
+├── useAgentflow.ts             # Primary public hook
+│
+├── atoms/                      # ⚛️ UI Primitives ("What it looks like" (Dumb))
+├── features/                   # 🧩 Domain Features ("What it does" (Smart))
+├── core/                       # 🧠 Business Logic ("Business Rules" (Types/Logic))
+└── infrastructure/             # 🌐 External Services ("Outside World" (API/Storage))
+```
+
+---
+
+## Directory Structure
+
+### `atoms/` - UI Primitives
+
+**"What it looks like."** Tiny, irreducible UI components with no business logic. These are the building blocks used by features.
+
+```
+atoms/
+├── MainCard.tsx            # Styled card wrapper
+├── NodeInputHandler.tsx    # Form input for node properties
+├── ...                     # Other UI primitives
+└── index.ts                # Central export
+```
+
+**Rules:**
+
+-   Must be "dumb" and stateless
+-   No business logic
+-   No API calls
+-   Stateless or minimal local state
+-   Imported by features, never the reverse
+-   **Forbidden**: Importing from `features/` or `infrastructure/` (except types from `core/types` for prop definitions, design tokens from `core/theme`, and primitives from `core/primitives`)
+
+**Goal:** 100% visual consistency.
+
+---
+
+### `features/` - Domain Features
+
+**"What it does."** Complex, self-contained domain modules (silos) that house the application's core functionality. Each feature owns its components, hooks, and utilities.
+
+```
+features/
+├── canvas/                 # Core ReactFlow canvas
+│   ├── containers/         # Smart components with state/logic
+│   │   ├── AgentFlowNode.tsx
+│   │   ├── AgentFlowEdge.tsx
+│   │   ├── ...             # Other node containers
+│   │   └── index.ts
+│   ├── components/         # Presentational components
+│   │   ├── ConnectionLine.tsx
+│   │   ├── NodeOutputHandles.tsx
+│   │   ├── ...             # Other presentational components
+│   │   └── index.ts
+│   ├── hooks/              # Canvas-related hooks
+│   │   ├── useFlowHandlers.ts
+│   │   ├── useDragAndDrop.ts
+│   │   ├── ...             # Other canvas hooks
+│   │   └── index.ts
+│   ├── styled.ts           # Styled components
+│   └── index.ts            # Public API
+│
+├── node-palette/           # Add nodes drawer
+│   ├── AddNodesDrawer.tsx
+│   ├── search.ts           # Feature-specific utility (private)
+│   ├── ...
+│   └── index.ts
+│
+├── generator/              # AI flow generation
+│   ├── GenerateFlowDialog.tsx
+│   ├── ...
+│   └── index.ts
+│
+└── node-editor/            # Node property editing
+    ├── EditNodeDialog.tsx
+    └── index.ts
+```
+
+**Rules:**
+
+-   Each feature has an `index.ts` gatekeeper
+-   **Features never import from other features directly** - If `canvas` needs logic from `generator`, move that logic to `core/`
+-   Feature-specific utils stay in the feature folder
+-   Styles are co-located with their feature
+-   Use `containers/` for smart components (with state, hooks, side effects)
+-   Use `components/` for presentational components (props in, JSX out)
+
+**Goal:** High cohesion. Should be able to delete a feature folder without breaking others.
+
+---
+
+### `core/` - Business Logic
+
+**"The Brain."** Framework-agnostic logic, types, and utilities. No React, no UI - pure TypeScript. Contains validation schemas, node registries, domain constants, and shared types.
+
+```
+core/
+├── types/                  # Global interfaces (Node, Edge, Flow)
+│   └── index.ts
+├── primitives/             # Domain-free utilities (safe for atoms)
+│   ├── inputDefaults.ts    # getDefaultValueForType
+│   └── index.ts
+├── node-config/            # Node configuration (icons, colors, default types)
+│   ├── nodeIcons.ts        # AGENTFLOW_ICONS, DEFAULT_AGENTFLOW_NODES
+│   └── ...
+├── node-catalog/           # Node catalog and filtering logic
+│   ├── nodeFilters.ts      # filterNodesByComponents, isAgentflowNode
+│   └── ...
+├── theme/                  # Design tokens and MUI theming
+│   ├── tokens.ts           # Color palettes, spacing, shadows
+│   ├── createAgentflowTheme.ts
+│   └── ...
+├── validation/             # Flow validation logic
+│   ├── flowValidation.ts   # validateFlow, validateNode
+│   ├── connectionValidation.ts  # isValidConnectionAgentflowV2
+│   └── ...
+├── utils/                  # Domain-aware utilities (NOT importable by atoms)
+│   ├── nodeFactory.ts      # initNode, getUniqueNodeId
+│   └── ...
+└── index.ts                # Barrel export (use sparingly)
+```
+
+**Rules:**
+
+-   **No React components allowed** - Pure TypeScript only
+-   No browser-specific APIs if possible
+-   No side effects
+-   Pure functions where possible
+-   Can be tested in isolation
+
+#### `core/primitives/` vs `core/utils/`
+
+`core/` contains two utility directories with different import permissions:
+
+-   **`primitives/`** — Domain-free, general-purpose functions with no knowledge of nodes, flows, or any business concept. These are pure data transformations (e.g., computing a default value from a type string). **Safe to import from `atoms/`.**
+-   **`utils/`** — Domain-aware utilities that understand node structures, flow data, or validation logic (e.g., `initNode`, `buildDynamicOutputAnchors`). **Only importable by `features/` and `infrastructure/`.**
+
+When adding a new utility, ask: _"Does this function need to know what a Node or Flow is?"_ If no → `primitives/`. If yes → `utils/`.
+
+**Goal:** To be the framework-agnostic source of truth.
+
+---
+
+### `infrastructure/` - External Services
+
+**"The Outside World."** Handles communication with external systems: data persistence, network requests, and global state management.
+
+```
+infrastructure/
+├── api/                    # API client layer (network requests)
+│   ├── client.ts           # Axios factory
+│   ├── ...                 # Endpoint modules (nodes, chatflows, etc.)
+│   └── index.ts
+│
+└── store/                  # State management
+    ├── AgentflowContext.tsx # Flow state context
+    ├── agentflowReducer.ts # Reducer for flow state actions
+    ├── ...                 # Other contexts (ApiContext, ConfigContext)
+    └── index.ts
+```
+
+**Rules:**
+
+-   All external communication goes here
+-   Contexts are internal (composed in AgentflowProvider)
+-   API hooks live with their API modules
+
+**Goal:** To wrap external dependencies so they can be easily swapped or mocked in tests.
+
+---
+
+## Dependency Flow
+
+**Dependencies must only flow downwards.**
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                  Root Files (Public API)                │
+│    (index.ts, Agentflow.tsx, AgentflowProvider.tsx)     │
+│                   "The Public Face"                     │
+└─────────────────────────────────────────────────────────┘
+                           │
+                           ▼
+┌─────────────────────────────────────────────────────────┐
+│                      features/                          │
+│   (canvas, node-palette, generator, node-editor)        │
+│                   "What it does"                        │
+└─────────────────────────────────────────────────────────┘
+          │                                    │
+          ▼                                    ▼
+┌──────────────────┐              ┌────────────────────────┐
+│      atoms/      │              │    infrastructure/     │
+│  (UI primitives) │              │    (api, store)        │
+│ "What it looks   │              │ "The Outside World"    │
+│     like"        │              │                        │
+└──────────────────┘              └────────────────────────┘
+          │                                    │
+          └──────────────┬─────────────────────┘
+                         ▼
+              ┌─────────────────────┐
+              │        core/        │
+              │  (types, constants, │
+              │   validation, etc.) │
+              │     "The Brain"     │
+              └─────────────────────┘
+```
+
+**Import Rules:**
+
+-   `features` → `atoms`, `infrastructure`, `core` ✅
+-   `infrastructure` → `core` ✅
+-   `atoms` → `core/types`, `core/theme`, and `core/primitives` only ✅
+-   `core` → nothing (leaf node) ✅
+-   **Atoms and Core are "leaf" nodes** - they cannot import from `features/` or `infrastructure/`
+
+---
+
+## Gatekeeper Pattern
+
+Each module exposes only what's needed via its `index.ts`:
+
+```typescript
+// features/canvas/index.ts
+// ✅ Public API
+export const nodeTypes = { ... }
+export const edgeTypes = { ... }
+export { ConnectionLine, AgentflowHeader, createHeaderProps }
+export { useFlowNodes, useFlowHandlers, useDragAndDrop }
+
+// Container components are re-exported for advanced usage
+export { AgentFlowNode, AgentFlowEdge, StickyNote, IterationNode }
+
+// ❌ Internal sub-components stay private within containers/components
+```
+
+This enables:
+
+-   **Encapsulation**: Internal refactoring doesn't break consumers
+-   **Tree-shaking**: Bundlers can eliminate unused code
+-   **Clarity**: Clear contract of what each module provides
+
+---
+
+## Adding a New Feature
+
+1. Create folder under `features/`:
+
+    ```
+    features/my-feature/
+    ├── containers/         # Smart components (optional)
+    │   └── MyContainer.tsx
+    ├── components/         # Presentational components (optional)
+    │   └── MyComponent.tsx
+    ├── hooks/              # Feature-specific hooks (optional)
+    │   └── useMyHook.ts
+    ├── helper.ts           # Feature-specific util
+    └── index.ts            # Public exports only
+    ```
+
+2. Export only what's needed:
+
+    ```typescript
+    // index.ts
+    export { MyContainer } from './containers'
+    export { MyComponent } from './components'
+    export { useMyHook } from './hooks'
+    export type { MyComponentProps } from './components'
+    ```
+
+3. Import from infrastructure/core, never from other features:
+
+    ```typescript
+    // ✅ Good
+    import { useApiContext } from '../../infrastructure/store'
+    import type { NodeData } from '../../core/types'
+
+    // ❌ Bad - cross-feature import
+    import { AgentFlowNode } from '../canvas/containers/AgentFlowNode'
+    ```
+
+---
+
+## Root Files (`src/*.ts`)
+
+**"The Public Face."** The entry point of the package.
+
+-   **`AgentflowProvider.tsx`**: Injects infrastructure (stores/api) into the app
+-   **`Agentflow.tsx`**: The primary component users will drop into their apps
+-   **`useAgentflow.ts`**: Primary public hook for accessing flow state and actions
+-   **`index.ts`**: The "Barrel" that exports the public API for npm
+
+---
+
+## Public API
+
+The package exposes a minimal public API via `src/index.ts`:
+
+```typescript
+// Components
+export { Agentflow } from './Agentflow'
+export { AgentflowProvider } from './AgentflowProvider'
+
+// Hooks
+export { useAgentflow } from './useAgentflow'
+export { useApiContext, useConfigContext, useAgentflowContext } from './infrastructure/store'
+
+// Types
+export type { AgentflowProps, FlowData, NodeData, ... } from './core/types'
+
+// Utilities (for advanced usage)
+export { AGENTFLOW_ICONS, validateFlow, ... } from './core/...'
+```
+
+Everything else is internal implementation detail.
+
+---
+
+## Development Principles
+
+### Barrel Exports
+
+Every directory must have an `index.ts` that acts as a gatekeeper.
+
+**✅ Good:**
+
+```typescript
+import { Button } from '@atoms'
+import { useFlowHandlers } from '@features/canvas'
+```
+
+**❌ Bad:**
+
+```typescript
+// Never deep-link into files
+import { Button } from '@atoms/Button/Button'
+import { useFlowHandlers } from '@features/canvas/hooks/useFlowHandlers'
+```
+
+### Prop Drilling vs. Context
+
+-   **Atoms**: Use props for all configuration
+-   **Features**: Use context/state for shared data
+
+### Naming Convention
+
+| Type        | Convention                | Example                               |
+| ----------- | ------------------------- | ------------------------------------- |
+| Component   | PascalCase.tsx            | `AgentFlowNode.tsx`                   |
+| Hook        | camelCase.ts (use prefix) | `useFlowHandlers.ts`                  |
+| Logic/Types | camelCase.ts              | `flowValidation.ts`, `nodeFilters.ts` |
+| Styles      | kebab-case (co-located)   | `canvas.css`                          |
+
+
+====================================================================================================
+DOSYA: packages/agentflow/README.md
+TAM YOL: C:\Users\salih\desktop\wixo\packages\agentflow\README.md
+====================================================================================================
+
+# @flowiseai/agentflow
+
+[![Version](https://img.shields.io/npm/v/@flowiseai/agentflow)](https://www.npmjs.com/package/@flowiseai/agentflow)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue)](https://github.com/FlowiseAI/Flowise/blob/main/LICENSE.md)
+
+> Embeddable React component for building and visualizing AI agent workflows
+
+## ⚠️ Status
+
+**This package is currently under active development.**
+
+-   🚧 Components are not yet fully functional
+-   ❌ End-to-end functionality is not complete
+-   🔄 Features are still being implemented and tested
+-   ⚡ APIs may change before stable release
+-   📝 Documentation is being updated as development progresses
+
+**Cannot be used in production. For development and testing purposes only.**
+
+## Overview
+
+`@flowiseai/agentflow` is a React-based flow editor for creating AI agent workflows. It provides a visual canvas built on ReactFlow for connecting AI agents, LLMs, tools, and logic nodes.
+
+## Features
+
+-   **Visual Canvas** — Drag-and-drop flow editor built on ReactFlow with zoom, pan, minimap, and fit-to-view controls
+-   **15 Built-in Node Types** — Start, Agent, LLM, Condition, Condition Agent, Human Input, Loop, Direct Reply, Custom Function, Tool, Retriever, Sticky Note, HTTP, Iteration, and Execute Flow
+-   **Node Editor Dialog** — Modal for editing node parameters with dynamic input types (text, number, boolean, dropdown, arrays, async options)
+-   **Rich Text Editor** — TipTap-based editor with syntax highlighting for JavaScript, TypeScript, Python, and JSON (lazy-loaded)
+-   **Specialized Input Components** — Condition builder, messages input (role + content), and structured output schema builder
+-   **AI Flow Generator** — Generate flows from natural language descriptions with model selection
+-   **Flow Validation** — Detects empty flows, missing start nodes, disconnected nodes, cycles, hanging edges, and per-node input errors with visual feedback
+-   **Dark Mode** — Full light/dark theme support via design tokens and CSS variables
+-   **Read-Only Mode** — Disable editing for view-only embedding
+-   **Custom Rendering** — Replace the default header and node palette with your own components via render props
+-   **Imperative API** — Programmatic control via ref (`getFlow`, `validate`, `fitView`, `clear`, `addNode`, `toJSON`)
+-   **Request Interceptor** — Customize outgoing API requests (headers, credentials) via an Axios interceptor callback
+-   **Keyboard Shortcuts** — Cmd/Ctrl+S to save
+
+## Installation
+
+```bash
+pnpm add @flowiseai/agentflow
+```
+
+**Peer Dependencies:**
+
+```bash
+pnpm add react react-dom @mui/material @mui/icons-material @emotion/react @emotion/styled reactflow
+```
+
+## Basic Usage
+
+```tsx
+import { Agentflow } from '@flowiseai/agentflow'
+
+import '@flowiseai/agentflow/flowise.css'
+
+export default function App() {
+    return (
+        <div style={{ width: '100vw', height: '100vh' }}>
+            <Agentflow apiBaseUrl='http://localhost:3000' token='your-api-key' />
+        </div>
+    )
+}
+
+```
+
+### With Initial Flow Data and Callbacks
+
+```tsx
+import { useRef } from 'react'
+
+import { Agentflow, type AgentFlowInstance, type FlowData } from '@flowiseai/agentflow'
+
+import '@flowiseai/agentflow/flowise.css'
+
+export default function App() {
+    const ref = useRef<AgentFlowInstance>(null)
+
+    const initialFlow: FlowData = {
+        nodes: [
+            {
+                id: 'startAgentflow_0',
+                type: 'agentflowNode',
+                position: { x: 100, y: 100 },
+                data: {
+                    id: 'startAgentflow_0',
+                    name: 'startAgentflow',
+                    label: 'Start',
+                    color: '#7EE787',
+                    hideInput: true,
+                    outputAnchors: [{ id: 'startAgentflow_0-output-0', name: 'start', label: 'Start', type: 'start' }]
+                }
+            }
+        ],
+        edges: [],
+        viewport: { x: 0, y: 0, zoom: 1 }
+    }
+
+    return (
+        <div style={{ width: '100vw', height: '100vh' }}>
+            <Agentflow
+                ref={ref}
+                apiBaseUrl='http://localhost:3000'
+                token='your-api-key'
+                initialFlow={initialFlow}
+                onFlowChange={(flow) => console.log('Flow changed:', flow)}
+                onSave={(flow) => console.log('Flow saved:', flow)}
+            />
+        </div>
+    )
+}
+
+```
+
+## Props
+
+<!-- prettier-ignore -->
+| Prop                 | Type                                       | Default        | Description                                                     |
+| -------------------- | ------------------------------------------ | -------------- | --------------------------------------------------------------- |
+| `apiBaseUrl`         | `string`                                   | **(required)** | Flowise API server endpoint                                     |
+| `token`              | `string`                                   | —              | Authentication token for API calls                              |
+| `requestInterceptor` | `(config: InternalAxiosRequestConfig) => InternalAxiosRequestConfig` | — | Customize outgoing API requests (e.g., set `withCredentials`, add headers). The callback receives the full Axios request config — only modify what you need. See [Security: requestInterceptor](#security-requestinterceptor) below. |
+| `initialFlow`        | `FlowData`                                 | —              | Initial flow data to render (uncontrolled — only used on mount) |
+| `components`         | `string[]`                                 | —              | Restrict which node types appear in the palette                 |
+| `onFlowChange`       | `(flow: FlowData) => void`                 | —              | Called when the flow changes (node/edge add, remove, move)      |
+| `onSave`             | `(flow: FlowData) => void`                 | —              | Called when the user triggers a save                            |
+| `onFlowGenerated`    | `(flow: FlowData) => void`                 | —              | Called when a flow is generated via AI                          |
+| `isDarkMode`         | `boolean`                                  | `false`        | Use dark mode theme                                             |
+| `readOnly`           | `boolean`                                  | `false`        | Disable editing (nodes not draggable/connectable)               |
+| `showDefaultHeader`  | `boolean`                                  | `true`         | Show built-in header (ignored if `renderHeader` provided)       |
+| `showDefaultPalette` | `boolean`                                  | `true`         | Show built-in node palette                                      |
+| `enableGenerator`    | `boolean`                                  | `true`         | Show the AI flow generator button                               |
+| `renderHeader`       | `(props: HeaderRenderProps) => ReactNode`  | —              | Custom header renderer                                          |
+| `renderNodePalette`  | `(props: PaletteRenderProps) => ReactNode` | —              | Custom node palette renderer                                    |
+
+### Imperative Methods (via `ref`)
+
+| Method                   | Return Type               | Description                           |
+| ------------------------ | ------------------------- | ------------------------------------- |
+| `getFlow()`              | `FlowData`                | Get current flow data                 |
+| `toJSON()`               | `string`                  | Export flow as JSON string            |
+| `validate()`             | `ValidationResult`        | Validate the current flow             |
+| `fitView()`              | `void`                    | Fit all nodes into view               |
+| `clear()`                | `void`                    | Remove all nodes and edges            |
+| `addNode(nodeData)`      | `void`                    | Add a node (`Partial<FlowNode>`)      |
+| `getReactFlowInstance()` | `ReactFlowInstance\|null` | Get the underlying ReactFlow instance |
+
+### Security: `requestInterceptor`
+
+The `requestInterceptor` callback runs inside the Axios request pipeline and has access to the full request configuration, including authentication headers. This is the same trust model as any other callback prop (e.g., `onSave`, `renderHeader`) — the host application developer supplies the function and is responsible for its behavior.
+
+**Guidelines for consumers:**
+
+-   Only pass **trusted, developer-authored** functions. Never use dynamically evaluated code (`eval`, `new Function`, etc.) or user-generated input as the interceptor.
+-   Follow the **principle of least privilege** — only read or modify the specific config properties you need (e.g., `withCredentials`, custom headers).
+-   If the interceptor throws, the error is caught, logged, and the **original unmodified config** is used so the request still proceeds safely.
+
+### Node Types
+
+The following node types are available in the palette by default. Use the `components` prop to restrict which types are shown.
+
+<!-- prettier-ignore -->
+| Node Type                  | Description                          |
+| -------------------------- | ------------------------------------ |
+| `startAgentflow`           | Entry point (required, always shown) |
+| `agentAgentflow`           | AI agent execution                   |
+| `llmAgentflow`             | LLM / language model call            |
+| `conditionAgentflow`       | Conditional branching                |
+| `conditionAgentAgentflow`  | Agent-level conditional branching    |
+| `humanInputAgentflow`      | Wait for user input                  |
+| `loopAgentflow`            | Loop / iteration                     |
+| `directReplyAgentflow`     | Direct response to user              |
+| `customFunctionAgentflow`  | Custom JavaScript function           |
+| `toolAgentflow`            | Tool integration                     |
+| `retrieverAgentflow`       | Data retrieval                       |
+| `stickyNoteAgentflow`      | Canvas annotation (not connectable)  |
+| `httpAgentflow`            | HTTP request                         |
+| `iterationAgentflow`       | Iteration / map-reduce container     |
+| `executeFlowAgentflow`     | Execute a sub-flow                   |
+
+### Design Note
+
+`<Agentflow>` is an **uncontrolled component**. The `initialFlow` prop seeds the canvas state on mount, but the component owns its own state afterward. Use the `ref` for imperative access and `onFlowChange` to observe changes.
+
+## Exports
+
+Beyond the main `<Agentflow>` component, the package exports utilities for advanced usage:
+
+```ts
+// Main component and provider
+// Types
+
+// Hooks
+// Validation
+// Node utilities
+
+// Field visibility helpers
+
+```
+
+## Development
+
+```bash
+# Install dependencies
+pnpm install
+
+# Build the package
+pnpm build
+
+# Run tests
+pnpm test
+
+# Run examples
+cd examples && pnpm install && pnpm dev
+```
+
+Visit the [examples](./examples) directory for more usage patterns. See [TESTS.md](./TESTS.md) for the full test plan and coverage status.
+
+## Publishing
+
+### Version Update
+
+Bump the version in `package.json` before publishing. Use `npm version` to update the version and create a git tag:
+
+```bash
+# Prerelease (for testing)
+npm version prerelease --preid=dev   # 0.0.0-dev.1 → 0.0.0-dev.2
+
+# Patch / Minor / Major (for stable releases)
+npm version patch                    # 0.0.1
+npm version minor                    # 0.1.0
+npm version major                    # 1.0.0
+```
+
+### Verify Before Publishing
+
+```bash
+# Build and check the tarball contents
+pnpm build
+npm pack --dry-run
+
+# Full publish dry-run (runs prepublishOnly + simulates upload)
+npm publish --dry-run
+```
+
+### Publish
+
+```bash
+# Prerelease — tagged so `npm install @flowiseai/agentflow` won't pick it up
+npm publish --tag dev
+
+# Stable release — gets the `latest` tag
+npm publish
+```
+
+> The `prepublishOnly` script automatically runs `clean` and `build` before every publish, so stale dist files are never uploaded.
+
+## Documentation
+
+-   [ARCHITECTURE.md](./ARCHITECTURE.md) - Internal architecture and design patterns
+-   [TESTS.md](./TESTS.md) - Test plan, coverage tiers, and configuration
+-   [Examples](./examples/README.md) - Usage examples and demos
+
+## Contributing
+
+This package follows a feature-based architecture with clear separation of concerns. See [ARCHITECTURE.md](./ARCHITECTURE.md) for details on the project structure and development guidelines.
+
+## License
+
+Apache-2.0 — see the repository root [LICENSE.md](https://github.com/FlowiseAI/Flowise/blob/main/LICENSE.md) for details.
+
+---
+
+Part of the [Flowise](https://github.com/FlowiseAI/Flowise) ecosystem
+
+
