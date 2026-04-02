@@ -2,6 +2,7 @@
 .idea
 .vscode
 
+
 # dependencies
 **/node_modules
 **/package-lock.json
@@ -118,3 +119,9 @@ apps/*/
 # Claude - session/user specific files
 .claude/plans/
 .claude/settings.local.json
+
+# Netlify local state
+.netlify/
+
+# Wixoo local state
+.wixoo/

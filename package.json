@@ -32,7 +32,9 @@
         "lint-fix": "pnpm lint --fix",
         "quick": "pretty-quick --staged",
         "postinstall": "husky install",
-        "migration:create": "pnpm typeorm migration:create"
+        "migration:create": "pnpm typeorm migration:create",
+        "validate:root-html": "node scripts/validate-root-shell.mjs",
+        "e2e:record": "playwright test -c playwright.preview.config.ts"
     },
     "lint-staged": {
         "*.{js,jsx,ts,tsx,json,md}": "eslint --fix"
@@ -40,6 +42,7 @@
     "devDependencies": {
         "@babel/preset-env": "^7.19.4",
         "@babel/preset-typescript": "7.18.6",
+        "@playwright/test": "^1.58.2",
         "@types/express": "^4.17.13",
         "@typescript-eslint/typescript-estree": "^7.13.1",
         "eslint": "^8.24.0",
@@ -86,7 +89,7 @@
             "unset-value": "2.0.1",
             "webpack-dev-middleware": "7.4.2",
             "ws": "8.18.3",
-            "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz",
+            "xlsx": "^0.18.5",
             "uuid": "^10.0.0",
             "request>uuid": "^3.4.0"
         }

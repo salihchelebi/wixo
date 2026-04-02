@@ -3,6 +3,19 @@ import PropTypes from 'prop-types'
 import { createContext, useContext, useEffect, useState } from 'react'
 
 const ConfigContext = createContext()
+const OPEN_SOURCE_FALLBACK = { PLATFORM_TYPE: 'openSource' }
+
+const resolveSettings = (settings) => {
+    if (!settings || Object.keys(settings).length === 0) {
+        return OPEN_SOURCE_FALLBACK
+    }
+
+    if (!settings.PLATFORM_TYPE) {
+        return OPEN_SOURCE_FALLBACK
+    }
+
+    return settings
+}
 
 export const ConfigProvider = ({ children }) => {
     const [config, setConfig] = useState({})
@@ -15,30 +28,33 @@ export const ConfigProvider = ({ children }) => {
         const userSettings = platformsettingsApi.getSettings()
         Promise.all([userSettings])
             .then(([currentSettingsData]) => {
-                const finalData = {
-                    ...currentSettingsData.data
-                }
+                const finalData = resolveSettings(currentSettingsData?.data)
+
                 setConfig(finalData)
-                if (finalData.PLATFORM_TYPE) {
-                    if (finalData.PLATFORM_TYPE === 'enterprise') {
-                        setEnterpriseLicensed(true)
-                        setCloudLicensed(false)
-                        setOpenSource(false)
-                    } else if (finalData.PLATFORM_TYPE === 'cloud') {
-                        setCloudLicensed(true)
-                        setEnterpriseLicensed(false)
-                        setOpenSource(false)
-                    } else {
-                        setOpenSource(true)
-                        setEnterpriseLicensed(false)
-                        setCloudLicensed(false)
-                    }
+                if (finalData.PLATFORM_TYPE === 'enterprise') {
+                    setEnterpriseLicensed(true)
+                    setCloudLicensed(false)
+                    setOpenSource(false)
+                } else if (finalData.PLATFORM_TYPE === 'cloud') {
+                    setCloudLicensed(true)
+                    setEnterpriseLicensed(false)
+                    setOpenSource(false)
+                } else {
+                    setOpenSource(true)
+                    setEnterpriseLicensed(false)
+                    setCloudLicensed(false)
                 }
 
                 setLoading(false)
             })
             .catch((error) => {
-                console.error('Error fetching data:', error)
+                const statusCode = error?.response?.status ?? 'no-response'
+                const endpoint = error?.config?.url || '/api/v1/settings'
+                console.error(`Error fetching data: settings endpoint failed [${statusCode}] ${endpoint}`, error)
+                setConfig(OPEN_SOURCE_FALLBACK)
+                setOpenSource(true)
+                setEnterpriseLicensed(false)
+                setCloudLicensed(false)
                 setLoading(false)
             })
     }, [])

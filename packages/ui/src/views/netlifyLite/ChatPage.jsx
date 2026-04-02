@@ -9,6 +9,8 @@ export default function NetlifyLiteChatPage() {
     const [message, setMessage] = useState('')
     const [reply, setReply] = useState('')
     const [error, setError] = useState('')
+    const [supabaseStatus, setSupabaseStatus] = useState('idle')
+    const [supabaseResult, setSupabaseResult] = useState('')
     const t = getNetlifyLiteTexts()
 
     useEffect(() => {
@@ -45,6 +47,28 @@ export default function NetlifyLiteChatPage() {
         }
     }
 
+    const onSupabaseFlow = async () => {
+        setSupabaseStatus('loading')
+        setSupabaseResult('')
+        try {
+            const response = await fetch('/api/supabase-flow', {
+                method: 'POST',
+                headers: { 'content-type': 'application/json' },
+                body: JSON.stringify({ message })
+            })
+            const data = await response.json()
+            if (!response.ok) {
+                throw new Error(data.error || 'Supabase akışı başarısız oldu.')
+            }
+
+            setSupabaseStatus('success')
+            setSupabaseResult(`Kayıt başarılı: ${JSON.stringify(data.record)}`)
+        } catch (err) {
+            setSupabaseStatus('error')
+            setSupabaseResult(String(err?.message || 'Supabase akışı başarısız oldu.'))
+        }
+    }
+
     return (
         <Box sx={{ maxWidth: 900, mx: 'auto', py: 4 }}>
             <Paper sx={{ p: 3 }}>
@@ -66,6 +90,14 @@ export default function NetlifyLiteChatPage() {
                         {t.send}
                     </Button>
                     <TextField label={t.assistantReply} value={reply} multiline minRows={4} fullWidth InputProps={{ readOnly: true }} />
+
+                    <Typography variant='h5'>Supabase Function Akışı</Typography>
+                    <Button variant='outlined' onClick={onSupabaseFlow} disabled={!message || supabaseStatus === 'loading'}>
+                        Supabase&apos;e Kaydet
+                    </Button>
+                    {supabaseStatus === 'loading' && <Alert severity='info'>Yükleniyor...</Alert>}
+                    {supabaseStatus === 'success' && <Alert severity='success'>{supabaseResult}</Alert>}
+                    {supabaseStatus === 'error' && <Alert severity='error'>{supabaseResult}</Alert>}
                 </Stack>
             </Paper>
         </Box>
