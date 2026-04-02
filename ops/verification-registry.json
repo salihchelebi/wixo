@@ -1,0 +1,125 @@
+{
+  "repo": {
+    "owner": "salihchelebi",
+    "name": "wixo",
+    "full": "salihchelebi/wixo",
+    "url": "https://github.com/salihchelebi/wixo",
+    "defaultBranch": "main"
+  },
+  "checks": {
+    "build_publish_path_alignment": {
+      "status": "PASSED",
+      "notes": "Vite outDir is ./build and netlify publish path is packages/ui/build.",
+      "evidence": [
+        {
+          "id": "routing-checks/build-publish-path-alignment-2026-03-30.md",
+          "type": "source+command"
+        }
+      ],
+      "fingerprint": "files:packages/ui/vite.config.js|netlify.toml",
+      "dependsOn": [
+        "packages/ui/vite.config.js",
+        "netlify.toml"
+      ],
+      "recheckTriggers": [
+        "packages/ui/vite.config.js",
+        "netlify.toml",
+        "packages/ui/package.json"
+      ]
+    },
+    "netlify_function_route_mapping": {
+      "status": "PASSED",
+      "notes": "API redirects include /api/v1/* -> flowise-api-proxy and legacy admin/chat/supabase mappings via /.netlify/functions.",
+      "evidence": [
+        {
+          "id": "routing-checks/netlify_function_route_mapping-2026-03-30.md",
+          "type": "source"
+        }
+      ],
+      "fingerprint": "file:netlify.toml",
+      "dependsOn": [
+        "netlify.toml",
+        "wixoo/functions/supabase-flow.js",
+        "wixoo/functions/flowise-api-proxy.js"
+      ],
+      "recheckTriggers": [
+        "netlify.toml",
+        "wixoo/functions/**",
+        "packages/ui/src/store/constant.js"
+      ]
+    },
+    "supabase_server_side_secret_usage": {
+      "status": "PASSED",
+      "notes": "SUPABASE_SERVICE_ROLE_KEY remains server-side only; UI uses API base URL without embedding service role key.",
+      "evidence": [
+        {
+          "id": "env-checks/supabase_server_side_secret_usage-2026-03-30.md",
+          "type": "source"
+        }
+      ],
+      "fingerprint": "file:wixoo/functions/_lib/supabaseRest.js",
+      "dependsOn": [
+        "wixoo/functions/_lib/supabaseRest.js",
+        "packages/ui/src/views/netlifyLite/ChatPage.jsx"
+      ],
+      "recheckTriggers": [
+        "wixoo/functions/_lib/supabaseRest.js",
+        "packages/ui/src/views/**"
+      ]
+    },
+    "local_function_smoke_behavior": {
+      "status": "PASSED",
+      "notes": "Local invocations proved supabase-flow guard/error path and flowise-api-proxy forwarding behavior.",
+      "evidence": [
+        {
+          "id": "preview-checks/local_function_smoke_behavior-2026-03-30.md",
+          "type": "command"
+        }
+      ],
+      "fingerprint": "command:node invoke supabase-flow",
+      "dependsOn": [
+        "wixoo/functions/supabase-flow.js",
+        "wixoo/functions/flowise-api-proxy.js"
+      ],
+      "recheckTriggers": [
+        "wixoo/functions/supabase-flow.js",
+        "wixoo/functions/_lib/**"
+      ]
+    },
+    "github_netlify_repo_linkage": {
+      "status": "UNCERTAIN",
+      "notes": "Cannot verify Netlify project linkage/production branch from local repo-only environment.",
+      "evidence": [
+        {
+          "id": "production-checks/github_netlify_repo_linkage-2026-03-30.md",
+          "type": "platform-log"
+        }
+      ],
+      "fingerprint": null,
+      "dependsOn": [
+        "platform:github",
+        "platform:netlify"
+      ],
+      "recheckTriggers": [
+        "platform-settings-change"
+      ]
+    },
+    "production_runtime_reachability": {
+      "status": "UNCERTAIN",
+      "notes": "No live Netlify deploy URL verification available in this environment.",
+      "evidence": [
+        {
+          "id": "production-checks/production_runtime_reachability-2026-03-30.md",
+          "type": "platform-log"
+        }
+      ],
+      "fingerprint": null,
+      "dependsOn": [
+        "platform:netlify-deploy"
+      ],
+      "recheckTriggers": [
+        "new-production-deploy"
+      ]
+    }
+  }
+}
